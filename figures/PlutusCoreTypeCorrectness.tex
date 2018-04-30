@@ -1,0 +1,219 @@
+\documentclass[../main.tex]{subfiles}
+
+\begin{document}
+
+\begin{figure*}[t]
+    \[\begin{array}{lrclr}
+        \textrm{Ctx} & \Gamma  & ::= & j^*                              & \textrm{variable context}     \\
+        \textrm{VarJ}   & j       & ::= & \typeJ{\alpha}{K}                & \textrm{type variable}              \\
+                        &         &     & \termJ{x}{T}                     & \textrm{term variable}              \\
+    \end{array}\]
+    
+    \caption{Contexts}
+    \label{fig:Plutus_core_contexts}
+\end{figure*}
+
+
+
+
+
+\begin{figure*}[t]
+    \judgmentdef{\(\hypJ{\Gamma}{\istypeJ{T}{K}}\)}{In context $\Gamma$, type $T$ has kind $K$}
+    
+    \begin{prooftree}
+        \AxiomC{\(\ctxni{\Gamma}{\typeJ{\alpha}{K}}\)}
+        \RightLabel{tyvar}
+        \UnaryInfC{\(\hypJ{\Gamma}{\istypeJ{\alpha}{K}}\)}
+    \end{prooftree}
+    
+    \begin{prooftree}
+        \AxiomC{\(\hypJ{\Gamma}{\istypeJ{S}{\typeK{}}}\)}
+        \AxiomC{\(\hypJ{\Gamma}{\istypeJ{T}{\typeK{}}}\)}
+        \RightLabel{fun}
+        \BinaryInfC{\(\hypJ{\Gamma}{\istypeJ{\funT{S}{T}}{\typeK{}}}\)}
+    \end{prooftree}
+    
+    \begin{prooftree}
+        \AxiomC{\(\hypJ{\Gamma, \typeJ{\alpha}{K}}{\istypeJ{T}{\typeK{}}}\)}
+        \RightLabel{forall}
+        \UnaryInfC{\(\hypJ{\Gamma}{\istypeJ{\forallT{\alpha}{K}{T}}{\typeK{}}}\)}
+    \end{prooftree}
+    
+    \begin{prooftree}
+        \AxiomC{}
+        \RightLabel{integer}
+        \UnaryInfC{\(\hypJ{\Gamma}{\istypeJ{\integerT{s}}{\typeK{}}}\)}
+    \end{prooftree}
+    
+    \begin{prooftree}
+        \AxiomC{}
+        \RightLabel{float}
+        \UnaryInfC{\(\hypJ{\Gamma}{\istypeJ{\floatT{}}{\typeK{}}}\)}
+    \end{prooftree}
+    
+    \begin{prooftree}
+        \AxiomC{}
+        \RightLabel{bytestring}
+        \UnaryInfC{\(\hypJ{\Gamma}{\istypeJ{\bytestringT{s}}{\typeK{}}}\)}
+    \end{prooftree}
+    
+    \begin{prooftree}
+        \AxiomC{\(\hypJ{\Gamma, \typeJ{\alpha}{J}}{\istypeJ{T}{K}}\)}
+        \RightLabel{tylam}
+        \UnaryInfC{\(\hypJ{\Gamma}{\istypeJ{\lamT{\alpha}{J}{T}}{\funK{J}{K}}}\)}
+    \end{prooftree}
+    
+    \begin{prooftree}
+        \AxiomC{\(\hypJ{\Gamma}{\istypeJ{S}{\funK{J}{K}}}\)}
+        \AxiomC{\(\hypJ{\Gamma}{\istypeJ{T}{J}}\)}
+        \RightLabel{tyapp}
+        \BinaryInfC{\(\hypJ{\Gamma}{\istypeJ{\appT{S}{T}}{K}}\)}
+    \end{prooftree}
+    
+    \begin{prooftree}
+        \AxiomC{\(\hypJ{\Gamma, \typeJ{\alpha}{K}}{\istypeJ{T}{K}}\)}
+        \RightLabel{tyfix}
+        \UnaryInfC{\(\hypJ{\Gamma}{\istypeJ{\fixT{\alpha}{K}{T}}{K}}\)}
+    \end{prooftree}
+    
+    \begin{prooftree}
+        \AxiomC{}
+        \RightLabel{size}
+        \UnaryInfC{\(\hypJ{\Gamma}{\istypeJ{\sizeT{s}}{\sizeK{}}}\)}
+    \end{prooftree}
+    
+    \caption{Type Well-formedness}
+    \label{fig:Plutus_core_type_well_formedness}
+\end{figure*}
+
+
+
+
+
+\begin{figure*}[t]
+    \judgmentdef{\(\hypJ{\Gamma}{\checkJ{T}{M}}\)}{In context $\Gamma$, type $T$ checks term $M$}
+    
+    \begin{prooftree}
+        \AxiomC{\(\hypJ{\Gamma, \typeJ{\alpha}{K}}{\checkJ{T}{M}}\)}
+        \RightLabel{abs}
+        \UnaryInfC{\(\hypJ{\Gamma}{\checkJ{\forallT{\alpha}{K}{T}}{\abs{\alpha}{M}}}\)}
+    \end{prooftree}
+    
+    \begin{prooftree}
+        \AxiomC{\(\hypJ{\Gamma, \termJ{x}{S}}{\checkJ{T}{M}}\)}
+        \RightLabel{lam}
+        \UnaryInfC{\(\hypJ{\Gamma}{\checkJ{\funT{S}{T}}{\lam{x}{M}}}\)}
+    \end{prooftree}
+    
+    \begin{prooftree}
+        \AxiomC{\(\hypJ{\Gamma}{\checkJ{\subst{\fixT{\alpha}{K}{T}}{\alpha}{T}}{M}}\)}
+        \RightLabel{tyfix}
+        \UnaryInfC{\(\hypJ{\Gamma}{\checkJ{\fixT{\alpha}{K}{T}}{M}}\)}
+    \end{prooftree}
+    
+    \begin{prooftree}
+        \AxiomC{\(\hypJ{\Gamma, \termJ{x}{T}}{\checkJ{T}{M}}\)}
+        \RightLabel{fix}
+        \UnaryInfC{\(\hypJ{\Gamma}{\checkJ{T}{\fix{x}{M}}}\)}
+    \end{prooftree}
+    
+    \begin{prooftree}
+        \AxiomC{\(s = s'\)}
+        \RightLabel{size}
+        \UnaryInfC{\(\hypJ{\Gamma}{\checkJ{\sizeT{s}}{\sizename{s'}}}\)}
+    \end{prooftree}
+    
+    \begin{prooftree}
+        \AxiomC{\(\hypJ{\Gamma}{\synthJ{M}{S}}\)}
+        \AxiomC{\(T = S\)}
+        \RightLabel{dir-change}
+        \BinaryInfC{\(\hypJ{\Gamma}{\checkJ{T}{M}}\)}
+    \end{prooftree}
+    
+    \caption{Type Checking}
+    \label{fig:Plutus_core_type_checking}
+\end{figure*}
+
+
+
+
+
+
+\begin{figure*}[t]
+    \judgmentdef{\(\hypJ{\Gamma}{\synthJ{M}{T}}\)}{In context $\Gamma$, term $M$ synthesizes type $T$}
+    
+    \begin{prooftree}
+        \AxiomC{\(\ctxni{\Gamma}{\termJ{x}{T}}\)}
+        \RightLabel{var}
+        \UnaryInfC{\(\hypJ{\Gamma}{\synthJ{x}{T}}\)}
+    \end{prooftree}
+    
+    \begin{prooftree}
+        \AxiomC{\(\hypJ{\Gamma}{\typeJ{T}{\typeK{}}}\)}
+        \AxiomC{\(\hypJ{\Gamma}{\checkJ{T}{M}}\)}
+        \RightLabel{isa}
+        \BinaryInfC{\(\hypJ{\Gamma}{\synthJ{\ann{M}{T}}{T}}\)}
+    \end{prooftree}
+    
+    \begin{prooftree}
+        \alwaysNoLine
+        \AxiomC{\(\hypJ{\Gamma}{\synthJ{M}{\forallT{\alpha}{K}{T}}}\)}
+        \UnaryInfC{\(\hypJ{\Gamma}{\istypeJ{S}{K}}\)}
+        \alwaysSingleLine
+        \RightLabel{inst}
+        \UnaryInfC{\(\hypJ{\Gamma}{\synthJ{\inst{M}{S}}{\subst{S}{\alpha}{T}}}\)}
+    \end{prooftree}
+    
+    \begin{prooftree}
+        \alwaysNoLine
+        \AxiomC{\(\hypJ{\Gamma}{\synthJ{M}{\funT{S}{T}}}\)}
+        \UnaryInfC{\(\hypJ{\Gamma}{\checkJ{S}{N}}\)}
+        \alwaysSingleLine
+        \RightLabel{app}
+        \UnaryInfC{\(\hypJ{\Gamma}{\synthJ{\app{M}{N}}{T}}\)}
+    \end{prooftree}
+    
+    \begin{prooftree}
+        \AxiomC{$bi$ is $T$}
+        \RightLabel{builtin}
+        \UnaryInfC{\(\hypJ{\Gamma}{\synthJ{\builtin{bi}}{T}}\)}
+    \end{prooftree}
+    
+    \begin{prooftree}
+        \AxiomC{$i$ is an $s$-bit integer}
+        \RightLabel{intval}
+        \UnaryInfC{\(\hypJ{\Gamma}{\synthJ{i}{\integerT{s}}}\)}
+    \end{prooftree}
+    
+    \begin{prooftree}
+        \AxiomC{}
+        \RightLabel{floatval}
+        \UnaryInfC{\(\hypJ{\Gamma}{\synthJ{f}{\floatT{}}}\)}
+    \end{prooftree}
+    
+    \begin{prooftree}
+        \AxiomC{$b$ is an $s$-byte bytestring}
+        \RightLabel{bytestringval}
+        \UnaryInfC{\(\hypJ{\Gamma}{\synthJ{b}{\bytestringT{s}}}\)}
+    \end{prooftree}
+    
+    \begin{prooftree}
+        \AxiomC{}
+        \RightLabel{size}
+        \UnaryInfC{\(\hypJ{\Gamma}{\synthJ{\sizename{s}}{\sizeT{s}}}\)}
+    \end{prooftree}
+    
+    \caption{Type Synthesis}
+    \label{fig:Plutus_core_type_synthesis}
+\end{figure*}
+
+
+
+
+
+
+
+
+
+
+\end{document}
