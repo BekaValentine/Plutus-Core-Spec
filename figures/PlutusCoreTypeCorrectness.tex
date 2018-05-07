@@ -40,18 +40,6 @@
     \end{prooftree}
     
     \begin{prooftree}
-        \AxiomC{}
-        \RightLabel{integer}
-        \UnaryInfC{\(\hypJ{\Gamma}{\istypeJ{\integerT{s}}{\typeK{}}}\)}
-    \end{prooftree}
-    
-    \begin{prooftree}
-        \AxiomC{}
-        \RightLabel{bytestring}
-        \UnaryInfC{\(\hypJ{\Gamma}{\istypeJ{\bytestringT{s}}{\typeK{}}}\)}
-    \end{prooftree}
-    
-    \begin{prooftree}
         \AxiomC{\(\hypJ{\Gamma, \typeJ{\alpha}{J}}{\istypeJ{T}{K}}\)}
         \RightLabel{tylam}
         \UnaryInfC{\(\hypJ{\Gamma}{\istypeJ{\lamT{\alpha}{J}{T}}{\funK{J}{K}}}\)}
@@ -68,12 +56,6 @@
         \AxiomC{\(\hypJ{\Gamma, \typeJ{\alpha}{K}}{\istypeJ{T}{K}}\)}
         \RightLabel{tyfix}
         \UnaryInfC{\(\hypJ{\Gamma}{\istypeJ{\fixT{\alpha}{K}{T}}{K}}\)}
-    \end{prooftree}
-    
-    \begin{prooftree}
-        \AxiomC{}
-        \RightLabel{size}
-        \UnaryInfC{\(\hypJ{\Gamma}{\istypeJ{\sizeT{s}}{\sizeK{}}}\)}
     \end{prooftree}
     
     \caption{Type Well-formedness}
@@ -109,12 +91,6 @@
         \AxiomC{\(\hypJ{\Gamma, \termJ{x}{T}}{\checkJ{T}{M}}\)}
         \RightLabel{fix}
         \UnaryInfC{\(\hypJ{\Gamma}{\checkJ{T}{\fix{x}{M}}}\)}
-    \end{prooftree}
-    
-    \begin{prooftree}
-        \AxiomC{\(s = s'\)}
-        \RightLabel{size}
-        \UnaryInfC{\(\hypJ{\Gamma}{\checkJ{\sizeT{s}}{\sizename{s'}}}\)}
     \end{prooftree}
     
     \begin{prooftree}
@@ -171,24 +147,6 @@
         \AxiomC{$bi$ is $T$}
         \RightLabel{builtin}
         \UnaryInfC{\(\hypJ{\Gamma}{\synthJ{\builtin{bi}}{T}}\)}
-    \end{prooftree}
-    
-    \begin{prooftree}
-        \AxiomC{$i$ is an $s$-bit integer}
-        \RightLabel{intval}
-        \UnaryInfC{\(\hypJ{\Gamma}{\synthJ{i}{\integerT{s}}}\)}
-    \end{prooftree}
-    
-    \begin{prooftree}
-        \AxiomC{$b$ is an $s$-byte bytestring}
-        \RightLabel{bytestringval}
-        \UnaryInfC{\(\hypJ{\Gamma}{\synthJ{b}{\bytestringT{s}}}\)}
-    \end{prooftree}
-    
-    \begin{prooftree}
-        \AxiomC{}
-        \RightLabel{size}
-        \UnaryInfC{\(\hypJ{\Gamma}{\synthJ{\sizename{s}}{\sizeT{s}}}\)}
     \end{prooftree}
     
     \caption{Type Synthesis}

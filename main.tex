@@ -431,6 +431,7 @@
 \newcommand{\blocktime}{\construct{\keyword{blocktime}}}
 \newcommand{\bind}[3]{\construct{\keyword{bind} ~ #1 ~ #2 ~ #3}}
 \newcommand{\builtin}[1]{\construct{\keyword{builtin} ~ #1}}
+\newcommand{\sizedBuiltin}[2]{#1\keyword{!}#2}
 \newcommand{\prim}[1]{\construct{\keyword{prim} ~ #1}}
 %\newcommand{\primInt}[1]{(\keyword{primInteger} ~ #1)}
 \newcommand{\primInt}[1]{\texttt{#1}}
@@ -467,9 +468,9 @@
 \newcommand{\forallT}[3]{\construct{\keyword{forall} ~ #1 ~ #2 ~ #3}}
 \newcommand{\bytestringT}[1]{\construct{\keyword{bytestring} ~ #1}}
 \newcommand{\integerT}[1]{\construct{\keyword{integer} ~ #1}}
-\newcommand{\builtinIntegerType}[1]{\keyword{integer[}#1\keyword{]}}
-\newcommand{\builtinBytestringType}[1]{\keyword{bytestring[}#1\keyword{]}}
-\newcommand{\builtinSizeType}{\keyword{size}}
+\newcommand{\builtinIntegerType}[1]{\keyword{integer}}
+\newcommand{\builtinBytestringType}[1]{\keyword{bytestring}}
+\newcommand{\builtinSizeType}[1]{\keyword{size}}
 \newcommand{\builtinT}[1]{\construct{\keyword{builtin} ~ #1}}
 \newcommand{\floatT}[1]{\construct{\keyword{float} ~ #1}}
 \newcommand{\sizeT}[1]{\construct{\keyword{size} ~ #1}}
