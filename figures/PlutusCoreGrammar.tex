@@ -5,7 +5,7 @@
 \begin{figure*}[t]
     \centering
     \[\begin{array}{lrclr}
-        \textrm{Term}             & M, N   & ::= & x                          & \textrm{variable}\\
+        \textrm{Term}             & M, N   & ::= & x                       & \textrm{variable}\\
                                   &     &     & \ann{M}{T}                 & \textrm{type annotation}\\
                                   &     &     & \abs{\alpha}{M}            & \textrm{type abstraction}\\
                                   &     &     & \inst{M}{T}                & \textrm{type instantiation}\\
@@ -23,13 +23,13 @@
                                   &     &     & \fixT{\alpha}{K}{T}        & \textrm{fixed point type}\\
                                   &     &     & \bytestringT{s}            & \textrm{bytestring}\\
                                   &     &     & \integerT{s}               & \textrm{integer}\\
-                                  &     &     & \floatT{}                  & \textrm{float}\\
                                   &     &     & \sizeT{s}                  & \textrm{size type}\\
                                   &     &     & \lamT{\alpha}{K}{T}        & \textrm{type abstraction}\\
                                   &     &     & \appT{T}{T^+}              & \textrm{type application}\\
-        \textrm{Kind}             & J,K   & ::= & \typeK{}                   & \textrm{type kind}\\
+        \textrm{Kind}             & J,K & ::= & \typeK{}                   & \textrm{type kind}\\
                                   &     &     & \funK{K}{K}                & \textrm{arrow kind}\\
                                   &     &     & \sizeK{}                   & \textrm{size kind}\\
+        \textrm{Program}          & P   & ::= & \program{v}{M}             & \textrm{program}\\
 
     \end{array}\]
     \caption{Grammar of Plutus Core}

@@ -47,12 +47,6 @@
     
     \begin{prooftree}
         \AxiomC{}
-        \RightLabel{float}
-        \UnaryInfC{\(\hypJ{\Gamma}{\istypeJ{\floatT{}}{\typeK{}}}\)}
-    \end{prooftree}
-    
-    \begin{prooftree}
-        \AxiomC{}
         \RightLabel{bytestring}
         \UnaryInfC{\(\hypJ{\Gamma}{\istypeJ{\bytestringT{s}}{\typeK{}}}\)}
     \end{prooftree}
@@ -183,12 +177,6 @@
         \AxiomC{$i$ is an $s$-bit integer}
         \RightLabel{intval}
         \UnaryInfC{\(\hypJ{\Gamma}{\synthJ{i}{\integerT{s}}}\)}
-    \end{prooftree}
-    
-    \begin{prooftree}
-        \AxiomC{}
-        \RightLabel{floatval}
-        \UnaryInfC{\(\hypJ{\Gamma}{\synthJ{f}{\floatT{}}}\)}
     \end{prooftree}
     
     \begin{prooftree}

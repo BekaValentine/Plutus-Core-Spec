@@ -5,17 +5,17 @@
 \begin{figure*}[t]
     \centering
     \[\begin{array}{lrclr}
-        \textrm{Var}     & x  & ::= & [\mathtt{a}\!\hyphen{}\!\mathtt{z}][\mathtt{a}\!\hyphen{}\!\mathtt{zA}\!\hyphen{}\!\mathtt{Z0}\!\hyphen{}\!\mathtt{9\_'}]^*                                                           & \textrm{term variable}\\
-        \textrm{TyVar}   & \alpha & ::= & [\mathtt{a}\!\hyphen{}\!\mathtt{z}][\mathtt{a}\!\hyphen{}\!\mathtt{z A}\!\hyphen{}\!\mathtt{Z0}\!\hyphen{}\!\mathtt{9\_'}]^*                                                      & \textrm{type variable}\\
-        \textrm{Integer} & i  & ::= & [\texttt{+-}]^?[\mathtt{0}\!\hyphen{}\!\mathtt{9}]^+                                                                                                                                  & \textrm{integer}\\
-        \textrm{Float}   & f  & ::= & [\texttt{+-}]^?[\mathtt{0}\!\hyphen{}\!\mathtt{9}]^+(\mathtt{\backslash{}.}[\mathtt{0}\!\hyphen{}\!\mathtt{9}]^+\mathit{e}^?| \mathit{e})                                             & \textrm{float}\\
-        \textrm{Exp}    & \mathit{e} & ::= & [\mathtt{eE}][\texttt{+-}]^?[\mathtt{0}\!\hyphen{}\!\mathtt{9}]^+                                                                                                              & \textrm{exponent}\\
-        \textrm{ByStr}   & b  & ::= & \texttt{\#}([\mathtt{a}\!\hyphen{}\!\mathtt{fA}\!\hyphen{}\!\mathtt{F0}\!\hyphen{}\!\mathtt{9}][\mathtt{a}\!\hyphen{}\!\mathtt{fA}\!\hyphen{}\!\mathtt{F0}\!\hyphen{}\!\mathtt{9}])^+ & \textrm{hex string}\\
-                         &    &     & \texttt{\#"}char^*\texttt{"}                                                                                                                                                          & \textrm{ASCII string}\\
-        \textrm{Builtin}    & bi  & ::= & [\mathtt{a}\!\hyphen{}\!\mathtt{z}][\mathtt{a}\!\hyphen{}\!\mathtt{zA}\!\hyphen{}\!\mathtt{Z0}\!\hyphen{}\!\mathtt{9\_'}]^*                                                          & \textrm{builtin name}\\
-        \textrm{Size} & s  & ::= & [\mathtt{0}\!\hyphen{}\!\mathtt{9}]^+                                                                                                                                  & \textrm{size}\\
-        \textrm{Size Term} & z  & ::= & \sizename{s}                                                     & \textrm{size name}\\
-                
+        \textrm{Var}     & x  & ::= & [\texttt{a}\!\hyphen{}\!\texttt{z}][\texttt{a}\!\hyphen{}\!\texttt{zA}\!\hyphen{}\!\texttt{Z0}\!\hyphen{}\!\texttt{9\_'}]^*                                                           & \textrm{term variable}\\
+        \textrm{TyVar}   & \alpha & ::= & [\texttt{a}\!\hyphen{}\!\texttt{z}][\texttt{a}\!\hyphen{}\!\texttt{zA}\!\hyphen{}\!\texttt{Z0}\!\hyphen{}\!\texttt{9\_'}]^*                                                      & \textrm{type variable}\\
+        \textrm{Integer} & i  & ::= & [\texttt{+-}]^?[\texttt{0}\!\hyphen{}\!\texttt{9}]^+                                                                                                                                  & \textrm{integer}\\
+        \textrm{ByStr}   & b  & ::= & \texttt{\#}([\texttt{a}\!\hyphen{}\!\texttt{fA}\!\hyphen{}\!\texttt{F0}\!\hyphen{}\!\texttt{9}][\texttt{a}\!\hyphen{}\!\texttt{fA}\!\hyphen{}\!\texttt{F0}\!\hyphen{}\!\texttt{9}])^+ & \textrm{hex string}\\
+                         &    &     & \texttt{\#"}asciichar^*\texttt{"}   & \textrm{ASCII string}\\
+                         &    &     & \texttt{\#u"}unicodechar^*\texttt{"}    & \textrm{Unicode string}\\
+        \textrm{Builtin}    & bi  & ::= & [\texttt{a}\!\hyphen{}\!\texttt{z}][\texttt{a}\!\hyphen{}\!\texttt{zA}\!\hyphen{}\!\texttt{Z0}\!\hyphen{}\!\texttt{9\_'}]^*                                                          & \textrm{builtin name}\\
+        \textrm{Size} & s  & ::= & [\texttt{0}\!\hyphen{}\!\texttt{9}]^+                                                                                                                                  & \textrm{size}\\
+        \textrm{Size Term} & z  & ::= & \texttt{\$} s                                                     & \textrm{size term}\\
+        
+        \textrm{Version} & v & ::= & [\texttt{0}\!\hyphen{}\!\texttt{9}]^+.[\texttt{0}\!\hyphen{}\!\texttt{9}]^+.[\texttt{0}\!\hyphen{}\!\texttt{9}]^+ & \textrm{version}
     \end{array}\]
     \caption{Lexical Grammar of Plutus Core}
     \label{fig:Plutus_core_lexical_grammar}

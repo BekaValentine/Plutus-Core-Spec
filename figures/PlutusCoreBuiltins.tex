@@ -5,89 +5,71 @@
 \begin{figure*}[t]
     \centering
     \footnotesize
-    \[\begin{array}{lll}
-        \textit{Builtin Name}               & \textit{Arguments} & \textit{Result}\\
+    \[\begin{array}{llll}
+        \textit{Builtin Name}               & \textit{Arguments} & \textit{Result} & \textit{Error Conditions}\\
         &&\\
         
-        \multicolumn{3}{l}{\forallT{s}{\sizeK{}}{\funT{\sizeT{s}}{\funT{\integerT{s}}{\funT{\integerT{s}}{\integerT{s}}}}}}\\
-        \mathrm{addInteger}                 &  s, z, i_0 , i_1   &   i_0 + i_1             \\
-        \mathrm{subtractInteger}            &  s, z, i_0 , i_1   &   i_0 - i_1             \\
-        \mathrm{multiplyInteger}            &  s, z, i_0 , i_1   &   i_0 \times i_1        \\
-        \mathrm{divideInteger}              &  s, z, i_0 , i_1   &   div ~ i_0 ~ i_1       \\
-        \mathrm{remainderInteger}           &  s, z, i_0 , i_1   &   mod ~ i_0 ~ i_1       \\
+        \multicolumn{4}{l}{\forallT{s}{\sizeK{}}{\funT{\integerT{s}}{\funT{\integerT{s}}{\integerT{s}}}}}\\
+        \mathrm{addInteger}                 &  i_0 , i_1   &   i_0 + i_1         &   \textrm{Addition Overflow}   \\
+        \mathrm{subtractInteger}            &  i_0 , i_1   &   i_0 - i_1         &   \textrm{None}       \\
+        \mathrm{multiplyInteger}            &  i_0 , i_1   &   i_0 \times i_1    &   \textrm{Multiplication Overflow}   \\
+        \mathrm{divideInteger}              &  i_0 , i_1   &   div ~ i_0 ~ i_1   &   \textrm{None}       \\
+        \mathrm{remainderInteger}           &  i_0 , i_1   &   mod ~ i_0 ~ i_1   &   \textrm{None}       \\
         &&\\
         
-        \multicolumn{3}{l}{\forallT{s}{\sizeK{}}{\funT{\sizeT{s}}{\funT{\integerT{s}}{\funT{\integerT{s}}{\mathit{boolean}}}}}}\\
-        \mathrm{lessThanInteger}            &  s, z, i_0 , i_1   &   i_0 < i_1             \\
-        \mathrm{lessThanEqualsInteger}      &  s, z, i_0 , i_1   &   i_0 <= i_1            \\
-        \mathrm{greaterThanInteger}         &  s, z, i_0 , i_1   &   i_0 > i_1             \\
-        \mathrm{greaterThanEqualsInteger}   &  s, z, i_0 , i_1   &   i_0 >= i_1            \\
-        \mathrm{equalsInteger}              &  s, z, i_0 , i_1   &   i_0 == i_1            \\
+        \multicolumn{4}{l}{\forallT{s}{\sizeK{}}{\funT{\integerT{s}}{\funT{\integerT{s}}{\mathit{boolean}}}}}\\
+        \mathrm{lessThanInteger}            &  i_0 , i_1   &   i_0 < i_1    &   \textrm{None}         \\
+        \mathrm{lessThanEqualsInteger}      &  i_0 , i_1   &   i_0 <= i_1   &   \textrm{None}         \\
+        \mathrm{greaterThanInteger}         &  i_0 , i_1   &   i_0 > i_1    &   \textrm{None}         \\
+        \mathrm{greaterThanEqualsInteger}   &  i_0 , i_1   &   i_0 >= i_1   &   \textrm{None}         \\
+        \mathrm{equalsInteger}              &  i_0 , i_1   &   i_0 == i_1   &   \textrm{None}         \\
         &&\\
         
-        \multicolumn{3}{l}{\forallT{s_0}{\sizeK{}}{\forallT{s_1}{\sizeK{}}{\funT{\sizeT{s_0}}{\funT{\sizeT{s_1}}{\funT{\integerT{s_0}}{\floatT{s_1}}}}}}}\\
-        \mathrm{intToFloat}                 &  s_0, s_1, z_0, z_1, i           &   intToFloat ~ i        \\
+        \multicolumn{4}{l}{\forallT{s_0,s_1}{\sizeK{}}{\funT{\sizeT{s_1}}{\funT{\integerT{s_0}}{\integerT{s_1}}}}} \\
+        \mathrm{resizeInteger}   &   z, i   &   resizeInteger ~ z ~ i   &   \textrm{Resizing Overflow} \\
         &&\\
         
-        \multicolumn{3}{l}{\forallT{s_0}{\sizeK{}}{\forallT{s_1}{\sizeK{}}{\funT{\sizeT{s_0}}{\funT{\sizeT{s_1}}{\funT{\integerT{s_0}}{\bytestringT{s_1}}}}}}}\\
-        \mathrm{intToByteString}            &  s_0, s_1, z_0, z_1, i           &   intToByteString ~ i   \\
+        \multicolumn{4}{l}{\forallT{s_0,s_1}{\sizeK{}}{\funT{\sizeT{s_1}}{\funT{\integerT{s_0}}{\bytestringT{s_1}}}}}\\
+        \mathrm{intToByteString}            &  z, i           &   intToByteString ~ z ~ i   &   \textrm{Overflow} \\
         &&\\
         
         
-        \multicolumn{3}{l}{\forallT{s}{\sizeK{}}{\funT{\sizeT{s}}{\funT{\floatT{s}}{\funT{\floatT{s}}{\floatT{s}}}}}}\\
-        \mathrm{addFloat}                 &   s, z, f_0 , f_1   &   f_0 + f_1               \\
-        \mathrm{subtractFloat}            &   s, z, f_0 , f_1   &   f_0 - f_1               \\
-        \mathrm{multiplyFloat}            &   s, z, f_0 , f_1   &   f_0 \times f_1          \\
-        \mathrm{divideFloat}              &   s, z, f_0 , f_1   &   f_0/f_1                 \\
-        
+        \multicolumn{4}{l}{\forallT{s}{\sizeK{}}{\funT{\bytestringT{s}}{\funT{\bytestringT{s}}{\mathit{\bytestringT{s}}}}}}\\
+        \mathrm{concatenate}       &   b_0 , b_1   & concat ~ [b_0,b_1]   &   \textrm{None}         \\
         &&\\
         
-        \multicolumn{3}{l}{\forallT{s}{\sizeK{}}{\funT{\sizeT{s}}{\funT{\floatT{s}}{\funT{\floatT{s}}{\mathit{boolean}}}}}}\\
-        \mathrm{lessThanFloat}            &   s, z, f_0 , f_1   &   f_0 < f_1               \\
-        \mathrm{lessThanEqualsFloat}      &   s, z, f_0 , f_1   &   f_0 <= f_1              \\
-        \mathrm{greaterThanFloat}         &   s, z, f_0 , f_1   &   f_0 > f_1               \\
-        \mathrm{greaterThanEqualsFloat}   &   s, z, f_0 , f_1   &   f_0 >= f_1              \\
-        \mathrm{equalsFloat}              &   s, z, f_0 , f_1   &   f_0 == f_1              \\
+        \multicolumn{4}{l}{\forallT{s_0,s_1}{\sizeK{}}{\funT{\bytestringT{s_0}}{\funT{\integerT{s_1}}{\mathit{\bytestringT{s_0}}}}}}\\
+        \mathrm{takeByteString}    &   i, b     & take ~ (fromIntegral ~ i) ~ b   &   \textrm{None} \\
+        \mathrm{dropByteString}    &   i, b     & drop ~ (fromIntegral ~ i) ~ b   &   \textrm{None} \\
         &&\\
         
-        \multicolumn{3}{l}{\forallT{s_0}{\sizeK{}}{\forallT{s_1}{\sizeK{}}{\funT{\sizeT{s_0}}{\funT{\sizeT{s_1}}{\funT{\floatT{s_0}}{\integerT{s_1}}}}}}}\\
-        \mathrm{ceil}                     &   s_0, s_1, z_0, z_1, f           &   ceil ~ f                \\
-        \mathrm{floor}                    &   s_0, s_1, z_0, z_1, f           &   floor ~ f               \\
-        \mathrm{round}                    &   s_0, s_1, z_0, z_1, f           &   round ~ f               \\
+        \multicolumn{4}{l}{\forallT{s}{\sizeK{}}{\funT{\bytestringT{s}}{\mathit{\bytestringT{\size{256}}}}}}\\
+        \mathrm{sha2\_256}         &   b           & sha2\_256 ~ b    & \textrm{None}                \\
+        \mathrm{sha3\_256}         &   b           & sha3\_256~ b     & \textrm{None}                \\
         &&\\
         
-        \multicolumn{3}{l}{\forallT{s}{\sizeK{}}{\funT{\sizeT{s}}{\funT{\bytestringT{s}}{\funT{\bytestringT{s}}{\mathit{\bytestringT{s}}}}}}}\\
-        \mathrm{concatenate}       &   s, z, b_0 , b_1   & concat ~ [b_0,b_1]               \\
+        \multicolumn{4}{l}{\forallT{s_0,s_1,s_2}{\sizeK{}}{\funT{\bytestringT{s_0}}{\funT{\bytestringT{s_1}}{\funT{\bytestringT{s_2}}{\mathit{\mathit{boolean}}}}}}}\\
+        \mathrm{verifySignature}   &   b_0, b_1, b_2           & verifySignature ~ b_0 ~ b_1 ~ b_2   &   \textrm{None}          \\
         &&\\
         
-        \multicolumn{3}{l}{\forallT{s_0}{\sizeK{}}{\forallT{s_1}{\sizeK{}}{\funT{\sizeT{s_0}}{\funT{\sizeT{s_1}}{\funT{\bytestringT{s_0}}{\funT{\integerT{s_1}}{\mathit{\bytestringT{s_0}}}}}}}}}\\
-        \mathrm{takeByteString}    &   s_0, s_1, z_0, z_1, i, b     & take ~ (fromIntegral ~ i) ~ b    \\
-        \mathrm{dropByteString}    &   s_0, s_1, z_0, z_1, i, b     & drop ~ (fromIntegral ~ i) ~ b    \\
+        \multicolumn{4}{l}{\forallT{s_0,s_1}{\sizeK{}}{\funT{\sizeT{s_1}}{\funT{\bytestringT{s_0}}{\integerT{s_1}}}}} \\
+        \mathrm{resizeBytestring}   &   z, b   &   resizeBytestring ~ z ~ b   &   \textrm{Resizing Overflow} \\
         &&\\
         
-        \multicolumn{3}{l}{\forallT{s}{\sizeK{}}{\funT{\sizeT{s}}{\funT{\bytestringT{s}}{\mathit{\bytestringT{s}}}}}}\\
-        \mathrm{sha2\_256}         &   s, z, b           & sha2\_256 ~ b                    \\
-        \mathrm{sha3\_256}         &   s, z, b           & sha3\_256~ b                     \\
+        \multicolumn{4}{l}{\forallT{s}{\sizeK{}}{\funT{\bytestringT{s}}{\funT{\bytestringT{s}}{\mathit{\mathit{boolean}}}}}}\\
+        \mathrm{equalsByteString}  &   b_0 , b_1   & b_0 == b_1   &   \textrm{None}  \\
         &&\\
         
-        \multicolumn{3}{l}{\forallT{s}{\sizeK{}}{\funT{\sizeT{s}}{\funT{\bytestringT{s}}{\mathit{\mathit{boolean}}}}}}\\
-        \mathrm{verifySignature}   &   s, z, b           & verifySignature ~ b              \\
+        \multicolumn{4}{l}{\bytestringT{256}}\\
+        \mathrm{txhash} & & \textit{the transaction hash}   &   \textrm{None}  \\
         &&\\
         
-        \multicolumn{3}{l}{\forallT{s}{\sizeK{}}{\funT{\sizeT{s}}{\funT{\bytestringT{s}}{\funT{\bytestringT{s}}{\mathit{\mathit{boolean}}}}}}}\\
-        \mathrm{equalsByteString}  &   s, z, b_0 , b_1   & b_0 == b_1   \\
+        \multicolumn{4}{l}{\forallT{s}{\sizeK{}}{\funT{\sizeT{s}}{\integerT{s}}}}\\
+        \mathrm{blocknum} & s, z & \textit{the block number}   &   \textrm{Insufficient Size Overflow}  \\
         &&\\
         
-        \multicolumn{3}{l}{\bytestringT{256}}\\
-        \mathrm{txhash} & & \textit{the transaction hash}\\
-        &&\\
-        
-        \multicolumn{3}{l}{\forallT{s}{\sizeK{}}{\funT{\sizeT{s}}{\integerT{s}}}}\\
-        \mathrm{blocknum} & s, z & \textit{the block number}\\
-        &&\\
-        
-        \multicolumn{3}{l}{\mathit{datetime}}\\
-        \mathrm{blocktime} & & \textit{the block time}\\
+        \multicolumn{4}{l}{\mathit{datetime}}\\
+        \mathrm{blocktime} & & \textit{the block time}   &   \textrm{}  \\
     \end{array}\]
     \normalsize
     \caption{Builtin Types and Reductions}

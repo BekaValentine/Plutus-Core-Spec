@@ -381,13 +381,13 @@
 \newcommand{\every}[2]{\forall #1(#2)}
 \newcommand{\some}[2]{\exists #1(#2)}
 
-\newcommand{\keyword}[1]{\mathtt{#1}}
-\newcommand{\sizename}[1]{\$ #1}
-\newcommand{\name}[1]{\mathtt{#1}}
+\newcommand{\keyword}[1]{\texttt{#1}}
+\newcommand{\size}[1]{\texttt{#1}}
+\newcommand{\name}[1]{\texttt{#1}}
 %\newcommand{\qual}[2]{(\keyword{qual} ~ \name{#1} ~ \name{#2})}
-\newcommand{\qual}[2]{#1\mathtt{.}#2}
+\newcommand{\qual}[2]{#1\texttt{.}#2}
 %\newcommand{\qualcon}[2]{(\keyword{qualcon} ~ \name{#1} ~ \name{#2})}
-\newcommand{\qualcon}[2]{#1\mathtt{.}#2}
+\newcommand{\qualcon}[2]{#1\texttt{.}#2}
 \newcommand{\metatycon}{\kappa}
 \newcommand{\metaqualtycon}{\hat{\kappa}}
 \newcommand{\metatyname}{\nu}
@@ -396,21 +396,21 @@
 \newcommand{\metaqualcon}{\hat{c}}
 \newcommand{\metaname}{n}
 \newcommand{\metaqualname}{\hat{n}}
-\newcommand{\variable}[1]{\mathtt{#1}}
-\newcommand{\multiplearg}[2]{#1 \keyword{;} \mathtt{\ldots} \keyword{;} #2}
-\newcommand{\listarg}[2]{#1 \keyword{,} \mathtt{\ldots} \keyword{,} #2}
+\newcommand{\variable}[1]{\texttt{#1}}
+\newcommand{\multiplearg}[2]{#1 \keyword{;} \texttt{\ldots} \keyword{;} #2}
+\newcommand{\listarg}[2]{#1 \keyword{,} \texttt{\ldots} \keyword{,} #2}
 \newcommand{\emptylist}{\keyword{\epsilon}}
-\newcommand{\listargelement}[1]{\mathtt{\ldots} \keyword{,} #1 \keyword{,} \mathtt{\ldots}}
-\newcommand{\altarg}[2]{#1 ~\keyword{|}~ \mathtt{\ldots} ~\keyword{|}~ #2}
+\newcommand{\listargelement}[1]{\texttt{\ldots} \keyword{,} #1 \keyword{,} \texttt{\ldots}}
+\newcommand{\altarg}[2]{#1 ~\keyword{|}~ \texttt{\ldots} ~\keyword{|}~ #2}
 
 \newcommand{\construct}[1]{\texttt{(} #1 \texttt{)}}
 %\newcommand{\scope}[2]{(\keyword{scope} ~ (#1) ~ #2)}
 %\newcommand{\decname}[1]{(\keyword{decname} ~ #1)}
-\newcommand{\decname}[1]{\mathtt{#1}}
+\newcommand{\decname}[1]{\texttt{#1}}
 \newcommand{\ann}[2]{\construct{\keyword{isa} ~ #2 ~ #1}}
 \newcommand{\letrec}[4]{\construct{\keyword{letrec} ~ #1 ~ #2 ~ #3 ~ #4}}
 \newcommand{\lettype}[3]{\construct{\keyword{lettype} ~ #1 ~ #2 ~ #3}}
-\newcommand{\sizeterm}[1]{\construct{\keyword{size} ~ #1}}
+\newcommand{\sizeterm}[1]{\texttt{\$#1}}
 \newcommand{\abs}[2]{\construct{\keyword{abs} ~ #1 ~ #2}}
 \newcommand{\inst}[2]{\construct{\keyword{inst} ~ #1 ~ #2}}
 \newcommand{\lam}[2]{\construct{\keyword{lam} ~ #1 ~ #2}}
@@ -433,17 +433,18 @@
 \newcommand{\builtin}[1]{\construct{\keyword{builtin} ~ #1}}
 \newcommand{\prim}[1]{\construct{\keyword{prim} ~ #1}}
 %\newcommand{\primInt}[1]{(\keyword{primInteger} ~ #1)}
-\newcommand{\primInt}[1]{\mathtt{#1}}
+\newcommand{\primInt}[1]{\texttt{#1}}
 %\newcommand{\primFloat}[1]{(\keyword{primFloat} ~ #1)}
-\newcommand{\primFloat}[1]{\mathtt{#1}}
+\newcommand{\primFloat}[1]{\texttt{#1}}
 %\newcommand{\primByteString}[1]{(\keyword{primByteString} ~ #1)}
-\newcommand{\primByteString}[1]{\mathtt{#1}}
+\newcommand{\primByteString}[1]{\texttt{#1}}
 \newcommand{\isFun}[1]{\construct{\keyword{isFun} ~ #1}}
 \newcommand{\isCon}[1]{\construct{\keyword{isCon} ~ #1}}
 \newcommand{\isConName}[2]{\construct{\keyword{isConName} ~ #1 ~ #2}}
 \newcommand{\isInt}[1]{\construct{\keyword{isInteger} ~ #1}}
 \newcommand{\isFloat}[1]{\construct{\keyword{isFloat} ~ #1}}
 \newcommand{\isByteString}[1]{\construct{\keyword{isByteString} ~ #1}}
+\newcommand{\program}[2]{\construct{\keyword{program} ~ #1 ~ #2}}
 \newcommand{\prg}[1]{\construct{\keyword{program} ~ #1}}
 \newcommand{\mdle}[4]{\construct{\keyword{module} ~ #1 ~ #2 ~ #3 ~ #4}}
 \newcommand{\impd}[1]{\construct{\keyword{import} ~ #1}}
@@ -473,7 +474,6 @@
 \newcommand{\typeK}{\construct{\keyword{type}}}
 \newcommand{\funK}[2]{\construct{\keyword{fun} ~ #1 ~ #2}}
 \newcommand{\sizeK}{\construct{\keyword{size}}}
-\newcommand{\sizelit}[1]{\$ #1}
 \newcommand{\conaritydec}[3]{\construct{\keyword{conarity} ~ #1 ~ \construct{#2} ~ \construct{#3}}}
 \newcommand{\conarity}[3]{\construct{\construct{#1} ~ \construct{#2} ~ #3}}
 \newcommand{\tyconaritydec}[2]{\construct{\keyword{tyconarity} ~ #1 ~ \construct{#2}}}
