@@ -11,11 +11,17 @@
         \textrm{ByStr}   & b  & ::= & \texttt{\#}([\texttt{a}\!\hyphen{}\!\texttt{fA}\!\hyphen{}\!\texttt{F0}\!\hyphen{}\!\texttt{9}][\texttt{a}\!\hyphen{}\!\texttt{fA}\!\hyphen{}\!\texttt{F0}\!\hyphen{}\!\texttt{9}])^+ & \textrm{hex string}\\
                          &    &     & \texttt{\#"}asciichar^*\texttt{"}   & \textrm{ASCII string}\\
                          &    &     & \texttt{\#u"}unicodechar^*\texttt{"}    & \textrm{Unicode string}\\
-        \textrm{Builtin}    & bi  & ::= & [\texttt{a}\!\hyphen{}\!\texttt{z}][\texttt{a}\!\hyphen{}\!\texttt{zA}\!\hyphen{}\!\texttt{Z0}\!\hyphen{}\!\texttt{9\_'}]^*                                                          & \textrm{builtin name}\\
-        \textrm{Size} & s  & ::= & [\texttt{0}\!\hyphen{}\!\texttt{9}]^+                                                                                                                                  & \textrm{size}\\
-        \textrm{Size Term} & z  & ::= & \texttt{\$} s                                                     & \textrm{size term}\\
-        
-        \textrm{Version} & v & ::= & [\texttt{0}\!\hyphen{}\!\texttt{9}]^+.[\texttt{0}\!\hyphen{}\!\texttt{9}]^+.[\texttt{0}\!\hyphen{}\!\texttt{9}]^+ & \textrm{version}
+        \textrm{Builtin Name}    & bn  & ::= & [\texttt{a}\!\hyphen{}\!\texttt{z}][\texttt{a}\!\hyphen{}\!\texttt{zA}\!\hyphen{}\!\texttt{Z0}\!\hyphen{}\!\texttt{9\_'}]^*                                                          & \textrm{builtin name}\\
+        \textrm{Size Term} & z  & ::= & \texttt{\$} s & \textrm{size term}\\
+        \textrm{Builtin} & bi & ::= & i & \textrm{builtin integer}\\
+                         &    &     & b & \textrm{builtin bytestring}\\
+                         &    &     & s & \textrm{builtin size}\\
+                         &    &     & bn & \textrm{builtin name}\\
+        \textrm{Size} & s  & ::= & [\texttt{0}\!\hyphen{}\!\texttt{9}]^+ & \textrm{size}\\
+        \textrm{Version} & v & ::= & [\texttt{0}\!\hyphen{}\!\texttt{9}]^+.[\texttt{0}\!\hyphen{}\!\texttt{9}]^+.[\texttt{0}\!\hyphen{}\!\texttt{9}]^+ & \textrm{version}\\
+        \textrm{Builtin Type Name}    & bt  & ::= & \builtinIntegerType{s} & \textrm{builtin integer type}\\
+                                      &     &     & \builtinBytestringType{s} & \textrm{builtin bytestring type}\\
+                                      &     &     & \builtinSizeType{} & \textrm{builtin size type}\\
     \end{array}\]
     \caption{Lexical Grammar of Plutus Core}
     \label{fig:Plutus_core_lexical_grammar}

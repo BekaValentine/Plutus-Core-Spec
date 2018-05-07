@@ -5,30 +5,25 @@
 \begin{figure*}[t]
     \centering
     \[\begin{array}{lrclr}
-        \textrm{Term}             & M, N   & ::= & x                       & \textrm{variable}\\
-                                  &     &     & \ann{M}{T}                 & \textrm{type annotation}\\
-                                  &     &     & \abs{\alpha}{M}            & \textrm{type abstraction}\\
-                                  &     &     & \inst{M}{T}                & \textrm{type instantiation}\\
-                                  &     &     & \lam{x}{M}                 & \textrm{$\lambda$ abstraction}\\
-                                  &     &     & \app{M}{M^+}               & \textrm{function application}\\
-                                  &     &     & \fix{x}{M}                 & \textrm{fixed point term}\\
-                                  &     &     & \builtin{bi}               & \textrm{builtin}\\
-                                  &     &     & i                          & \textrm{primitive integer}\\
-                                  &     &     & b                          & \textrm{primitive bytestring}\\
-                                  &     &     & z                          & \textrm{size term}\\
+        \textrm{Term}             & M, N  & ::= & x                          & \textrm{variable}\\
+                                  &       &     & \ann{M}{T}                 & \textrm{type annotation}\\
+                                  &       &     & \abs{\alpha}{M}            & \textrm{type abstraction}\\
+                                  &       &     & \inst{M}{T}                & \textrm{type instantiation}\\
+                                  &       &     & \lam{x}{M}                 & \textrm{$\lambda$ abstraction}\\
+                                  &       &     & \app{M}{M^+}               & \textrm{function application}\\
+                                  &       &     & \fix{x}{M}                 & \textrm{fixed point term}\\
+                                  &       &     & \builtin{bi}               & \textrm{builtin}\\
         \textrm{Type}             & R,S,T & ::= & \alpha                     & \textrm{type variable}\\
-                                  &     &     & \funT{T}{T}                & \textrm{function type}\\
-                                  &     &     & \forallT{\alpha}{K}{T}     & \textrm{polymorphic type}\\
-                                  &     &     & \fixT{\alpha}{K}{T}        & \textrm{fixed point type}\\
-                                  &     &     & \bytestringT{s}            & \textrm{bytestring}\\
-                                  &     &     & \integerT{s}               & \textrm{integer}\\
-                                  &     &     & \sizeT{s}                  & \textrm{size type}\\
-                                  &     &     & \lamT{\alpha}{K}{T}        & \textrm{type abstraction}\\
-                                  &     &     & \appT{T}{T^+}              & \textrm{type application}\\
-        \textrm{Kind}             & J,K & ::= & \typeK{}                   & \textrm{type kind}\\
-                                  &     &     & \funK{K}{K}                & \textrm{arrow kind}\\
-                                  &     &     & \sizeK{}                   & \textrm{size kind}\\
-        \textrm{Program}          & P   & ::= & \program{v}{M}             & \textrm{program}\\
+                                  &       &     & \funT{T}{T}                & \textrm{function type}\\
+                                  &       &     & \forallT{\alpha}{K}{T}     & \textrm{polymorphic type}\\
+                                  &       &     & \fixT{\alpha}{K}{T}        & \textrm{fixed point type}\\
+                                  &       &     & \lamT{\alpha}{K}{T}        & \textrm{type abstraction}\\
+                                  &       &     & \appT{T}{T^+}              & \textrm{type application}\\
+                                  &       &     & \builtinT{bt}              & \textrm{builtin type}\\
+        \textrm{Kind}             & J,K   & ::= & \typeK{}                   & \textrm{type kind}\\
+                                  &       &     & \funK{K}{K}                & \textrm{arrow kind}\\
+                                  &       &     & \sizeK{}                   & \textrm{size kind}\\
+        \textrm{Program}          & P     & ::= & \program{v}{M}             & \textrm{program}\\
 
     \end{array}\]
     \caption{Grammar of Plutus Core}
