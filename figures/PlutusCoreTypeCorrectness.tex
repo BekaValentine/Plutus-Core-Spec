@@ -29,13 +29,13 @@
     \begin{prooftree}
         \AxiomC{\(\hypJ{\Gamma}{\istypeJ{S}{\typeK{}}}\)}
         \AxiomC{\(\hypJ{\Gamma}{\istypeJ{T}{\typeK{}}}\)}
-        \RightLabel{fun}
+        \RightLabel{tyfun}
         \BinaryInfC{\(\hypJ{\Gamma}{\istypeJ{\funT{S}{T}}{\typeK{}}}\)}
     \end{prooftree}
     
     \begin{prooftree}
         \AxiomC{\(\hypJ{\Gamma, \typeJ{\alpha}{K}}{\istypeJ{T}{\typeK{}}}\)}
-        \RightLabel{forall}
+        \RightLabel{tyforall}
         \UnaryInfC{\(\hypJ{\Gamma}{\istypeJ{\forallT{\alpha}{K}{T}}{\typeK{}}}\)}
     \end{prooftree}
     
@@ -56,6 +56,12 @@
         \AxiomC{\(\hypJ{\Gamma, \typeJ{\alpha}{K}}{\istypeJ{T}{K}}\)}
         \RightLabel{tyfix}
         \UnaryInfC{\(\hypJ{\Gamma}{\istypeJ{\fixT{\alpha}{K}{T}}{K}}\)}
+    \end{prooftree}
+    
+    \begin{prooftree}
+        \AxiomC{$bt$ is $K$}
+        \RightLabel{tybuiltin}
+        \UnaryInfC{\(\hypJ{\Gamma}{\istypeJ{\builtinT{bt}}{K}}\)}
     \end{prooftree}
     
     \caption{Type Well-formedness}
