@@ -758,24 +758,46 @@
 
 
 
+\section{Introduction}
+Plutus Core is a typed, eagerly evaluated $\lambda$-calculus designed for use as a transaction validation language in blockchain systems. More precisely, it is a higher-kinded variant of System F with equirecursive types. Plutus Core is intended to be both bearable to write programs with and straightforward to formalize with a proof assistant or theorem prover.
 
-\section{Plutus Core}
+Plutus Core includes support for \emph{sized types} (and \emph{size kinds}) to facilitate reasoning about memory usage and running time of programs. This is important in blockchain settings where programs consume \emph{gas} during execution, with the amount of gas cosumed depending on the amount of space and time required. Additionally, there is no explicit support for algebraic datatypes in the language, as we intend to represent such types with their Scott encoding \cite{koopman-plasmeijer-jansen}.
 
-Plutus Core is a typed, strict, eagerly-reduced $\lambda$-calculus design to run as a transaction validation scripting language on blockchain systems. It's designed to be simple and easy to reason about using mechanized proof assistants and automated theorem provers. The grammar of the language is given in Figures \ref{fig:Plutus_core_grammar} and \ref{fig:Plutus_core_lexical_grammar}, using a modified s-expression format. The language can be described as a bidirectional higher-kinded System F variant with fixedpoint terms, equirecursive fixedpoint types, constant terms, constant types, and size-indexed types. As such, we have the following syntactic constructs at the term level: variables, type annotation, type abstraction, type instantiation, $\lambda$ abstraction, application, term-level fixed points, and term constants. At the type level, we have the following syntactic constructs: variables, polymorphic types, function types, fixedpoint types, $\lambda$ abstraction, application, and constant types. Additionally we have the following kind-level constructs: type kind, function kind, and size kind. The language also explicitly tracks versions for tracking which version of the normalizer is to be run.
-
-By using a variant of System F, we're able to capture various desirable abstraction properties via the continuation-based encoding of existential types. The choice to use fixedpoint types is so that we can represent recursive types via Scott encodings (instead of the less efficient and harder-to-program Church encodings typical of pure System F). Higher-kindedness makes it possible to define type operators like $\textit{List}$ rather than defining the non-parametric types $\textit{ListOfA}$ for each choice of $A$. Finally, sized types make it possible to specify for certain constant types precise what kind of memory usage they'll have. In particular, we track the size of integers and bytestrings explicitly in the types for them, which makes many kinds of formal reasoning about computation time possible.
-
-In this grammar, we have multi-argument application, both in types (\(\appT{A}{B^+}\)) and in terms (\(\app{M}{N^+}\)), as well as multi-argument instantiation in terms (\(\inst{M}{A^*}\)). This is to be understood as a convenient form of syntactic sugar for iterated binary application associated to the left, and the formal rules treat only the binary case.
+The syntax of the language is presented in section 1, and section 2 describes a bidirectional typechecking algorithm for the language \cite{pfenning-bidi}\cite{christiansen-bidi}. Section 3 describes the operational semantics of the language in two ways: A sequent calculus of $\beta$-reduction, and rules for a CK machine \cite{felleisen-friedman}. The former is perhaps more suited to formal reasoning about Plutus Core, with the latter more suited to efficient implementations. Section 4 describes the prmitive terms and types of the language, and finally section 5 contains a number of examples.
 
 
+\section{Syntax}
 
 \subfile{figures/PlutusCoreLexicalGrammar}
 
 \subfile{figures/PlutusCoreGrammar}
 
+\section{Type System}
+
+The existence of equirecursive fixedpoint types necessities special attention be paid to equality of types, however. In figure \ref{fig:Plutus_core_coinductive_equality}, we define the judgment \(A = A'\) explicitly as a coinductive equality as in \cite{gapeyev-levin-pierce}. The intuition behind this notion of equality is that we perform the usual parallel structural recursion on types to compute syntactic equality, but in doing so, track which equational problems we've encountered already as super-problems to any given sub-problem, and if we re-encounter a problem, we consider the equality to hold. The syntactic decomposition is not performed in precisely one case: the fixedpoint type, where we instead decompose the fixedpoint into its one-step unfolding. Thought of in terms of a proof tree, coinductive proofs add a new mechanism of proof: where normally one can use inference rules to prove a goal inductively, in a coinductive tree you can also use reference to another node of the same syntactic form in a super-problem. Alternatively: coinductive proofs of a problem succeed when the problem repeats itself in the course of being proved.
+
+Finally, type synthesis for constants ($\con{bn}$ and $\conT{bt}$) is given in tabular form rather than in inference rule form, in Figure \ref{fig:Plutus_core_builtins}, which also gives the reduction semantics. This table also specifies what conditions trigger an error.
+
+\subfile{figures/PlutusCoreTypeCorrectness}
+
+\section{Operational Semantics}
+
+In figure \ref{fig:Plutus_core_reduction}, we define a standard eager, small-step contextual semantics for Plutus Core in terms of the local ($\beta$) reduction relation for types (\(\typeReduces{A}{A'}\)) and terms (\(\reduces{M}{M'}\)), which lifts to stepping terms in arbitrary contexts (\(\typeStep{A}{A'}\) and \(\step{M}{M'}\), respectively). We make use of the transitive closure of these stepping relations via the usual Kleene star notation.
+
+In the context of a blockchain system, it can be useful to also have a step indexed version of stepping, indicated by a superscript count of steps (\(\multistepIndexed{M}{n}{M'}\)). In order to prevent transaction validation from looping indefinitely, or from simply taking an inordinate amount of time, which would be a serious security flaw in the blockchain system, we can use step indexing to put an upper bound on the number of computational steps that a program can have. In this setting, we would pick some upper bound $\mathit{max}$ and then perform steps of terms $M$ by computing which $M'$ is such that \(\multistepIndexed{M}{\mathit{max}}{M'}\).
 
 
 
+\subfile{figures/PlutusCoreReduction}
+
+
+
+
+\section{Builtins}
+
+\subfile{figures/PlutusCoreBuiltins}
+
+\section{Examples}
 
 % As an example, consider the program in Figure \ref{fig:Plutus_core_example}, which defines the type of natural numbers as well as lists, and the factorial and map functions. This program is not the most readable, which is to be expected from a representation intended for machine interpretation rather than human interpretation, but it does make explicit precisely what the roles are of the various parts.
 
@@ -786,58 +808,6 @@ In this grammar, we have multi-argument application, both in types (\(\appT{A}{B
 
 
 
-
-% !!!! Example
-
-
-
-
-\section{Type Correctness}
-
-We define for Plutus Core a number of typing judgments which explain ways that a program can be well-formed. First, in Figure \ref{fig:Plutus_core_contexts}, we define the grammar of variable contexts that these judgments hold under. Variable contexts contain information about the nature of variables --- type variables with their kind, and term variables with their type.
-
-Then, in Figure \ref{fig:Plutus_core_type_well_formedness}, we define what it means for a type construct to inhabit a kind. Plutus Core is a higher-kinded version of System-F, so we have a number of standard System-F rules together with some obvious extensions.
-
-Next, in Figure \ref{fig:Plutus_core_type_checking}, we define the type checking judgment that explains when a type contains a term. This is defined together with Figure \ref{fig:Plutus_core_type_synthesis}'s type synthesis judgment, which explains how a term synthesizes a type. Together, these two judgments constitute a standard bidirectional type theory \cite{pfenning-bidi} \cite{christiansen-bidi}.
-
-The existence of equirecursive fixedpoint types necessities special attention be paid to equality of types, however. In figure \ref{fig:Plutus_core_coinductive_equality}, we define the judgment \(A = A'\) explicitly as a coinductive equality as in [REFERENCE]. The intuition behind this notion of equality is that we perform the usual parallel structural recursion on types to compute syntactic equality, but in doing so, track which equational problems we've encountered already as super-problems to any given sub-problem, and if we re-encounter a problem, we consider the equality to hold. The syntactic decomposition is not performed in precisely one case: the fixedpoint type, where we instead decompose the fixedpoint into its one-step unfolding. Thought of in terms of a proof tree, coinductive proofs add a new mechanism of proof: where normally one can use inference rules to prove a goal inductively, in a coinductive tree you can also use reference to another node of the same syntactic form in a super-problem. Alternatively: coinductive proofs of a problem succeed when the problem repeats itself in the course of being proved.
-
-Finally, type synthesis for constants ($\con{bn}$ and $\conT{bt}$) is given in tabular form rather than in inference rule form, in Figure \ref{fig:Plutus_core_builtins}, which also gives the reduction semantics. This table also specifies what conditions trigger an error.
-
-
-
-
-
-
-\subfile{figures/PlutusCoreTypeCorrectness}
-
-
-
-
-
-
-
-
-
-\section{Reduction and Execution}
-
-In figure \ref{fig:Plutus_core_reduction}, we define a standard eager, small-step contextual semantics for Plutus Core in terms of the local ($\beta$) reduction relation for types (\(\typeReduces{A}{A'}\)) and terms (\(\reduces{M}{M'}\)), which lifts to stepping terms in arbitrary contexts (\(\typeStep{A}{A'}\) and \(\step{M}{M'}\), respectively). We make use of the transitive closure of these stepping relations via the usual Kleene star notation.
-
-In the context of a blockchain system, it can be useful to also have a step indexed version of stepping, indicated by a superscript count of steps (\(\multistepIndexed{M}{n}{M'}\)). In order to prevent transaction validation from looping indefinitely, or from simply taking an inordinate amount of time, which would be a serious security flaw in the blockchain system, we can use step indexing to put an upper bound on the number of computational steps that a program can have. In this setting, we would pick some upper bound $\mathit{max}$ and then perform steps of terms $M$ by computing which $M'$ is such that \(\multistepIndexed{M}{\mathit{max}}{M'}\).
-
-
-
-\subfile{figures/PlutusCoreReduction}
-
-\subfile{figures/PlutusCoreBuiltins}
-
-
-
-
-
-\section{Basic Validation Program Structure}
-
-The basic way that validation is done in Plutus Core is somewhat similar to what's in Bitcoin Script. Whereas in Bitcoin Script, a validation is successful if the validating script successfully executes and leaves $\textit{true}$ on the top of the stack, in Plutus Core, validation is successful when the script successfully reduces to $\textit{true}$. In this context, however, $\textit{true}$ means a very particular value: the Scott encoding of the boolean. That is to say, $\textit{true}$ is {\small\(\abs{\alpha}{\typeK{}}{\lam{t}{\lam{f}{\app{t}{\abs{\beta}{\typeK{}}{\lam{x}{x}}}}}}\)}. If it reduces to $\textit{false}$ or throws an error, the validation is considered to fail.
 
 
 
@@ -893,6 +863,15 @@ Bidirectional Type Checking}. 2004. \url{https://www.cs.cmu.edu/~fp/courses/1531
 \bibitem{christiansen-bidi}
 Christiansen, D. R. \emph{Bidirectional Typing Rules: A Tutorial}. \url{http://www.davidchristiansen.dk/tutorials/bidirectional.pdf}
 
+\bibitem{gapeyev-levin-pierce}
+Gapeyev, Levin, and Pierce. \emph{Recursive Subtyping Revealed}. Journal of Functional Programming, Volume 12, Issue 6. November 2002.
+
+\bibitem{koopman-plasmeijer-jansen}
+Koopman, Plasmeijer, and Jansen. \emph{Church Encoding of Data Types Considered Harmful for Implementations}. Proceedings of the International Symposium on Implementation and Application of Functional Languages. 2014.
+
+\bibitem{felleisen-friedman}
+Felleisen and Friedman. \emph{Control Operators, the SECD Machine, and the $\lambda$-calculus}. Proceedings of the Conference on Formal Description of Programming Concepts Part III. 1986.
+  
 \end{thebibliography}
 
 % biography section
