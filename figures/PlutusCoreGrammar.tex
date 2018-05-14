@@ -12,18 +12,18 @@
                                   &       &     & \lam{x}{M}                 & \textrm{$\lambda$ abstraction}\\
                                   &       &     & \app{M}{M^+}               & \textrm{function application}\\
                                   &       &     & \fix{x}{M}                 & \textrm{fixed point term}\\
-                                  &       &     & \builtin{bi}               & \textrm{builtin}\\
+                                  &       &     & \con{bi}               & \textrm{builtin}\\
         \textrm{Type}             & R,S,T & ::= & \alpha                     & \textrm{type variable}\\
                                   &       &     & \funT{T}{T}                & \textrm{function type}\\
-                                  &       &     & \forallT{\alpha}{K}{T}     & \textrm{polymorphic type}\\
+                                  &       &     & \allT{\alpha}{K}{T}        & \textrm{polymorphic type}\\
                                   &       &     & \fixT{\alpha}{K}{T}        & \textrm{fixed point type}\\
                                   &       &     & \lamT{\alpha}{K}{T}        & \textrm{$\lambda$ abstraction}\\
                                   &       &     & \appT{T}{T^+}              & \textrm{function application}\\
-                                  &       &     & \builtinT{bt}              & \textrm{builtin type}\\
+                                  &       &     & \conT{bt}                  & \textrm{builtin type}\\
         \textrm{Kind}             & J,K   & ::= & \typeK{}                   & \textrm{type kind}\\
                                   &       &     & \funK{K}{K}                & \textrm{arrow kind}\\
                                   &       &     & \sizeK{}                   & \textrm{size kind}\\
-        \textrm{Program}          & P     & ::= & \program{v}{M}             & \textrm{program}\\
+        \textrm{Program}          & P     & ::= & \version{v}{M}             & \textrm{versioned program}\\
 
     \end{array}\]
     \caption{Grammar of Plutus Core}

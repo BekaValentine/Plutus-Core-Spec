@@ -12,7 +12,7 @@
         \textrm{TCtx} & H  & ::= & \hole{}                                  & \textrm{hole}\\
                       &    &     & \inFunTLeft{H}{T}                        & \textrm{left arrow}\\
                       &    &     & \inFunTRight{U}{H}                       & \textrm{right arrow}\\
-                      &    &     & \inForallT{\alpha}{K}{H}                 & \textrm{forall}\\
+                      &    &     & \inAllT{\alpha}{K}{H}                    & \textrm{forall}\\
                       &    &     & \inAppTLeft{H}{T}                        & \textrm{left app}\\
                       &    &     & \inAppTRight{U}{H}                       & \textrm{right app}\\
     \end{array}\]
@@ -21,22 +21,6 @@
     \label{fig:Plutus_core_type_reduction_contexts}
 \end{figure*}
 
-
-
-
-\begin{figure*}[t]
-    \begin{align*}
-        \ctxsubst{\hole{}}{T}                                         &= T\\
-        \ctxsubst{\inFunTLeft{H}{T'}}{T}                              &= \funT{\ctxsubst{H}{T}}{T'}\\
-        \ctxsubst{\inFunTRight{U}{H}}{T}                              &= \funT{U}{\ctxsubst{H}{T}}\\
-        \ctxsubst{\inForallT{\alpha}{K}{H}}{T}                        &= \forallT{\alpha}{K}{\ctxsubst{H}{T}}\\
-        \ctxsubst{\inAppTLeft{H}{T'}}{T}                              &= \appT{\ctxsubst{H}{T}}{T'}\\
-        \ctxsubst{\inAppTRight{U}{H}}{T}                              &= \appT{U}{\ctxsubst{H}{T}}\\
-    \end{align*}
-    
-    \caption{Type Context Insertion}
-    \label{fig:Plutus_core_type_context_insertion}
-\end{figure*}
 
 
 
@@ -95,33 +79,19 @@
 
 
 
-\begin{figure*}[t]
-    \begin{align*}
-        \ctxsubst{\hole{}}{N}                                       &= N\\
-        \ctxsubst{\inAnnLeft{E}{T}}{N}                              &= \ann{\ctxsubst{E}{N}}{T}\\
-        \ctxsubst{\inInstLeft{E}{T}}{N}                             &= \inst{\ctxsubst{E}{N}}{T}\\
-        \ctxsubst{\inAppLeft{E}{M}}{N}                              &= \app{\ctxsubst{E}{N}}{M}\\
-        \ctxsubst{\inAppRight{M}{E}}{N}                             &= \app{M}{\ctxsubst{E}{N}}\\
-    \end{align*}
-    
-    \caption{Context Insertion}
-    \label{fig:Plutus_core_context_insertion}
-\end{figure*}
-
-
 
 \begin{figure*}[t]
-    \judgmentdef{\(\multistep{\delta}{M}{V}\)}{Term $M$ reduces in some number of steps to value $V$ in declaration environment $\delta$}
+    \judgmentdef{\(\multistep{M}{V}\)}{Term $M$ reduces in some number of steps to value $V$}
     
     \begin{prooftree}
         \AxiomC{}
-        \UnaryInfC{\(\multistep{\delta}{V}{V}\)}
+        \UnaryInfC{\(\multistep{V}{V}\)}
     \end{prooftree}
     
     \begin{prooftree}
-        \AxiomC{\(\step{\delta}{M}{M'}\)}
-        \AxiomC{\(\multistep{\delta}{M'}{V}\)}
-        \BinaryInfC{\(\multistep{\delta}{M}{V}\)}
+        \AxiomC{\(\step{M}{M'}\)}
+        \AxiomC{\(\multistep{M'}{V}\)}
+        \BinaryInfC{\(\multistep{M}{V}\)}
     \end{prooftree}
     
     
@@ -129,44 +99,42 @@
     
     
     
-    \judgmentdef{\(\step{\delta}{M}{M'}\)}{Term $M$ reduces in one step to term $M'$ in declaration environment $\delta$}
+    \judgmentdef{\(\step{M}{M'}\)}{Term $M$ reduces in one step to term $M'$}
     
     \begin{prooftree}
-        \AxiomC{\(\reduces{\delta}{M}{M'}\)}
-        \UnaryInfC{\(\step{\delta}{\ctxsubst{E}{M}}{\ctxsubst{E}{M'}}\)}
+        \AxiomC{\(\reduces{M}{M'}\)}
+        \UnaryInfC{\(\step{\ctxsubst{E}{M}}{\ctxsubst{E}{M'}}\)}
     \end{prooftree}
+    
+    
+    
+    
+    \judgmentdef{\(\reduces{M}{M'}\)}{Term $M$ locally reduces to term $M'$}
+    
+    \begin{prooftree}
+        \AxiomC{}
+        \UnaryInfC{\(\reduces{\ann{M}{T}}{M}\)}
+    \end{prooftree}
+    
+    \begin{prooftree}
+        \AxiomC{}
+        \UnaryInfC{\(\reduces{\inst{\abs{\alpha}{M}}{T}}{\subst{T}{\alpha}{M}}\)}
+    \end{prooftree}
+    
+    \begin{prooftree}
+        \AxiomC{}
+        \UnaryInfC{\(\reduces{\app{\lam{\mathit{x}}{M}}{V}}{\subst{V}{x}{M}}\)}
+    \end{prooftree}
+    
+    \begin{prooftree}
+        \AxiomC{}
+        \UnaryInfC{\(\reduces{\fix{x}{M}}{\subst{\fix{x}{M}}{x}{M}}\)}
+    \end{prooftree}
+    
+    
     
     \caption{Reduction via Contextual Dynamics}
     \label{fig:Plutus_core_reduction}
-\end{figure*}
-
-
-
-\begin{figure*}[t]
-    \judgmentdef{\(\reduces{\delta}{M}{M'}\)}{Term $M$ locally reduces to term $M'$ in declaration context $\delta$}
-    
-    \begin{prooftree}
-        \AxiomC{}
-        \UnaryInfC{\(\reduces{\delta}{\ann{M}{T}}{M}\)}
-    \end{prooftree}
-    
-    \begin{prooftree}
-        \AxiomC{}
-        \UnaryInfC{\(\reduces{\delta}{\inst{\abs{\alpha}{M}}{T}}{\subst{T}{\alpha}{M}}\)}
-    \end{prooftree}
-    
-    \begin{prooftree}
-        \AxiomC{}
-        \UnaryInfC{\(\reduces{\delta}{\app{\lam{\mathit{x}}{M}}{V}}{\subst{V}{x}{M}}\)}
-    \end{prooftree}
-    
-    \begin{prooftree}
-        \AxiomC{}
-        \UnaryInfC{\(\reduces{\delta}{\fix{x}{M}}{\subst{\fix{x}{M}}{x}{M}}\)}
-    \end{prooftree}
-    
-    \caption{Local Reduction}
-    \label{fig:Plutus_core_local_reduction}
 \end{figure*}
 
 
@@ -192,19 +160,18 @@
 
 
 \begin{figure*}[t]
-    \judgmentdef{\(\cksteps{\delta}{\sigma}{\sigma'}\)}{Machine state $\sigma$ transitions in one step to machine state $\sigma'$}
+    \judgmentdef{\(\cksteps{\sigma}{\sigma'}\)}{Machine state $\sigma$ transitions in one step to machine state $\sigma'$}
     
     \begin{align*}
-        &\cksteps{\delta, n \mapsto M}{\ckforward{s}{n}}{\ckforward{s}{M}}\\
-        &\cksteps{\delta}{\ckforward{s}{\ann{M}{T}}}{\ckforward{s, \inAnnLeftFrame{T}}{M}}\\
-        &\cksteps{\delta}{\ckforward{s}{\abs{\alpha}{M}}}{\ckbackward{s}{\abs{\alpha}{M}}}\\
-        &\cksteps{\delta}{\ckforward{s}{\inst{M}{T}}}{\ckforward{s, \inInstLeftFrame{T}}{M}}\\
-        &\cksteps{\delta}{\ckforward{s}{\lam{x}{M}}}{\ckbackward{s}{\lam{x}{M}}}\\
-        &\cksteps{\delta}{\ckforward{s}{\app{M}{M'}}}{\ckforward{s, \inAppLeftFrame{M'}}{M}}\\
-        &\cksteps{\delta}{\ckbackward{s, \inAnnLeftFrame{T}}{V}}{\ckbackward{s}{V}}\\
-        &\cksteps{\delta}{\ckbackward{s, \inInstLeftFrame{T}}{\abs{\alpha}{M}}}{\ckforward{s}{\subst{T}{\alpha}{M}}}\\
-        &\cksteps{\delta}{\ckbackward{s, \inAppLeftFrame{M'}}{V}}{\ckforward{s, \inAppRightFrame{V}}{M'}}\\
-        &\cksteps{\delta}{\ckbackward{s, \inAppRightFrame{\lam{x}{M}}}{V}}{\ckforward{s}{\subst{V}{x}{M}}}\\
+        &\cksteps{\ckforward{s}{\ann{M}{T}}}{\ckforward{s, \inAnnLeftFrame{T}}{M}}\\
+        &\cksteps{\ckforward{s}{\abs{\alpha}{M}}}{\ckbackward{s}{\abs{\alpha}{M}}}\\
+        &\cksteps{\ckforward{s}{\inst{M}{T}}}{\ckforward{s, \inInstLeftFrame{T}}{M}}\\
+        &\cksteps{\ckforward{s}{\lam{x}{M}}}{\ckbackward{s}{\lam{x}{M}}}\\
+        &\cksteps{\ckforward{s}{\app{M}{M'}}}{\ckforward{s, \inAppLeftFrame{M'}}{M}}\\
+        &\cksteps{\ckbackward{s, \inAnnLeftFrame{T}}{V}}{\ckbackward{s}{V}}\\
+        &\cksteps{\ckbackward{s, \inInstLeftFrame{T}}{\abs{\alpha}{M}}}{\ckforward{s}{\subst{T}{\alpha}{M}}}\\
+        &\cksteps{\ckbackward{s, \inAppLeftFrame{M'}}{V}}{\ckforward{s, \inAppRightFrame{V}}{M'}}\\
+        &\cksteps{\ckbackward{s, \inAppRightFrame{\lam{x}{M}}}{V}}{\ckforward{s}{\subst{V}{x}{M}}}\\
     \end{align*}
     
     \caption{CK Machine}

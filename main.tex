@@ -412,12 +412,11 @@
 \newcommand{\lettype}[3]{\construct{\keyword{lettype} ~ #1 ~ #2 ~ #3}}
 \newcommand{\sizeterm}[1]{\texttt{\$#1}}
 \newcommand{\abs}[2]{\construct{\keyword{abs} ~ #1 ~ #2}}
-\newcommand{\inst}[2]{\construct{\keyword{inst} ~ #1 ~ #2}}
+\newcommand{\inst}[2]{\texttt{\{}#1 ~ #2\texttt{\}}}
 \newcommand{\lam}[2]{\construct{\keyword{lam} ~ #1 ~ #2}}
 %\newcommand{\app}[2]{(\keyword{app} ~ #1 ~ #2)}
 \newcommand{\app}[2]{\texttt{[} #1 ~ #2 \texttt{]}}
 \newcommand{\fix}[2]{\construct{\keyword{fix} ~ #1 ~ #2}}
-\newcommand{\con}[2]{\construct{\keyword{con} ~ #1 ~ #2}}
 \newcommand{\conNullary}[1]{\construct{\keyword{con} ~ #1}}
 \newcommand{\case}[2]{\construct{\keyword{case} ~ #1 ~ #2}}
 \newcommand{\cl}[3]{\construct{#1 ~ \texttt{(} #2 \texttt{)} ~ #3}}
@@ -430,7 +429,7 @@
 \newcommand{\blocknum}{\construct{\keyword{blocknum}}}
 \newcommand{\blocktime}{\construct{\keyword{blocktime}}}
 \newcommand{\bind}[3]{\construct{\keyword{bind} ~ #1 ~ #2 ~ #3}}
-\newcommand{\builtin}[1]{\construct{\keyword{builtin} ~ #1}}
+\newcommand{\con}[1]{\construct{\keyword{con} ~ #1}}
 \newcommand{\sizedBuiltin}[2]{#1\keyword{!}#2}
 \newcommand{\prim}[1]{\construct{\keyword{prim} ~ #1}}
 %\newcommand{\primInt}[1]{(\keyword{primInteger} ~ #1)}
@@ -445,7 +444,7 @@
 \newcommand{\isInt}[1]{\construct{\keyword{isInteger} ~ #1}}
 \newcommand{\isFloat}[1]{\construct{\keyword{isFloat} ~ #1}}
 \newcommand{\isByteString}[1]{\construct{\keyword{isByteString} ~ #1}}
-\newcommand{\program}[2]{\construct{\keyword{program} ~ #1 ~ #2}}
+\newcommand{\version}[2]{\construct{\keyword{version} ~ #1 ~ #2}}
 \newcommand{\prg}[1]{\construct{\keyword{program} ~ #1}}
 \newcommand{\mdle}[4]{\construct{\keyword{module} ~ #1 ~ #2 ~ #3 ~ #4}}
 \newcommand{\impd}[1]{\construct{\keyword{import} ~ #1}}
@@ -462,16 +461,14 @@
 \newcommand{\defdecl}[2]{\construct{\keyword{define} ~ #1 ~ #2}}
 \newcommand{\funT}[2]{\construct{\keyword{fun} ~ #1 ~ #2}}
 \newcommand{\fixT}[3]{\construct{\keyword{fix} ~ #1 ~ #2 ~ #3}}
-\newcommand{\conT}[2]{\construct{\keyword{con} ~ #1 ~ #2}}
-\newcommand{\conTNullary}[1]{\construct{\keyword{con} ~ #1}}
 \newcommand{\compT}[1]{\construct{\keyword{comp} ~ #1}}
-\newcommand{\forallT}[3]{\construct{\keyword{forall} ~ #1 ~ #2 ~ #3}}
+\newcommand{\allT}[3]{\construct{\keyword{all} ~ #1 ~ #2 ~ #3}}
 \newcommand{\bytestringT}[1]{\construct{\keyword{bytestring} ~ #1}}
 \newcommand{\integerT}[1]{\construct{\keyword{integer} ~ #1}}
-\newcommand{\builtinIntegerType}[1]{\keyword{integer}}
-\newcommand{\builtinBytestringType}[1]{\keyword{bytestring}}
-\newcommand{\builtinSizeType}[1]{\keyword{size}}
-\newcommand{\builtinT}[1]{\construct{\keyword{builtin} ~ #1}}
+\newcommand{\conIntegerType}[1]{\keyword{integer}}
+\newcommand{\conBytestringType}[1]{\keyword{bytestring}}
+\newcommand{\conSizeType}[1]{\keyword{size}}
+\newcommand{\conT}[1]{\construct{\keyword{con} ~ #1}}
 \newcommand{\floatT}[1]{\construct{\keyword{float} ~ #1}}
 \newcommand{\sizeT}[1]{\construct{\keyword{size} ~ #1}}
 \newcommand{\lamT}[3]{\construct{\keyword{lam} ~ #1 ~ #2 ~ #3}}
@@ -490,7 +487,7 @@
 \newcommand{\synthJ}[2]{#1 \in #2}
 \newcommand{\synthsplittopJ}[2]{#1 \vdash #2}
 \newcommand{\synthsplitbottomJ}[1]{\in #1}
-\newcommand{\builtinSig}[5]{#1 ~ \textrm{is} ~ \forallT{#2}{#3}{\funT{#4}{#5}}}
+\newcommand{\conSig}[5]{#1 ~ \textrm{is} ~ \allT{#2}{#3}{\funT{#4}{#5}}}
 \newcommand{\compbuiltinSig}[2]{#1 ~ \textrm{is} ~ #2}
 \newcommand{\subtypeJ}[2]{#1 ~ \sqsubseteq ~ #2}
 \newcommand{\clause}[4]{#1 ; #2 \vdash ~ #3 ~ \mathrm{clause} ~ #4}
@@ -508,12 +505,12 @@
 \newcommand{\defJ}[2]{#1 = #2}
 \newcommand{\typenameJ}[3]{#1 = #2 :: #3}
 \newcommand{\tyconJ}[2]{#1 :: \funK{#2}{\typeK{}}}
-\newcommand{\conJ}[5]{#1 : \forallT{#2}{#3}{\funT{#4}{\appT{#5}{#2}}}}
+\newcommand{\conJ}[5]{#1 : \allT{#2}{#3}{\funT{#4}{\appT{#5}{#2}}}}
 \newcommand{\ctxni}[2]{#1 \ni #2}
 \newcommand{\ctxnotni}[2]{#1 \not\ni #2}
 \newcommand{\permits}[3]{#1 \vdash #2 : #3}
 \newcommand{\permitstype}[3]{#1 \vdash #2 :: #3}
-\newcommand{\permitscon}[6]{#1 \vdash #2 : \forallT{#3}{#4}{\funT{#5}{\appT{#6}{#3}}}}
+\newcommand{\permitscon}[6]{#1 \vdash #2 : \allT{#3}{#4}{\funT{#5}{\appT{#6}{#3}}}}
 \newcommand{\permitstycon}[3]{#1 \vdash #2 :: \funK{#3}{\typeK{}}}
 \newcommand{\exportsToNominalContext}[2]{\lfloor #2 \rfloor_{#1}}
 \newcommand{\exportsToNominalContextType}[2]{\lfloor #2 \rfloor^{T}_{#1}}
@@ -560,7 +557,7 @@
 \newcommand{\inFunTLeft}[2]{\funT{#1}{#2}}
 \newcommand{\inFunTRight}[2]{\funT{#1}{#2}}
 \newcommand{\inConT}[4]{\conT{#1}{#2 ~ #3 ~ #4}}
-\newcommand{\inForallT}[3]{\forallT{#1}{#2}{#3}}
+\newcommand{\inAllT}[3]{\allT{#1}{#2}{#3}}
 \newcommand{\inCompT}[1]{\compT{#1}}
 \newcommand{\typeReduces}[2]{#1 ~ \Rightarrow_{ty} ~ #2}
 \newcommand{\typeStep}[2]{#1 ~ \rightarrow_{ty} ~ #2}
@@ -574,24 +571,24 @@
 \newcommand{\caseValue}[2]{\mathrm{case\ on} ~ #1 ~ \mathrm{of} ~ #2}
 \newcommand{\inSuccess}[1]{\success{#1}}
 \newcommand{\inBind}[3]{\bind{#1}{#2}{#3}}
-\newcommand{\inBuiltin}[2]{\builtin{#1}{#2}}
+\newcommand{\inBuiltin}[2]{\con{#1}{#2}}
 \newcommand{\ctxsubst}[2]{#1\{#2\}}
-\newcommand{\reduces}[3]{#2 ~ \Rightarrow_{#1} ~ #3}
-\newcommand{\builtinReduces}[3]{#1 ~ \mathrm{on} ~ #2 ~ \mathrm{reduces ~ to} ~ #3}
-\newcommand{\builtinValue}[2]{#1 ~ \mathrm{on} ~ #2}
-\newcommand{\step}[3]{#2 ~ \rightarrow_{#1} ~ #3}
-\newcommand{\multistep}[3]{#2 ~ \rightarrow^*_{#1} ~ #3}
+\newcommand{\reduces}[2]{#1 ~ \Rightarrow ~ #2}
+\newcommand{\conReduces}[3]{#1 ~ \mathrm{on} ~ #2 ~ \mathrm{reduces ~ to} ~ #3}
+\newcommand{\conValue}[2]{#1 ~ \mathrm{on} ~ #2}
+\newcommand{\step}[2]{#1 ~ \rightarrow ~ #2}
+\newcommand{\multistep}[2]{#1 ~ \rightarrow^* ~ #2}
 \newcommand{\multistepIndexed}[4]{#2 ~ \rightarrow^{#3}_{#1} ~ #4}
 \newcommand{\normalform}[1]{\llbracket #1 \rrbracket}
 \newcommand{\evalprog}[2]{#1 ~\Longrightarrow~ #2}
 \newcommand{\evalsto}[3]{#2 ~\Downarrow_{#1}~ #3}
-\newcommand{\builtineval}[3]{\mathrm{built-in} ~ \name{#1} ~ \mathrm{evals ~ on} ~ #2 ~ \mathrm{to} ~ #3}
+\newcommand{\coneval}[3]{\mathrm{built-in} ~ \name{#1} ~ \mathrm{evals ~ on} ~ #2 ~ \mathrm{to} ~ #3}
 \newcommand{\matches}[4]{#1 , #2 ~\sim~ #3 ~\triangleright~ #4}
 \newcommand{\subst}[3]{[#1/#2]#3}
 \newcommand{\substmulti}[2]{[#1]#2}
 \newcommand{\executes}[3]{#2 ~\rightsquigarrow^*_{#1}~ #3}
 \newcommand{\executesIndexed}[4]{#2 ~\rightsquigarrow^{#3}_{#1}~ #4}
-\newcommand{\cksteps}[3]{#2 ~\mapsto_{#1}~ #3}
+\newcommand{\cksteps}[2]{#1 ~\mapsto~ #2}
 \newcommand{\inAnnLeftFrame}[1]{\ann{\_}{#1}}
 \newcommand{\inInstLeftFrame}[1]{\inst{\_}{#1}}
 \newcommand{\inAppLeftFrame}[1]{\app{\_}{#1}}
@@ -600,7 +597,7 @@
 \newcommand{\inCaseFrame}[1]{\case{\_}{#1}}
 \newcommand{\inSuccessFrame}{\success{\_}}
 \newcommand{\inBindFrame}[2]{\bind{\_}{#1}{#2}}
-\newcommand{\inBuiltinFrame}[3]{\builtin{#1}{#2 ~ \_ ~ #3}}
+\newcommand{\inBuiltinFrame}[3]{\con{#1}{#2 ~ \_ ~ #3}}
 \newcommand{\ckforward}[2]{#1 \triangleright #2}
 \newcommand{\ckbackward}[2]{#1 \triangleleft #2}
 
@@ -800,7 +797,7 @@
 
 %A number of auxiliary judgments are defined in Figure \ref{fig:Plutus_core_auxiliary_judgments}. In particular, we define when a type contains a clause for that type's constructors, and how that then synthesizes a type. We also define what it means for a qualified name to be permitted for use. Finally, we define the various elaboration judgments in Figure \ref{fig:Plutus_core_elaboration_judgments}, which explain how declarations, modules, and programs elaborate out to complete nominal contexts. Declarations for the types and definitions of terms are separated into two distinct forms, rather than a single construct. One reason for this is that it makes type checking mutual recursion relatively simple, because all the types of names can be put before use sites.
 
-%Finally, type synthesis for built-in operations (\(\builtinSig{n}{\repetition{S}}{T}\)) is given in tabular form rather than in inference rule form, in Figure \ref{fig:Plutus_core_builtins}, which also gives the reduction semantics. The types in the arguments column constitute $\repetition{T}$, and the type in the return column constitutes $T'$, in the judgment form. The same is done for synthesis of built-in computations (\(\compbuiltinSig{n}{T}\)).
+%Finally, type synthesis for built-in operations (\(\conSig{n}{\repetition{S}}{T}\)) is given in tabular form rather than in inference rule form, in Figure \ref{fig:Plutus_core_builtins}, which also gives the reduction semantics. The types in the arguments column constitute $\repetition{T}$, and the type in the return column constitutes $T'$, in the judgment form. The same is done for synthesis of built-in computations (\(\compbuiltinSig{n}{T}\)).
 
 
 

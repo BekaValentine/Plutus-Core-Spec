@@ -16,30 +16,30 @@
         &&\\
         
         \multicolumn{4}{l}{
-          \forallT{s}{\sizeK{}}{
-            \funT{\appT{\builtin{\builtinSizeType{}}}{s}}
-                 {\appT{\builtinT{\builtinIntegerType{s}}}{s}}}}\\
+          \allT{s}{\sizeK{}}{
+            \funT{\appT{\con{\conSizeType{}}}{s}}
+                 {\appT{\conT{\conIntegerType{s}}}{s}}}}\\
         i & & i & \textrm{Insufficient Size Overflow}\\
         &&\\
         
         \multicolumn{4}{l}{
-          \forallT{s}{\sizeK{}}{
-            \funT{\appT{\builtin{\builtinSizeType{}}}{s}}
-                 {\appT{\builtinT{\builtinBytestringType{}}}{s}}}}\\
+          \allT{s}{\sizeK{}}{
+            \funT{\appT{\con{\conSizeType{}}}{s}}
+                 {\appT{\conT{\conBytestringType{}}}{s}}}}\\
         b & & b & \textrm{Insufficient Size Overflow}\\
         &&\\
         
         \multicolumn{4}{l}{
-          \forallT{s}{\sizeK{}}{
-            \appT{\builtinT{\builtinSizeType{}}}{s}}}\\
+          \allT{s}{\sizeK{}}{
+            \appT{\conT{\conSizeType{}}}{s}}}\\
         z & & z & \textrm{None}\\
         &&\\
         
         \multicolumn{4}{l}{
-          \forallT{s}{\sizeK{}}{
-            \funT{\appT{\builtinT{\builtinIntegerType{}}}{s}}
-                 {\funT{\appT{\builtinT{\builtinIntegerType{}}}{s}}
-                       {\appT{\builtinT{\builtinIntegerType{}}}{s}}}}}\\
+          \allT{s}{\sizeK{}}{
+            \funT{\appT{\conT{\conIntegerType{}}}{s}}
+                 {\funT{\appT{\conT{\conIntegerType{}}}{s}}
+                       {\appT{\conT{\conIntegerType{}}}{s}}}}}\\
         \mathrm{addInteger}                 &  i_0 , i_1   &   i_0 + i_1         &   \textrm{Addition Overflow}   \\
         \mathrm{subtractInteger}            &  i_0 , i_1   &   i_0 - i_1         &   \textrm{None}       \\
         \mathrm{multiplyInteger}            &  i_0 , i_1   &   i_0 \times i_1    &   \textrm{Multiplication Overflow}   \\
@@ -48,9 +48,9 @@
         &&\\
         
         \multicolumn{4}{l}{
-          \forallT{s}{\sizeK{}}{
-            \funT{\appT{\builtinT{\builtinIntegerType{}}}{s}}
-                 {\funT{\appT{\builtinT{\builtinIntegerType{}}}{s}}
+          \allT{s}{\sizeK{}}{
+            \funT{\appT{\conT{\conIntegerType{}}}{s}}
+                 {\funT{\appT{\conT{\conIntegerType{}}}{s}}
                        {\mathit{boolean}}}}}\\
         \mathrm{lessThanInteger}            &  i_0 , i_1   &   i_0 < i_1    &   \textrm{None}         \\
         \mathrm{lessThanEqualsInteger}      &  i_0 , i_1   &   i_0 <= i_1   &   \textrm{None}         \\
@@ -60,80 +60,80 @@
         &&\\
         
         \multicolumn{4}{l}{
-          \forallT{s_0,s_1}{\sizeK{}}{
-            \funT{\appT{\builtinT{\builtinSizeType{}}}{s_1}}
-                 {\funT{\appT{\builtinT{\builtinIntegerType{}}}{s_0}}
-                       {\appT{\builtinT{\builtinIntegerType{}}}{s_1}}}}} \\
+          \allT{s_0,s_1}{\sizeK{}}{
+            \funT{\appT{\conT{\conSizeType{}}}{s_1}}
+                 {\funT{\appT{\conT{\conIntegerType{}}}{s_0}}
+                       {\appT{\conT{\conIntegerType{}}}{s_1}}}}} \\
         \mathrm{resizeInteger}   &   z, i   &   resizeInteger ~ z ~ i   &   \textrm{Resizing Overflow} \\
         &&\\
         
         \multicolumn{4}{l}{
-          \forallT{s_0,s_1}{\sizeK{}}{
-            \funT{\appT{\builtinT{\builtinSizeType{}}}{s_1}}
-                 {\funT{\appT{\builtinT{\builtinIntegerType{}}}{s_0}}
-                       {\appT{\builtinT{\builtinBytestringType{}}}{s_1}}}}}\\
+          \allT{s_0,s_1}{\sizeK{}}{
+            \funT{\appT{\conT{\conSizeType{}}}{s_1}}
+                 {\funT{\appT{\conT{\conIntegerType{}}}{s_0}}
+                       {\appT{\conT{\conBytestringType{}}}{s_1}}}}}\\
         \mathrm{intToByteString}            &  z, i           &   intToByteString ~ z ~ i   &   \textrm{Overflow} \\
         &&\\
         
         
         \multicolumn{4}{l}{
-          \forallT{s}{\sizeK{}}{
-            \funT{\appT{\builtinT{\builtinBytestringType{}}}{s}}
-                 {\funT{\appT{\builtinT{\builtinBytestringType{}}}{s}}
-                       {\appT{\builtinT{\builtinBytestringType{}}}{s}}}}}\\
+          \allT{s}{\sizeK{}}{
+            \funT{\appT{\conT{\conBytestringType{}}}{s}}
+                 {\funT{\appT{\conT{\conBytestringType{}}}{s}}
+                       {\appT{\conT{\conBytestringType{}}}{s}}}}}\\
         \mathrm{concatenate}       &   b_0 , b_1   & concat ~ [b_0,b_1]   &   \textrm{None}         \\
         &&\\
         
         \multicolumn{4}{l}{
-          \forallT{s_0,s_1}{\sizeK{}}{
-            \funT{\appT{\builtinT{\builtinBytestringType{}}}{s_0}}
-                 {\funT{\appT{\builtinT{\builtinIntegerType{}}}{s_1}}
-                       {\appT{\builtinT{\builtinBytestringType{}}}{s_0}}}}}\\
+          \allT{s_0,s_1}{\sizeK{}}{
+            \funT{\appT{\conT{\conBytestringType{}}}{s_0}}
+                 {\funT{\appT{\conT{\conIntegerType{}}}{s_1}}
+                       {\appT{\conT{\conBytestringType{}}}{s_0}}}}}\\
         \mathrm{takeByteString}    &   i, b     & take ~ (fromIntegral ~ i) ~ b   &   \textrm{None} \\
         \mathrm{dropByteString}    &   i, b     & drop ~ (fromIntegral ~ i) ~ b   &   \textrm{None} \\
         &&\\
         
         \multicolumn{4}{l}{
-          \forallT{s}{\sizeK{}}{
-            \funT{\appT{\builtinT{\builtinBytestringType{}}}{s}}
-                 {\appT{\builtinT{\builtinBytestringType{}}}{\size{256}}}}}\\
+          \allT{s}{\sizeK{}}{
+            \funT{\appT{\conT{\conBytestringType{}}}{s}}
+                 {\appT{\conT{\conBytestringType{}}}{\size{256}}}}}\\
         \mathrm{sha2\_256}         &   b           & sha2\_256 ~ b    & \textrm{None}                \\
         \mathrm{sha3\_256}         &   b           & sha3\_256~ b     & \textrm{None}                \\
         &&\\
         
         \multicolumn{4}{l}{
-          \forallT{s_0,s_1,s_2}{\sizeK{}}{
-            \funT{\appT{\builtinT{\builtinBytestringType{}}}{s_0}}
-                 {\funT{\appT{\builtinT{\builtinBytestringType{}}}{s_1}}
-                       {\funT{\appT{\builtinT{\builtinBytestringType{}}}{s_2}}
+          \allT{s_0,s_1,s_2}{\sizeK{}}{
+            \funT{\appT{\conT{\conBytestringType{}}}{s_0}}
+                 {\funT{\appT{\conT{\conBytestringType{}}}{s_1}}
+                       {\funT{\appT{\conT{\conBytestringType{}}}{s_2}}
                              {\mathit{boolean}}}}}}\\
         \mathrm{verifySignature}   &   b_0, b_1, b_2           & verifySignature ~ b_0 ~ b_1 ~ b_2   &   \textrm{None}          \\
         &&\\
         
         \multicolumn{4}{l}{
-          \forallT{s_0,s_1}{\sizeK{}}{
-            \funT{\appT{\builtinT{\builtinSizeType{}}}{s_1}}
-                 {\funT{\appT{\builtinT{\builtinBytestringType{}}}{s_0}}
-                       {\appT{\builtinT{\builtinIntegerType{}}}{s_1}}}}} \\
+          \allT{s_0,s_1}{\sizeK{}}{
+            \funT{\appT{\conT{\conSizeType{}}}{s_1}}
+                 {\funT{\appT{\conT{\conBytestringType{}}}{s_0}}
+                       {\appT{\conT{\conIntegerType{}}}{s_1}}}}} \\
         \mathrm{resizeBytestring}   &   z, b   &   resizeBytestring ~ z ~ b   &   \textrm{Resizing Overflow} \\
         &&\\
         
         \multicolumn{4}{l}{
-          \forallT{s}{\sizeK{}}{
-            \funT{\appT{\builtinT{\builtinBytestringType{}}}{s}}
-                 {\funT{\appT{\builtinT{\builtinBytestringType{}}}{s}}
+          \allT{s}{\sizeK{}}{
+            \funT{\appT{\conT{\conBytestringType{}}}{s}}
+                 {\funT{\appT{\conT{\conBytestringType{}}}{s}}
                        {\mathit{boolean}}}}}\\
         \mathrm{equalsByteString}  &   b_0 , b_1   & b_0 == b_1   &   \textrm{None}  \\
         &&\\
         
-        \multicolumn{4}{l}{\appT{\builtinT{\builtinBytestringType{}}}{\size{256}}}\\
+        \multicolumn{4}{l}{\appT{\conT{\conBytestringType{}}}{\size{256}}}\\
         \mathrm{txhash} & & \textit{the transaction hash}   &   \textrm{None}  \\
         &&\\
         
         \multicolumn{4}{l}{
-          \forallT{s}{\sizeK{}}{
-            \funT{\appT{\builtinT{\builtinSizeType{}}}{s}}
-                 {\appT{\builtinT{\builtinIntegerType{}}}{s}}}}\\
+          \allT{s}{\sizeK{}}{
+            \funT{\appT{\conT{\conSizeType{}}}{s}}
+                 {\appT{\conT{\conIntegerType{}}}{s}}}}\\
         \mathrm{blocknum} & s, z & \textit{the block number}   &   \textrm{Insufficient Size Overflow}  \\
         &&\\
         
