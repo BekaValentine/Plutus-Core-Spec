@@ -6,8 +6,46 @@
     \[\begin{array}{lrclr}
         \textrm{Ctx} & \Gamma  & ::= & \epsilon                    & \textrm{empty context} \\
                      &         &     & \Gamma, \typeJ{\alpha}{K}   & \textrm{type variable} \\
-                     &         &     & \Gamma, \termJ{x}{T}        & \textrm{term variable} \\
+                     &         &     & \Gamma, \termJ{x}{A}        & \textrm{term variable} \\
     \end{array}\]
+    
+    \begin{prooftree}
+        \AxiomC{}
+        \RightLabel{here}
+        \UnaryInfC{\(\ctxni{\Gamma, \typeJ{\alpha}{K}}{\typeJ{\alpha}{K}}\)}
+    \end{prooftree}
+    
+    \begin{prooftree}
+        \AxiomC{}
+        \RightLabel{here}
+        \UnaryInfC{\(\ctxni{\Gamma, \termJ{x}{A}}{\termJ{x}{A}}\)}
+    \end{prooftree}
+    
+    \begin{prooftree}
+        \AxiomC{\(\ctxni{\Gamma}{\typeJ{\alpha}{K}}\)}
+        \AxiomC{\(\alpha \not= \beta\)}
+        \RightLabel{there}
+        \BinaryInfC{\(\ctxni{\Gamma, \typeJ{\beta}{J}}{\typeJ{\alpha}{K}}\)}
+    \end{prooftree}
+    
+     \begin{prooftree}
+        \AxiomC{\(\ctxni{\Gamma}{\typeJ{\alpha}{K}}\)}
+        \RightLabel{there}
+        \UnaryInfC{\(\ctxni{\Gamma, \termJ{y}{B}}{\typeJ{\alpha}{B}}\)}
+    \end{prooftree}
+    
+    \begin{prooftree}
+        \AxiomC{\(\ctxni{\Gamma}{\termJ{x}{A}}\)}
+        \RightLabel{there}
+        \UnaryInfC{\(\ctxni{\Gamma, \typeJ{\beta}{J}}{\termJ{x}{A}}\)}
+    \end{prooftree}
+    
+     \begin{prooftree}
+        \AxiomC{\(\ctxni{\Gamma}{\termJ{x}{A}}\)}
+        \AxiomC{\(x \not= y\)}
+        \RightLabel{there}
+        \BinaryInfC{\(\ctxni{\Gamma, \termJ{y}{B}}{\termJ{x}{A}}\)}
+    \end{prooftree}
     
     \caption{Contexts}
     \label{fig:Plutus_core_contexts}
@@ -18,7 +56,7 @@
 
 
 \begin{figure*}[t]
-    \judgmentdef{\(\hypJ{\Gamma}{\istypeJ{T}{K}}\)}{In context $\Gamma$, type $T$ has kind $K$}
+    \judgmentdef{\(\hypJ{\Gamma}{\istypeJ{A}{K}}\)}{In context $\Gamma$, type $A$ has kind $K$}
     
     \begin{prooftree}
         \AxiomC{\(\ctxni{\Gamma}{\typeJ{\alpha}{K}}\)}
@@ -27,35 +65,35 @@
     \end{prooftree}
     
     \begin{prooftree}
-        \AxiomC{\(\hypJ{\Gamma}{\istypeJ{S}{\typeK{}}}\)}
-        \AxiomC{\(\hypJ{\Gamma}{\istypeJ{T}{\typeK{}}}\)}
+        \AxiomC{\(\hypJ{\Gamma}{\istypeJ{B}{\typeK{}}}\)}
+        \AxiomC{\(\hypJ{\Gamma}{\istypeJ{A}{\typeK{}}}\)}
         \RightLabel{tyfun}
-        \BinaryInfC{\(\hypJ{\Gamma}{\istypeJ{\funT{S}{T}}{\typeK{}}}\)}
+        \BinaryInfC{\(\hypJ{\Gamma}{\istypeJ{\funT{B}{A}}{\typeK{}}}\)}
     \end{prooftree}
     
     \begin{prooftree}
-        \AxiomC{\(\hypJ{\Gamma, \typeJ{\alpha}{K}}{\istypeJ{T}{\typeK{}}}\)}
+        \AxiomC{\(\hypJ{\Gamma, \typeJ{\alpha}{K}}{\istypeJ{A}{\typeK{}}}\)}
         \RightLabel{tyforall}
-        \UnaryInfC{\(\hypJ{\Gamma}{\istypeJ{\allT{\alpha}{K}{T}}{\typeK{}}}\)}
+        \UnaryInfC{\(\hypJ{\Gamma}{\istypeJ{\allT{\alpha}{K}{A}}{\typeK{}}}\)}
     \end{prooftree}
     
     \begin{prooftree}
-        \AxiomC{\(\hypJ{\Gamma, \typeJ{\alpha}{J}}{\istypeJ{T}{K}}\)}
+        \AxiomC{\(\hypJ{\Gamma, \typeJ{\alpha}{J}}{\istypeJ{A}{K}}\)}
         \RightLabel{tylam}
-        \UnaryInfC{\(\hypJ{\Gamma}{\istypeJ{\lamT{\alpha}{J}{T}}{\funK{J}{K}}}\)}
+        \UnaryInfC{\(\hypJ{\Gamma}{\istypeJ{\lamT{\alpha}{J}{A}}{\funK{J}{K}}}\)}
     \end{prooftree}
     
     \begin{prooftree}
         \AxiomC{\(\hypJ{\Gamma}{\istypeJ{S}{\funK{J}{K}}}\)}
         \AxiomC{\(\hypJ{\Gamma}{\istypeJ{T}{J}}\)}
         \RightLabel{tyapp}
-        \BinaryInfC{\(\hypJ{\Gamma}{\istypeJ{\appT{S}{T}}{K}}\)}
+        \BinaryInfC{\(\hypJ{\Gamma}{\istypeJ{\appT{A}{B}}{K}}\)}
     \end{prooftree}
     
     \begin{prooftree}
-        \AxiomC{\(\hypJ{\Gamma, \typeJ{\alpha}{K}}{\istypeJ{T}{K}}\)}
+        \AxiomC{\(\hypJ{\Gamma, \typeJ{\alpha}{K}}{\istypeJ{A}{K}}\)}
         \RightLabel{tyfix}
-        \UnaryInfC{\(\hypJ{\Gamma}{\istypeJ{\fixT{\alpha}{K}{T}}{K}}\)}
+        \UnaryInfC{\(\hypJ{\Gamma}{\istypeJ{\fixT{\alpha}{K}{A}}{K}}\)}
     \end{prooftree}
     
     \begin{prooftree}
@@ -73,37 +111,39 @@
 
 
 \begin{figure*}[t]
-    \judgmentdef{\(\hypJ{\Gamma}{\checkJ{T}{M}}\)}{In context $\Gamma$, type $T$ checks term $M$}
+    \judgmentdef{\(\hypJ{\Gamma}{\checkJ{A}{M}}\)}{In context $\Gamma$, type $A$ checks term $M$}
     
     \begin{prooftree}
-        \AxiomC{\(\hypJ{\Gamma, \typeJ{\alpha}{K}}{\checkJ{T}{M}}\)}
+        \AxiomC{\(\hypJ{\Gamma, \typeJ{\alpha}{K}}{\checkJ{A}{M}}\)}
         \RightLabel{abs}
-        \UnaryInfC{\(\hypJ{\Gamma}{\checkJ{\allT{\alpha}{K}{T}}{\abs{\alpha}{M}}}\)}
+        \UnaryInfC{\(\hypJ{\Gamma}{\checkJ{\allT{\alpha}{K}{A}}{\abs{\alpha}{M}}}\)}
     \end{prooftree}
     
     \begin{prooftree}
-        \AxiomC{\(\hypJ{\Gamma, \termJ{x}{S}}{\checkJ{T}{M}}\)}
+        \AxiomC{\(\hypJ{\Gamma, \termJ{y}{B}}{\checkJ{A}{M}}\)}
         \RightLabel{lam}
-        \UnaryInfC{\(\hypJ{\Gamma}{\checkJ{\funT{S}{T}}{\lam{x}{M}}}\)}
+        \UnaryInfC{\(\hypJ{\Gamma}{\checkJ{\funT{B}{A}}{\lam{y}{M}}}\)}
     \end{prooftree}
     
     \begin{prooftree}
-        \AxiomC{\(\hypJ{\Gamma}{\checkJ{\subst{\fixT{\alpha}{K}{T}}{\alpha}{T}}{M}}\)}
-        \RightLabel{equi}
-        \UnaryInfC{\(\hypJ{\Gamma}{\checkJ{\fixT{\alpha}{K}{T}}{M}}\)}
-    \end{prooftree}
-    
-    \begin{prooftree}
-        \AxiomC{\(\hypJ{\Gamma, \termJ{x}{T}}{\checkJ{T}{M}}\)}
+        \AxiomC{\(\hypJ{\Gamma, \termJ{x}{A}}{\checkJ{A}{M}}\)}
         \RightLabel{fix}
-        \UnaryInfC{\(\hypJ{\Gamma}{\checkJ{T}{\fix{x}{M}}}\)}
+        \UnaryInfC{\(\hypJ{\Gamma}{\checkJ{A}{\fix{x}{M}}}\)}
     \end{prooftree}
     
     \begin{prooftree}
-        \AxiomC{\(\hypJ{\Gamma}{\synthJ{M}{S}}\)}
-        \AxiomC{\(T = S\)}
+        \AxiomC{\(M \not= \fix{x}{N}\)}
+        \AxiomC{\(\hypJ{\Gamma}{\checkJ{\subst{\fixT{\alpha}{K}{A}}{\alpha}{A}}{M}}\)}
+        \RightLabel{equi}
+        \BinaryInfC{\(\hypJ{\Gamma}{\checkJ{\fixT{\alpha}{K}{A}}{M}}\)}
+    \end{prooftree}
+    
+    \begin{prooftree}
+        \AxiomC{\(A \not= \fixT{\alpha}{K}{C}\)}
+        \AxiomC{\(\hypJ{\Gamma}{\synthJ{Y}{B}}\)}
+        \AxiomC{\(A = B\)}
         \RightLabel{dir-change}
-        \BinaryInfC{\(\hypJ{\Gamma}{\checkJ{T}{M}}\)}
+        \TrinaryInfC{\(\hypJ{\Gamma}{\checkJ{A}{Y}}\)}
     \end{prooftree}
     
     \caption{Type Checking}
@@ -116,43 +156,43 @@
 
 
 \begin{figure*}[t]
-    \judgmentdef{\(\hypJ{\Gamma}{\synthJ{M}{T}}\)}{In context $\Gamma$, term $M$ synthesizes type $T$}
+    \judgmentdef{\(\hypJ{\Gamma}{\synthJ{M}{A}}\)}{In context $\Gamma$, term $M$ synthesizes type $A$}
     
     \begin{prooftree}
-        \AxiomC{\(\ctxni{\Gamma}{\termJ{x}{T}}\)}
+        \AxiomC{\(\ctxni{\Gamma}{\termJ{x}{A}}\)}
         \RightLabel{var}
-        \UnaryInfC{\(\hypJ{\Gamma}{\synthJ{x}{T}}\)}
+        \UnaryInfC{\(\hypJ{\Gamma}{\synthJ{x}{A}}\)}
     \end{prooftree}
     
     \begin{prooftree}
-        \AxiomC{\(\hypJ{\Gamma}{\typeJ{T}{\typeK{}}}\)}
-        \AxiomC{\(\hypJ{\Gamma}{\checkJ{T}{M}}\)}
+        \AxiomC{\(\hypJ{\Gamma}{\typeJ{A}{\typeK{}}}\)}
+        \AxiomC{\(\hypJ{\Gamma}{\checkJ{A}{M}}\)}
         \RightLabel{isa}
-        \BinaryInfC{\(\hypJ{\Gamma}{\synthJ{\ann{M}{T}}{T}}\)}
+        \BinaryInfC{\(\hypJ{\Gamma}{\synthJ{\isa{A}{M}}{A}}\)}
     \end{prooftree}
     
     \begin{prooftree}
         \alwaysNoLine
-        \AxiomC{\(\hypJ{\Gamma}{\synthJ{M}{\allT{\alpha}{K}{T}}}\)}
-        \UnaryInfC{\(\hypJ{\Gamma}{\istypeJ{S}{K}}\)}
+        \AxiomC{\(\hypJ{\Gamma}{\synthJ{L}{\allT{\alpha}{K}{B}}}\)}
+        \UnaryInfC{\(\hypJ{\Gamma}{\istypeJ{A}{K}}\)}
         \alwaysSingleLine
         \RightLabel{inst}
-        \UnaryInfC{\(\hypJ{\Gamma}{\synthJ{\inst{M}{S}}{\subst{S}{\alpha}{T}}}\)}
+        \UnaryInfC{\(\hypJ{\Gamma}{\synthJ{\inst{L}{A}}{\subst{A}{\alpha}{B}}}\)}
     \end{prooftree}
     
     \begin{prooftree}
         \alwaysNoLine
-        \AxiomC{\(\hypJ{\Gamma}{\synthJ{M}{\funT{S}{T}}}\)}
-        \UnaryInfC{\(\hypJ{\Gamma}{\checkJ{S}{N}}\)}
+        \AxiomC{\(\hypJ{\Gamma}{\synthJ{L}{\funT{B}{A}}}\)}
+        \UnaryInfC{\(\hypJ{\Gamma}{\checkJ{A}{M}}\)}
         \alwaysSingleLine
         \RightLabel{app}
-        \UnaryInfC{\(\hypJ{\Gamma}{\synthJ{\app{M}{N}}{T}}\)}
+        \UnaryInfC{\(\hypJ{\Gamma}{\synthJ{\app{L}{M}}{B}}\)}
     \end{prooftree}
     
     \begin{prooftree}
-        \AxiomC{$bi$ is $T$}
+        \AxiomC{$bi$ is $A$}
         \RightLabel{builtin}
-        \UnaryInfC{\(\hypJ{\Gamma}{\synthJ{\con{bi}}{T}}\)}
+        \UnaryInfC{\(\hypJ{\Gamma}{\synthJ{\con{bi}}{A}}\)}
     \end{prooftree}
     
     \caption{Type Synthesis}
@@ -161,6 +201,107 @@
 
 
 
+
+
+
+\begin{figure*}
+    $E$ is a set of pairs of types.
+    
+    
+    \begin{prooftree}
+        \AxiomC{\(\coeqJ{\varnothing}{A}{A'}\)}
+        \UnaryInfC{\(A = A'\)}
+    \end{prooftree}
+    
+    \begin{prooftree}
+        \AxiomC{\(\ctxni{E}{(A,A')}\)}
+        \UnaryInfC{\(\coeqJ{E}{A}{A'}\)}
+    \end{prooftree}
+    
+    \begin{prooftree}
+        \alwaysNoLine
+        \AxiomC{\(\ctxnotni{E}{(A,A')}\)}
+        \UnaryInfC{\(A = \alpha\)}
+        \UnaryInfC{\(A' = \alpha\)}
+        \alwaysSingleLine
+        \UnaryInfC{\(\coeqJ{E}{A}{A'}\)}
+    \end{prooftree}
+    
+    \begin{prooftree}
+        \alwaysNoLine
+        \AxiomC{\(\ctxnotni{E}{(A,A')}\)}
+        \UnaryInfC{\(A = \funT{B}{C}\)}
+        \UnaryInfC{\(A' = \funT{B'}{C'}\)}
+        \UnaryInfC{\(\coeqJ{E, (A,A')}{B}{B'}\)}
+        \UnaryInfC{\(\coeqJ{E, (A,A')}{C}{C'}\)}
+        \alwaysSingleLine
+        \UnaryInfC{\(\coeqJ{E}{A}{A'}\)}
+    \end{prooftree}
+    
+    \begin{prooftree}
+        \alwaysNoLine
+        \AxiomC{\(\ctxnotni{E}{(A,A')}\)}
+        \UnaryInfC{\(A = \allT{\alpha}{K}{B}\)}
+        \UnaryInfC{\(A' = \allT{\alpha'}{K'}{B'}\)}
+        \UnaryInfC{\(K = K'\)}
+        \UnaryInfC{\(\coeqJ{E, (A,A')}{B}{\subst{\alpha}{\alpha'}{B'}}\)}
+        \alwaysSingleLine
+        \UnaryInfC{\(\coeqJ{E}{A}{A'}\)}
+    \end{prooftree}
+    
+    \begin{prooftree}
+        \alwaysNoLine
+        \AxiomC{\(\ctxnotni{E}{(A,A')}\)}
+        \UnaryInfC{\(A = \lamT{\alpha}{K}{B}\)}
+        \UnaryInfC{\(A' = \lamT{\alpha'}{K'}{B'}\)}
+        \UnaryInfC{\(K = K'\)}
+        \UnaryInfC{\(\coeqJ{E, (A,A')}{B}{\subst{\alpha}{\alpha'}{B'}}\)}
+        \alwaysSingleLine
+        \UnaryInfC{\(\coeqJ{E}{A}{A'}\)}
+    \end{prooftree}
+    
+    \begin{prooftree}
+        \alwaysNoLine
+        \AxiomC{\(\ctxnotni{E}{(A,A')}\)}
+        \UnaryInfC{\(A = \appT{B}{C}\)}
+        \UnaryInfC{\(A' = \appT{B'}{C'}\)}
+        \UnaryInfC{\(\coeqJ{E, (A,A')}{B}{B'}\)}
+        \UnaryInfC{\(\coeqJ{E, (A,A')}{C}{C'}\)}
+        \alwaysSingleLine
+        \UnaryInfC{\(\coeqJ{E}{A}{A'}\)}
+    \end{prooftree}
+    
+    \begin{prooftree}
+        \alwaysNoLine
+        \AxiomC{\(\ctxnotni{E}{(A,A')}\)}
+        \UnaryInfC{\(A = \fixT{\alpha}{K}{B}\)}
+        \UnaryInfC{\(\coeqJ{E, (A,A')}{\subst{\fixT{\alpha}{K}{B}}{\alpha}{B}}{A'}\)}
+        \alwaysSingleLine
+        \UnaryInfC{\(\coeqJ{E}{A}{A'}\)}
+    \end{prooftree}
+    
+    \begin{prooftree}
+        \alwaysNoLine
+        \AxiomC{\(\ctxnotni{E}{(A,A')}\)}
+        \UnaryInfC{\(A \not= \fixT{\alpha}{K}{T}\)}
+        \UnaryInfC{\(A = \fixT{\alpha'}{K'}{T'}\)}
+        \UnaryInfC{\(\coeqJ{E, (A,A')}{A}{\subst{\fixT{\alpha'}{K'}{B'}}{\alpha'}{B'}}\)}
+        \alwaysSingleLine
+        \UnaryInfC{\(\coeqJ{E}{A}{A'}\)}
+    \end{prooftree}
+    
+    \begin{prooftree}
+        \alwaysNoLine
+        \AxiomC{\(\ctxnotni{E}{(A,A')}\)}
+        \UnaryInfC{\(A = \conT{bt}\)}
+        \UnaryInfC{\(A' = \conT{bt}\)}
+        \alwaysSingleLine
+        \UnaryInfC{\(\coeqJ{E}{A}{A'}\)}
+    \end{prooftree}
+    
+    \caption{Coinductive Equality}
+    \label{fig:Plutus_core_coinductive_equality}
+\end{figure*}
 
 
 

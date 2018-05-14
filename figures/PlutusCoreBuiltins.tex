@@ -3,8 +3,11 @@
 \begin{document}
 
 \begin{figure*}[t]
+    In the following, $unit$ is shorthand for \(\allT{\alpha}{\typeK{}}{\funT{\alpha}{\alpha}}\), and $boolean$ is shorthand for \(\allT{\alpha}{\typeK{}}{\funT{\funT{unit}{\alpha}}{\funT{\funT{unit}{\alpha}}{\alpha}}}\)
+    
     \centering
     \footnotesize
+    
     \[\begin{array}{llll}
         \textit{Builtin Name}               & \textit{Arguments} & \textit{Result} & \textit{Error Conditions}\\
         &&\\
@@ -16,23 +19,18 @@
         &&\\
         
         \multicolumn{4}{l}{
-          \allT{s}{\sizeK{}}{
-            \funT{\appT{\con{\conSizeType{}}}{s}}
-                 {\appT{\conT{\conIntegerType{s}}}{s}}}}\\
-        i & & i & \textrm{Insufficient Size Overflow}\\
+          \appT{\conT{\conIntegerType{}}}{s}}\\
+        s!i & & si & \textrm{Insufficient Size Overflow}\\
         &&\\
         
         \multicolumn{4}{l}{
-          \allT{s}{\sizeK{}}{
-            \funT{\appT{\con{\conSizeType{}}}{s}}
-                 {\appT{\conT{\conBytestringType{}}}{s}}}}\\
-        b & & b & \textrm{Insufficient Size Overflow}\\
+          \appT{\conT{\conBytestringType{}}}{s}}\\
+        s!b & & s!b & \textrm{Insufficient Size Overflow}\\
         &&\\
         
         \multicolumn{4}{l}{
-          \allT{s}{\sizeK{}}{
-            \appT{\conT{\conSizeType{}}}{s}}}\\
-        z & & z & \textrm{None}\\
+          \appT{\conT{\conSizeType{}}}{s}}\\
+        s & & s & \textrm{None}\\
         &&\\
         
         \multicolumn{4}{l}{
@@ -40,11 +38,11 @@
             \funT{\appT{\conT{\conIntegerType{}}}{s}}
                  {\funT{\appT{\conT{\conIntegerType{}}}{s}}
                        {\appT{\conT{\conIntegerType{}}}{s}}}}}\\
-        \mathrm{addInteger}                 &  i_0 , i_1   &   i_0 + i_1         &   \textrm{Addition Overflow}   \\
-        \mathrm{subtractInteger}            &  i_0 , i_1   &   i_0 - i_1         &   \textrm{None}       \\
-        \mathrm{multiplyInteger}            &  i_0 , i_1   &   i_0 \times i_1    &   \textrm{Multiplication Overflow}   \\
-        \mathrm{divideInteger}              &  i_0 , i_1   &   div ~ i_0 ~ i_1   &   \textrm{None}       \\
-        \mathrm{remainderInteger}           &  i_0 , i_1   &   mod ~ i_0 ~ i_1   &   \textrm{None}       \\
+        \mathrm{addInteger}                 &  i_0 , i_1   &   i_0 + i_1         &   \textrm{Addition Overflow}       \\
+        \mathrm{subtractInteger}            &  i_0 , i_1   &   i_0 - i_1         &   \textrm{Subtraction Overflow}    \\
+        \mathrm{multiplyInteger}            &  i_0 , i_1   &   i_0 \times i_1    &   \textrm{Multiplication Overflow} \\
+        \mathrm{divideInteger}              &  i_0 , i_1   &   div ~ i_0 ~ i_1   &   \textrm{Divide by Zero}          \\
+        \mathrm{remainderInteger}           &  i_0 , i_1   &   mod ~ i_0 ~ i_1   &   \textrm{Divide by Zero}          \\
         &&\\
         
         \multicolumn{4}{l}{
@@ -72,7 +70,7 @@
             \funT{\appT{\conT{\conSizeType{}}}{s_1}}
                  {\funT{\appT{\conT{\conIntegerType{}}}{s_0}}
                        {\appT{\conT{\conBytestringType{}}}{s_1}}}}}\\
-        \mathrm{intToByteString}            &  z, i           &   intToByteString ~ z ~ i   &   \textrm{Overflow} \\
+        \mathrm{intToByteString}            &  z, i           &   intToByteString ~ z ~ i   &   \textrm{Insufficient Size Overflow} \\
         &&\\
         
         
@@ -81,7 +79,7 @@
             \funT{\appT{\conT{\conBytestringType{}}}{s}}
                  {\funT{\appT{\conT{\conBytestringType{}}}{s}}
                        {\appT{\conT{\conBytestringType{}}}{s}}}}}\\
-        \mathrm{concatenate}       &   b_0 , b_1   & concat ~ [b_0,b_1]   &   \textrm{None}         \\
+        \mathrm{concatenate}       &   b_0 , b_1   & concat ~ [b_0,b_1]   &   \textrm{Concatenation Overflow} \\
         &&\\
         
         \multicolumn{4}{l}{
