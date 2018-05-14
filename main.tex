@@ -774,7 +774,7 @@ The syntax of the language is presented in section 2, and section 3 describes a 
 
 \section{Type System}
 
-The existence of equirecursive fixedpoint types necessities special attention be paid to equality of types, however. In figure \ref{fig:Plutus_core_coinductive_equality}, we define the judgment \(A = A'\) explicitly as a coinductive equality as in \cite{gapeyev-levin-pierce}. The intuition behind this notion of equality is that we perform the usual parallel structural recursion on types to compute syntactic equality, but in doing so, track which equational problems we've encountered already as super-problems to any given sub-problem, and if we re-encounter a problem, we consider the equality to hold. The syntactic decomposition is not performed in precisely one case: the fixedpoint type, where we instead decompose the fixedpoint into its one-step unfolding. Thought of in terms of a proof tree, coinductive proofs add a new mechanism of proof: where normally one can use inference rules to prove a goal inductively, in a coinductive tree you can also use reference to another node of the same syntactic form in a super-problem. Alternatively: coinductive proofs of a problem succeed when the problem repeats itself in the course of being proved.
+The existence of equirecursive fixedpoint types necessities special attention be paid to equality of types, however. In figure \ref{fig:Plutus_core_coinductive_equality}, we define the judgment \(A = A'\) explicitly as a coinductive equality as in \cite{gapeyev-levin-pierce}\cite{stone-schoonmaker}. The intuition behind this notion of equality is that we perform the usual parallel structural recursion on types to compute syntactic equality, but in doing so, track which equational problems we've encountered already as super-problems to any given sub-problem, and if we re-encounter a problem, we consider the equality to hold. The syntactic decomposition is not performed in precisely one case: the fixedpoint type, where we instead decompose the fixedpoint into its one-step unfolding. Thought of in terms of a proof tree, coinductive proofs add a new mechanism of proof: where normally one can use inference rules to prove a goal inductively, in a coinductive tree you can also use reference to another node of the same syntactic form in a super-problem. Alternatively: coinductive proofs of a problem succeed when the problem repeats itself in the course of being proved.
 
 Finally, type synthesis for constants ($\con{bn}$ and $\conT{bt}$) is given in tabular form rather than in inference rule form, in Figure \ref{fig:Plutus_core_builtins}, which also gives the reduction semantics. This table also specifies what conditions trigger an error.
 
@@ -871,7 +871,10 @@ Koopman, Plasmeijer, and Jansen. \emph{Church Encoding of Data Types Considered 
 
 \bibitem{felleisen-friedman}
 Felleisen and Friedman. \emph{Control Operators, the SECD Machine, and the $\lambda$-calculus}. Proceedings of the Conference on Formal Description of Programming Concepts Part III. 1986.
-  
+
+\bibitem{stone-schoonmaker}
+Stone and Schoonmaker. \emph{Equational Theories With Recursive Types}. 2005.
+
 \end{thebibliography}
 
 % biography section
