@@ -5,19 +5,18 @@
 \begin{figure*}[t]
     \centering
     \[\begin{array}{lrclr}
-        \textrm{Term}             & L,M,N  & ::= & I                          & \textrm{inherited term}\\
-                                  &        &     & Y                          & \textrm{synthesized term}\\
-        \textrm{Inherited Term}   & I      & ::= & \abs{\alpha}{M}            & \textrm{type abstraction}\\
-                                  &        &     & \lam{x}{M}                 & \textrm{$\lambda$ abstraction}\\
-                                  &        &     & \fix{x}{M}                 & \textrm{fixed point term}\\
-        \textrm{Synthesized Term} & Y      & ::= & x                          & \textrm{variable}\\
-                                  &        &     & \isa{A}{M}                 & \textrm{type annotation}\\
+        \textrm{Term}             & L,M,N  &     & x                          & \textrm{variable}\\
+                                  &        &     & \fix{x}{A}{M}              & \textrm{fixed point term}\\
+                                  &        &     & \abs{\alpha}{K}{M}         & \textrm{type abstraction}\\
                                   &        &     & \inst{M}{A^+}              & \textrm{type instantiation}\\
+                                  &        &     & \lam{x}{A}{M}              & \textrm{$\lambda$ abstraction}\\
                                   &        &     & \app{M}{N^+}               & \textrm{function application}\\
                                   &        &     & \con{bi}                   & \textrm{builtin}\\
-        \textrm{Value}            & V,W    & ::= & \abs{\alpha}{M}            & \textrm{type abstraction}\\
-                                  &        &     & \lam{x}{M}                 & \textrm{$\lambda$ abstraction}\\
+                                  &        &     & \error{A}                  & \textrm{error}\\
+        \textrm{Value}            & V,W    & ::= & \abs{\alpha}{K}{M}         & \textrm{type abstraction}\\
+                                  &        &     & \lam{x}{A}{M}              & \textrm{$\lambda$ abstraction}\\
                                   &        &     & \con{bi}                   & \textrm{builtin}\\
+                                  &        &     & \error{A}                  & \textrm{error}\\
         \textrm{Type}             & A,B,C  & ::= & \alpha                     & \textrm{type variable}\\
                                   &        &     & \funT{A}{B}                & \textrm{function type}\\
                                   &        &     & \allT{\alpha}{K}{A}        & \textrm{polymorphic type}\\

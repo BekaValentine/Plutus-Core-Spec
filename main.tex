@@ -411,12 +411,12 @@
 \newcommand{\letrec}[4]{\construct{\keyword{letrec} ~ #1 ~ #2 ~ #3 ~ #4}}
 \newcommand{\lettype}[3]{\construct{\keyword{lettype} ~ #1 ~ #2 ~ #3}}
 \newcommand{\sizeterm}[1]{\texttt{\$#1}}
-\newcommand{\abs}[2]{\construct{\keyword{abs} ~ #1 ~ #2}}
+\newcommand{\abs}[3]{\construct{\keyword{abs} ~ #1 ~ #2 ~ #3}}
 \newcommand{\inst}[2]{\texttt{\{}#1 ~ #2\texttt{\}}}
-\newcommand{\lam}[2]{\construct{\keyword{lam} ~ #1 ~ #2}}
+\newcommand{\lam}[3]{\construct{\keyword{lam} ~ #1 ~ #2 ~ #3}}
 %\newcommand{\app}[2]{(\keyword{app} ~ #1 ~ #2)}
 \newcommand{\app}[2]{\texttt{[} #1 ~ #2 \texttt{]}}
-\newcommand{\fix}[2]{\construct{\keyword{fix} ~ #1 ~ #2}}
+\newcommand{\fix}[3]{\construct{\keyword{fix} ~ #1 ~ #2 ~ #3}}
 \newcommand{\conNullary}[1]{\construct{\keyword{con} ~ #1}}
 \newcommand{\case}[2]{\construct{\keyword{case} ~ #1 ~ #2}}
 \newcommand{\cl}[3]{\construct{#1 ~ \texttt{(} #2 \texttt{)} ~ #3}}
@@ -430,6 +430,7 @@
 \newcommand{\blocktime}{\construct{\keyword{blocktime}}}
 \newcommand{\bind}[3]{\construct{\keyword{bind} ~ #1 ~ #2 ~ #3}}
 \newcommand{\con}[1]{\construct{\keyword{con} ~ #1}}
+\newcommand{\error}[1]{\construct{\keyword{error} ~ #1}}
 \newcommand{\sizedBuiltin}[2]{#1\keyword{!}#2}
 \newcommand{\prim}[1]{\construct{\keyword{prim} ~ #1}}
 %\newcommand{\primInt}[1]{(\keyword{primInteger} ~ #1)}
@@ -483,6 +484,7 @@
 \newcommand{\typesignature}[2]{\construct{#1 ~ #2}}
 \newcommand{\kindsignature}[2]{\construct{#1 ~ #2}}
 
+\newcommand{\istermJ}[2]{#1 : #2}
 \newcommand{\checkJ}[2]{#1 \ni #2}
 \newcommand{\synthJ}[2]{#1 \in #2}
 \newcommand{\synthsplittopJ}[2]{#1 \vdash #2}
@@ -665,7 +667,7 @@
 %
 % paper title
 % can use linebreaks \\ within to get better formatting as desired
-\title{Formal Specification of\\the Plutus Napkin Language}
+\title{Formal Specification of\\the Plutus Napkin Language (RC1)}
 
 
 % author names and affiliations
@@ -761,7 +763,7 @@
 
 \section{Plutus Core}
 
-Plutus Core is a typed, strict, eagerly-reduced $\lambda$-calculus design to run as a transaction validation scripting language on blockchain systems. It's designed to be simple and easy to reason about using mechanized proof assistants and automated theorem provers. The grammar of the language is given in Figures \ref{fig:Plutus_core_grammar} and \ref{fig:Plutus_core_lexical_grammar}, using a modified s-expression format. The language can be described as a bidirectional higher-kinded System F variant with fixedpoint terms, equirecursive fixedpoint types, constant terms, constant types, and size-indexed types. As such, we have the following syntactic constructs at the term level: variables, type annotation, type abstraction, type instantiation, $\lambda$ abstraction, application, term-level fixed points, and term constants. At the type level, we have the following syntactic constructs: variables, polymorphic types, function types, fixedpoint types, $\lambda$ abstraction, application, and constant types. Additionally we have the following kind-level constructs: type kind, function kind, and size kind. The language also explicitly tracks versions for tracking which version of the normalizer is to be run.
+Plutus Core is a typed, strict, eagerly-reduced $\lambda$-calculus design to run as a transaction validation scripting language on blockchain systems. It's designed to be simple and easy to reason about using mechanized proof assistants and automated theorem provers. The grammar of the language is given in Figures \ref{fig:Plutus_core_grammar} and \ref{fig:Plutus_core_lexical_grammar}, using a modified s-expression format. The language can be described as a higher-kinded Church-style/intrinsically-typed System F variant with fixedpoint terms, equirecursive fixedpoint types, constant terms, constant types, and size-indexed types. As such, we have the following syntactic constructs at the term level: variables, type annotation, type abstraction, type instantiation, $\lambda$ abstraction, application, term-level fixed points, and term constants. At the type level, we have the following syntactic constructs: variables, polymorphic types, function types, fixedpoint types, $\lambda$ abstraction, application, and constant types. Additionally we have the following kind-level constructs: type kind, function kind, and size kind. The language also explicitly tracks versions for tracking which version of the normalizer is to be run.
 
 By using a variant of System F, we're able to capture various desirable abstraction properties via the continuation-based encoding of existential types. The choice to use fixedpoint types is so that we can represent recursive types via Scott encodings (instead of the less efficient and harder-to-program Church encodings typical of pure System F). Higher-kindedness makes it possible to define type operators like $\textit{List}$ rather than defining the non-parametric types $\textit{ListOfA}$ for each choice of $A$. Finally, sized types make it possible to specify for certain constant types precise what kind of memory usage they'll have. In particular, we track the size of integers and bytestrings explicitly in the types for them, which makes many kinds of formal reasoning about computation time possible.
 
@@ -796,9 +798,7 @@ In this grammar, we have multi-argument application, both in types (\(\appT{A}{B
 
 We define for Plutus Core a number of typing judgments which explain ways that a program can be well-formed. First, in Figure \ref{fig:Plutus_core_contexts}, we define the grammar of variable contexts that these judgments hold under. Variable contexts contain information about the nature of variables --- type variables with their kind, and term variables with their type.
 
-Then, in Figure \ref{fig:Plutus_core_type_well_formedness}, we define what it means for a type construct to inhabit a kind. Plutus Core is a higher-kinded version of System-F, so we have a number of standard System-F rules together with some obvious extensions.
-
-Next, in Figure \ref{fig:Plutus_core_type_checking}, we define the type checking judgment that explains when a type contains a term. This is defined together with Figure \ref{fig:Plutus_core_type_synthesis}'s type synthesis judgment, which explains how a term synthesizes a type. Together, these two judgments constitute a standard bidirectional type theory \cite{pfenning-bidi} \cite{christiansen-bidi}.
+Then, in Figure \ref{fig:Plutus_core_kind_synthesis}, we define what it means for a type synthesize a kind. Plutus Core is a higher-kinded version of System-F, so we have a number of standard System-F rules together with some obvious extensions. In Figure \ref{fig:Plutus_core_type_synthesis}, we define the type synthesis judgment, which explains how a term synthesizes a type.
 
 The existence of equirecursive fixedpoint types necessities special attention be paid to equality of types, however. In figure \ref{fig:Plutus_core_coinductive_equality}, we define the judgment \(A = A'\) explicitly as a coinductive equality as in [REFERENCE]. The intuition behind this notion of equality is that we perform the usual parallel structural recursion on types to compute syntactic equality, but in doing so, track which equational problems we've encountered already as super-problems to any given sub-problem, and if we re-encounter a problem, we consider the equality to hold. The syntactic decomposition is not performed in precisely one case: the fixedpoint type, where we instead decompose the fixedpoint into its one-step unfolding. Thought of in terms of a proof tree, coinductive proofs add a new mechanism of proof: where normally one can use inference rules to prove a goal inductively, in a coinductive tree you can also use reference to another node of the same syntactic form in a super-problem. Alternatively: coinductive proofs of a problem succeed when the problem repeats itself in the course of being proved.
 
@@ -837,7 +837,7 @@ In the context of a blockchain system, it can be useful to also have a step inde
 
 \section{Basic Validation Program Structure}
 
-The basic way that validation is done in Plutus Core is somewhat similar to what's in Bitcoin Script. Whereas in Bitcoin Script, a validation is successful if the validating script successfully executes and leaves $\textit{true}$ on the top of the stack, in Plutus Core, validation is successful when the script successfully reduces to $\textit{true}$. In this context, however, $\textit{true}$ means a very particular value: the Scott encoding of the boolean. That is to say, $\textit{true}$ is {\small\(\abs{\alpha}{\typeK{}}{\lam{t}{\lam{f}{\app{t}{\abs{\beta}{\typeK{}}{\lam{x}{x}}}}}}\)}. If it reduces to $\textit{false}$ or throws an error, the validation is considered to fail.
+The basic way that validation is done in Plutus Core is somewhat similar to what's in Bitcoin Script. Whereas in Bitcoin Script, a validation is successful if the validating script successfully executes and leaves $\textit{true}$ on the top of the stack, in Plutus Core, validation is successful when the script reduces to any value other than \(\error{A}\) in the allotted number of steps.
 
 
 
@@ -881,19 +881,12 @@ The basic way that validation is done in Plutus Core is somewhat similar to what
 % set second argument of \begin to the number of references
 % (used to reserve space for the reference number labels box)
 
-\begin{thebibliography}{1}
+%\begin{thebibliography}{1}
 
 %\bibitem{pfpl}
 %Harper, R. \emph{Practical Foundations for Programming Languages}.
 
-\bibitem{pfenning-bidi}
-Pfenning, F. \emph{Lecture Notes on
-Bidirectional Type Checking}. 2004. \url{https://www.cs.cmu.edu/~fp/courses/15312-f04/handouts/15-bidirectional.pdf}
-
-\bibitem{christiansen-bidi}
-Christiansen, D. R. \emph{Bidirectional Typing Rules: A Tutorial}. \url{http://www.davidchristiansen.dk/tutorials/bidirectional.pdf}
-
-\end{thebibliography}
+%\end{thebibliography}
 
 % biography section
 % 

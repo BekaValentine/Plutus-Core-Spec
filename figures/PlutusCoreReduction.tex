@@ -9,17 +9,16 @@
 \begin{figure*}
     \centering
     \[\begin{array}{lrclr}
-        \textrm{TCtx} & H  & ::= & \hole{}                                  & \textrm{hole}\\
-                      &    &     & \inFunTLeft{H}{A}                        & \textrm{left arrow}\\
-                      &    &     & \inFunTRight{S}{H}                       & \textrm{right arrow}\\
-                      &    &     & \inAllT{\alpha}{K}{H}                    & \textrm{forall}\\
-                      &    &     & \inLamT{\alpha}{K}{H}                    & \textrm{$\lambda$}\\
-                      &    &     & \inAppTLeft{H}{A}                        & \textrm{left app}\\
-                      &    &     & \inAppTRight{S}{H}                       & \textrm{right app}\\
+        \textrm{Type Frame} & f  & ::= & \inFunTLeft{\_}{A}                        & \textrm{left arrow}\\
+                            &    &     & \inFunTRight{S}{\_}                       & \textrm{right arrow}\\
+                            &    &     & \inAllT{\alpha}{K}{\_}                    & \textrm{forall}\\
+                            &    &     & \inLamT{\alpha}{K}{\_}                    & \textrm{$\lambda$}\\
+                            &    &     & \inAppTLeft{\_}{A}                        & \textrm{left app}\\
+                            &    &     & \inAppTRight{S}{\_}                       & \textrm{right app}\\
     \end{array}\]
     
-    \caption{Grammar of Type Reduction Contexts}
-    \label{fig:Plutus_core_type_reduction_contexts}
+    \caption{Grammar of Type Reduction Frames}
+    \label{fig:Plutus_core_type_reduction_frames}
 \end{figure*}
 
 
@@ -30,17 +29,15 @@
     \judgmentdef{\(\typeStep{A}{A'}\)}{Type $A$ reduces in one step to type $A'$}
     
     \begin{prooftree}
-        \AxiomC{\(\typeReduces{A}{A'}\)}
-        \UnaryInfC{\(\typeStep{\ctxsubst{H}{A}}{\ctxsubst{H}{A'}}\)}
+        \AxiomC{}
+        \UnaryInfC{\(\typeStep{\appT{\lamT{\alpha}{K}{B}}{S}}{\subst{S}{\alpha}{B}}\)}
     \end{prooftree}
-    
-    
-    \judgmentdef{\(\typeReduces{A}{A'}\)}{Type $A$ locally reduces to type $A'$}
     
     \begin{prooftree}
-        \AxiomC{}
-        \UnaryInfC{\(\typeReduces{\appT{\lamT{\alpha}{K}{B}}{S}}{\subst{S}{\alpha}{B}}\)}
+        \AxiomC{\(\typeStep{A}{A'}\)}
+        \UnaryInfC{\(\typeStep{\ctxsubst{F}{A}}{\ctxsubst{F}{A'}}\)}
     \end{prooftree}
+    
     
     
     \caption{Type Reduction via Contextual Dynamics}
@@ -54,15 +51,13 @@
 \begin{figure*}[t]
     \centering
     \[\begin{array}{lrclr}
-        \textrm{Ctx} & E & ::= & \hole{}                               & \textrm{hole}\\
-                     &   &     & \inAnnLeft{E}{A}                      & \textrm{left annotation}\\
-                     &   &     & \inInstLeft{E}{A}                     & \textrm{left instantiation}\\
-                     &   &     & \inInstRight{V}{E}                    & \textrm{right instantiation}\\
-                     &   &     & \inAppLeft{E}{M}                      & \textrm{left app}\\
-                     &   &     & \inAppRight{V}{E}                     & \textrm{right app}\\
+        \textrm{Frame} & f & ::= & \inInstLeft{\_}{A}                     & \textrm{left instantiation}\\
+                       &   &     & \inInstRight{V}{\_}                    & \textrm{right instantiation}\\
+                       &   &     & \inAppLeft{\_}{M}                      & \textrm{left app}\\
+                       &   &     & \inAppRight{V}{\_}                     & \textrm{right app}\\
     \end{array}\]
-    \caption{Grammar of Reduction Contexts}
-    \label{fig:Plutus_core_reduction_contexts}
+    \caption{Grammar of Reduction Frames}
+    \label{fig:Plutus_core_reduction_frames}
 \end{figure*}
 
 
@@ -72,39 +67,38 @@
     \judgmentdef{\(\step{M}{M'}\)}{Term $M$ reduces in one step to term $M'$}
     
     \begin{prooftree}
-        \AxiomC{\(\reduces{M}{M'}\)}
-        \UnaryInfC{\(\step{\ctxsubst{E}{M}}{\ctxsubst{E}{M'}}\)}
+        \AxiomC{}
+        \UnaryInfC{\(\step{\inst{\abs{\alpha}{K}{M}}{A}}{\subst{A}{\alpha}{M}}\)}
+    \end{prooftree}
+    
+    \begin{prooftree}
+        \AxiomC{}
+        \UnaryInfC{\(\step{\app{\lam{x}{A}{M}}{V}}{\subst{V}{x}{M}}\)}
+    \end{prooftree}
+    
+    \begin{prooftree}
+        \AxiomC{}
+        \UnaryInfC{\(\step{\fix{x}{A}{M}}{\subst{\fix{x}{A}{M}}{x}{M}}\)}
     \end{prooftree}
     
     \begin{prooftree}
         \AxiomC{\(\typeStep{A}{A'}\)}
-        \UnaryInfC{\(\step{\ctxsubst{E}{A}}{\ctxsubst{E}{A'}}\)}
-    \end{prooftree}
-    
-    
-    
-    
-    \judgmentdef{\(\reduces{M}{M'}\)}{Term $M$ locally reduces to term $M'$}
-    
-    \begin{prooftree}
-        \AxiomC{}
-        \UnaryInfC{\(\reduces{\isa{M}{A}}{M}\)}
+        \UnaryInfC{\(\step{\ctxsubst{f}{A}}{\ctxsubst{f}{A'}}\)}
     \end{prooftree}
     
     \begin{prooftree}
-        \AxiomC{}
-        \UnaryInfC{\(\reduces{\inst{\abs{\alpha}{M}}{A}}{\subst{A}{\alpha}{M}}\)}
+        \AxiomC{\(\step{M}{\error{A}}\)}
+        \UnaryInfC{\(\step{\ctxsubst{f}{M}}{\error{A}}\)}
     \end{prooftree}
     
     \begin{prooftree}
-        \AxiomC{}
-        \UnaryInfC{\(\reduces{\app{\lam{\mathit{x}}{M}}{V}}{\subst{V}{x}{M}}\)}
+        \AxiomC{\(\step{M}{M'}\)}
+        \AxiomC{\(M' \not= \error{A}\)}
+        \BinaryInfC{\(\step{\ctxsubst{f}{M}}{\ctxsubst{f}{M'}}\)}
     \end{prooftree}
     
-    \begin{prooftree}
-        \AxiomC{}
-        \UnaryInfC{\(\reduces{\fix{x}{M}}{\subst{\fix{x}{M}}{x}{M}}\)}
-    \end{prooftree}
+    
+    
     
     
     
@@ -119,11 +113,6 @@
 \begin{figure*}
     \centering
     \[\begin{array}{lrclr}
-        \textrm{Frame} & f  & ::= & \inAnnLeftFrame{A}                    & \textrm{left annotation}\\
-                       &    &     & \inInstLeftFrame{A}                   & \textrm{left instantiation}\\
-                       &    &     & \inInstRightFrame{V}                  & \textrm{right instantiation}\\
-                       &    &     & \inAppLeftFrame{M}                    & \textrm{left app}\\
-                       &    &     & \inAppRightFrame{V}                   & \textrm{right app}\\
         \textrm{Stack} & s      & ::= & f^*                               & \textrm{stacks}\\
         \textrm{State} & \sigma & ::= & \ckforward{s}{M}                  & \textrm{computing a term}\\
                        &        &     & \ckforward{s}{A}                  & \textrm{computing a type}\\
@@ -141,16 +130,17 @@
     \judgmentdef{\(\cksteps{\sigma}{\sigma'}\)}{Machine state $\sigma$ transitions in one step to machine state $\sigma'$}
     
     \begin{align*}
-        &\cksteps{\ckforward{s}{\isa{M}{A}}}{\ckforward{s, \inAnnLeftFrame{A}}{M}}\\
-        &\cksteps{\ckforward{s}{\abs{\alpha}{M}}}{\ckbackward{s}{\abs{\alpha}{M}}}\\
+        &\cksteps{\ckforward{s}{\abs{\alpha}{K}{M}}}{\ckbackward{s}{\abs{\alpha}{K}{M}}}\\
         &\cksteps{\ckforward{s}{\inst{M}{A}}}{\ckforward{s, \inInstLeftFrame{A}}{M}}\\
-        &\cksteps{\ckforward{s}{\lam{x}{M}}}{\ckbackward{s}{\lam{x}{M}}}\\
+        &\cksteps{\ckforward{s}{\lam{x}{A}{M}}}{\ckbackward{s}{\lam{x}{A}{M}}}\\
         &\cksteps{\ckforward{s}{\app{M}{N}}}{\ckforward{s, \inAppLeftFrame{N}}{M}}\\
+        &\cksteps{\ckforward{s}{\error{A}}}{\ckbackward{s}{\error{A}}}\\
         &\cksteps{\ckbackward{s, \inAnnLeftFrame{A}}{V}}{\ckbackward{s}{V}}\\
         &\cksteps{\ckbackward{s, \inInstLeftFrame{A}}{V}}{\ckforward{s, \inInstRightFrame{V}{\_}}{A}}\\
-        &\cksteps{\ckbackward{s, \inInstRightFrame{\abs{\alpha}{M}}{\_}}{S}}{\ckforward{s}{\subst{S}{\alpha}{M}}}\\
+        &\cksteps{\ckbackward{s, \inInstRightFrame{\abs{\alpha}{K}{M}}{\_}}{S}}{\ckforward{s}{\subst{S}{\alpha}{M}}}\\
         &\cksteps{\ckbackward{s, \inAppLeftFrame{N}}{V}}{\ckforward{s, \inAppRightFrame{V}}{N}}\\
-        &\cksteps{\ckbackward{s, \inAppRightFrame{\lam{x}{M}}}{V}}{\ckforward{s}{\subst{V}{x}{M}}}\\
+        &\cksteps{\ckbackward{s, \inAppRightFrame{\lam{x}{A}{M}}}{V}}{\ckforward{s}{\subst{V}{x}{M}}}\\
+        &\cksteps{\ckbackward{s, f}{\error{A}}}{\ckbackward{s}{\error{A}}}\\
     \end{align*}
     
     \caption{CK Machine}

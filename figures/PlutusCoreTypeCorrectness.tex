@@ -11,39 +11,33 @@
     
     \begin{prooftree}
         \AxiomC{}
-        \RightLabel{here}
         \UnaryInfC{\(\ctxni{\Gamma, \typeJ{\alpha}{K}}{\typeJ{\alpha}{K}}\)}
     \end{prooftree}
     
     \begin{prooftree}
         \AxiomC{}
-        \RightLabel{here}
         \UnaryInfC{\(\ctxni{\Gamma, \termJ{x}{A}}{\termJ{x}{A}}\)}
     \end{prooftree}
     
     \begin{prooftree}
         \AxiomC{\(\ctxni{\Gamma}{\typeJ{\alpha}{K}}\)}
         \AxiomC{\(\alpha \not= \beta\)}
-        \RightLabel{there}
         \BinaryInfC{\(\ctxni{\Gamma, \typeJ{\beta}{J}}{\typeJ{\alpha}{K}}\)}
     \end{prooftree}
     
      \begin{prooftree}
         \AxiomC{\(\ctxni{\Gamma}{\typeJ{\alpha}{K}}\)}
-        \RightLabel{there}
         \UnaryInfC{\(\ctxni{\Gamma, \termJ{y}{B}}{\typeJ{\alpha}{B}}\)}
     \end{prooftree}
     
     \begin{prooftree}
         \AxiomC{\(\ctxni{\Gamma}{\termJ{x}{A}}\)}
-        \RightLabel{there}
         \UnaryInfC{\(\ctxni{\Gamma, \typeJ{\beta}{J}}{\termJ{x}{A}}\)}
     \end{prooftree}
     
      \begin{prooftree}
         \AxiomC{\(\ctxni{\Gamma}{\termJ{x}{A}}\)}
         \AxiomC{\(x \not= y\)}
-        \RightLabel{there}
         \BinaryInfC{\(\ctxni{\Gamma, \termJ{y}{B}}{\termJ{x}{A}}\)}
     \end{prooftree}
     
@@ -102,8 +96,8 @@
         \UnaryInfC{\(\hypJ{\Gamma}{\istypeJ{\conT{bt}}{K}}\)}
     \end{prooftree}
     
-    \caption{Type Well-formedness}
-    \label{fig:Plutus_core_type_well_formedness}
+    \caption{Kind Synthesis}
+    \label{fig:Plutus_core_kind_synthesis}
 \end{figure*}
 
 
@@ -111,88 +105,70 @@
 
 
 \begin{figure*}[t]
-    \judgmentdef{\(\hypJ{\Gamma}{\checkJ{A}{M}}\)}{In context $\Gamma$, type $A$ checks term $M$}
-    
-    \begin{prooftree}
-        \AxiomC{\(\hypJ{\Gamma, \typeJ{\alpha}{K}}{\checkJ{A}{M}}\)}
-        \RightLabel{abs}
-        \UnaryInfC{\(\hypJ{\Gamma}{\checkJ{\allT{\alpha}{K}{A}}{\abs{\alpha}{M}}}\)}
-    \end{prooftree}
-    
-    \begin{prooftree}
-        \AxiomC{\(\hypJ{\Gamma, \termJ{y}{B}}{\checkJ{A}{M}}\)}
-        \RightLabel{lam}
-        \UnaryInfC{\(\hypJ{\Gamma}{\checkJ{\funT{B}{A}}{\lam{y}{M}}}\)}
-    \end{prooftree}
-    
-    \begin{prooftree}
-        \AxiomC{\(\hypJ{\Gamma, \termJ{x}{A}}{\checkJ{A}{M}}\)}
-        \RightLabel{fix}
-        \UnaryInfC{\(\hypJ{\Gamma}{\checkJ{A}{\fix{x}{M}}}\)}
-    \end{prooftree}
-    
-    \begin{prooftree}
-        \AxiomC{\(M \not= \fix{x}{N}\)}
-        \AxiomC{\(\hypJ{\Gamma}{\checkJ{\subst{\fixT{\alpha}{K}{A}}{\alpha}{A}}{M}}\)}
-        \RightLabel{equi}
-        \BinaryInfC{\(\hypJ{\Gamma}{\checkJ{\fixT{\alpha}{K}{A}}{M}}\)}
-    \end{prooftree}
-    
-    \begin{prooftree}
-        \AxiomC{\(A \not= \fixT{\alpha}{K}{C}\)}
-        \AxiomC{\(\hypJ{\Gamma}{\synthJ{Y}{B}}\)}
-        \AxiomC{\(A = B\)}
-        \RightLabel{dir-change}
-        \TrinaryInfC{\(\hypJ{\Gamma}{\checkJ{A}{Y}}\)}
-    \end{prooftree}
-    
-    \caption{Type Checking}
-    \label{fig:Plutus_core_type_checking}
-\end{figure*}
-
-
-
-
-
-
-\begin{figure*}[t]
-    \judgmentdef{\(\hypJ{\Gamma}{\synthJ{M}{A}}\)}{In context $\Gamma$, term $M$ synthesizes type $A$}
+    \judgmentdef{\(\hypJ{\Gamma}{\istermJ{M}{A}}\)}{In context $\Gamma$, term $M$ has type $A$}
     
     \begin{prooftree}
         \AxiomC{\(\ctxni{\Gamma}{\termJ{x}{A}}\)}
         \RightLabel{var}
-        \UnaryInfC{\(\hypJ{\Gamma}{\synthJ{x}{A}}\)}
+        \UnaryInfC{\(\hypJ{\Gamma}{\istermJ{x}{A}}\)}
     \end{prooftree}
     
     \begin{prooftree}
-        \AxiomC{\(\hypJ{\Gamma}{\typeJ{A}{\typeK{}}}\)}
-        \AxiomC{\(\hypJ{\Gamma}{\checkJ{A}{M}}\)}
-        \RightLabel{isa}
-        \BinaryInfC{\(\hypJ{\Gamma}{\synthJ{\isa{A}{M}}{A}}\)}
+        \AxiomC{\(\hypJ{\Gamma, \termJ{x}{A}}{\istermJ{M}{A}}\)}
+        \RightLabel{fix}
+        \UnaryInfC{\(\hypJ{\Gamma}{\istermJ{\fix{x}{A}{M}}{A}}\)}
+    \end{prooftree}
+    
+    \begin{prooftree}
+        \AxiomC{\(\hypJ{\Gamma, \typeJ{\alpha}{K}}{\istermJ{M}{A}}\)}
+        \RightLabel{abs}
+        \UnaryInfC{\(\hypJ{\Gamma}{\istermJ{\abs{\alpha}{K}{M}}{\allT{\alpha}{K}{A}}}\)}
     \end{prooftree}
     
     \begin{prooftree}
         \alwaysNoLine
-        \AxiomC{\(\hypJ{\Gamma}{\synthJ{L}{\allT{\alpha}{K}{B}}}\)}
+        \AxiomC{\(\hypJ{\Gamma}{\istermJ{L}{\allT{\alpha}{K}{B}}}\)}
         \UnaryInfC{\(\hypJ{\Gamma}{\istypeJ{A}{K}}\)}
         \alwaysSingleLine
         \RightLabel{inst}
-        \UnaryInfC{\(\hypJ{\Gamma}{\synthJ{\inst{L}{A}}{\subst{A}{\alpha}{B}}}\)}
+        \UnaryInfC{\(\hypJ{\Gamma}{\istermJ{\inst{L}{A}}{\subst{A}{\alpha}{B}}}\)}
+    \end{prooftree}
+    
+    \begin{prooftree}
+        \AxiomC{\(\hypJ{\Gamma, \termJ{y}{B}}{\istermJ{M}{A}}\)}
+        \RightLabel{lam}
+        \UnaryInfC{\(\hypJ{\Gamma}{\istermJ{\lam{y}{B}{M}}{\funT{B}{A}}}\)}
     \end{prooftree}
     
     \begin{prooftree}
         \alwaysNoLine
-        \AxiomC{\(\hypJ{\Gamma}{\synthJ{L}{\funT{B}{A}}}\)}
-        \UnaryInfC{\(\hypJ{\Gamma}{\checkJ{A}{M}}\)}
+        \AxiomC{\(\hypJ{\Gamma}{\istermJ{L}{\funT{A}{B}}}\)}
+        \UnaryInfC{\(\hypJ{\Gamma}{\istermJ{M}{A'}}\)}
+        \UnaryInfC{\(A = A'\)}
         \alwaysSingleLine
         \RightLabel{app}
-        \UnaryInfC{\(\hypJ{\Gamma}{\synthJ{\app{L}{M}}{B}}\)}
+        \UnaryInfC{\(\hypJ{\Gamma}{\istermJ{\app{L}{M}}{B}}\)}
+    \end{prooftree}
+    
+    \begin{prooftree}
+        \alwaysNoLine
+        \AxiomC{\(M \not= \fix{x}{B}{N}\)}
+        \UnaryInfC{\(\hypJ{\Gamma}{\istermJ{M}{\subst{\fixT{\alpha}{K}{A}}{\alpha}{A}}}\)}
+        \alwaysSingleLine
+        \RightLabel{equi}
+        \UnaryInfC{\(\hypJ{\Gamma}{\istermJ{M}{\fixT{\alpha}{K}{A}}}\)}
     \end{prooftree}
     
     \begin{prooftree}
         \AxiomC{$bi$ is $A$}
         \RightLabel{builtin}
-        \UnaryInfC{\(\hypJ{\Gamma}{\synthJ{\con{bi}}{A}}\)}
+        \UnaryInfC{\(\hypJ{\Gamma}{\istermJ{\con{bi}}{A}}\)}
+    \end{prooftree}
+    
+    \begin{prooftree}
+        \AxiomC{\(\hypJ{\Gamma}{\istypeJ{A}{\typeK{}}}\)}
+        \RightLabel{error}
+        \UnaryInfC{\(\hypJ{\Gamma}{\istermJ{\error{A}}{A}}\)}
     \end{prooftree}
     
     \caption{Type Synthesis}
