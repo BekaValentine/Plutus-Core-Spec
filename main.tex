@@ -380,6 +380,8 @@
 \newcommand{\unrepetition}[1]{\underline{#1}}
 \newcommand{\every}[2]{\forall #1(#2)}
 \newcommand{\some}[2]{\exists #1(#2)}
+\newcommand{\lpar}{\texttt{(}}
+\newcommand{\rpar}{\texttt{)}}
 
 \newcommand{\keyword}[1]{\texttt{#1}}
 \newcommand{\size}[1]{\texttt{#1}}
@@ -546,7 +548,8 @@
 \newcommand{\defineJ}[4]{#1 ~ \vdash ~ #2 ~ \mathrm{define} ~ #3 ~ \dashv ~ #4}
 \newcommand{\valJ}[1]{#1 ~ \mathrm{val}}
 \newcommand{\tyvalJ}[1]{#1 ~ \mathrm{tyval}}
-\newcommand{\coeqJ}[3]{#1 ~ \vdash ~ #2 \sim #3}
+\newcommand{\coeqJ}[2]{#1 \sim #2}
+\newcommand{\coeqF}[3]{\mathbf{coeq} ~ #1 ~ #2 ~ #3}
 
 \newcommand{\declenv}[1]{\lfloor{}#1\rfloor{}}
 
@@ -667,7 +670,7 @@
 %
 % paper title
 % can use linebreaks \\ within to get better formatting as desired
-\title{Formal Specification of\\the Plutus Napkin Language (RC1)}
+\title{Formal Specification of\\the Plutus Core Language (RC2)}
 
 
 % author names and affiliations

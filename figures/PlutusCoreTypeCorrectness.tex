@@ -181,104 +181,87 @@
 
 
 \begin{figure*}
-    $E$ is a set of pairs of types.
-    
-    
     \begin{prooftree}
-        \AxiomC{\(\coeqJ{\varnothing}{A}{A'}\)}
+        \AxiomC{\(\coeqJ{A}{A'}\)}
         \UnaryInfC{\(A = A'\)}
     \end{prooftree}
     
     \begin{prooftree}
-        \AxiomC{\(\ctxni{E}{(A,A')}\)}
-        \UnaryInfC{\(\coeqJ{E}{A}{A'}\)}
+        \AxiomC{}
+        \UnaryInfC{\(\coeqJ{\alpha}{\alpha}\)}
     \end{prooftree}
     
     \begin{prooftree}
-        \alwaysNoLine
-        \AxiomC{\(\ctxnotni{E}{(A,A')}\)}
-        \UnaryInfC{\(A = \alpha\)}
-        \UnaryInfC{\(A' = \alpha\)}
-        \alwaysSingleLine
-        \UnaryInfC{\(\coeqJ{E}{A}{A'}\)}
+        \AxiomC{\(\coeqJ{A}{A'}\)}
+        \AxiomC{\(\coeqJ{B}{B'}\)}
+        \BinaryInfC{\(\coeqJ{\funT{A}{B}}{\funT{A'}{B'}}\)}
     \end{prooftree}
     
     \begin{prooftree}
-        \alwaysNoLine
-        \AxiomC{\(\ctxnotni{E}{(A,A')}\)}
-        \UnaryInfC{\(A = \funT{B}{C}\)}
-        \UnaryInfC{\(A' = \funT{B'}{C'}\)}
-        \UnaryInfC{\(\coeqJ{E, (A,A')}{B}{B'}\)}
-        \UnaryInfC{\(\coeqJ{E, (A,A')}{C}{C'}\)}
-        \alwaysSingleLine
-        \UnaryInfC{\(\coeqJ{E}{A}{A'}\)}
+        \AxiomC{\(K = K'\)}
+        \AxiomC{\(\coeqJ{A}{\subst{\alpha}{\alpha'}{A'}}\)}
+        \BinaryInfC{\(\coeqJ{\allT{\alpha}{K}{A}}{\allT{\alpha'}{K'}{A'}}\)}
     \end{prooftree}
     
     \begin{prooftree}
-        \alwaysNoLine
-        \AxiomC{\(\ctxnotni{E}{(A,A')}\)}
-        \UnaryInfC{\(A = \allT{\alpha}{K}{B}\)}
-        \UnaryInfC{\(A' = \allT{\alpha'}{K'}{B'}\)}
-        \UnaryInfC{\(K = K'\)}
-        \UnaryInfC{\(\coeqJ{E, (A,A')}{B}{\subst{\alpha}{\alpha'}{B'}}\)}
-        \alwaysSingleLine
-        \UnaryInfC{\(\coeqJ{E}{A}{A'}\)}
+        \AxiomC{\(K = K'\)}
+        \AxiomC{\(\coeqJ{A}{\subst{\alpha}{\alpha'}{A'}}\)}
+        \BinaryInfC{\(\coeqJ{\lamT{\alpha}{K}{A}}{\lamT{\alpha'}{K'}{A'}}\)}
     \end{prooftree}
     
     \begin{prooftree}
-        \alwaysNoLine
-        \AxiomC{\(\ctxnotni{E}{(A,A')}\)}
-        \UnaryInfC{\(A = \lamT{\alpha}{K}{B}\)}
-        \UnaryInfC{\(A' = \lamT{\alpha'}{K'}{B'}\)}
-        \UnaryInfC{\(K = K'\)}
-        \UnaryInfC{\(\coeqJ{E, (A,A')}{B}{\subst{\alpha}{\alpha'}{B'}}\)}
-        \alwaysSingleLine
-        \UnaryInfC{\(\coeqJ{E}{A}{A'}\)}
+        \AxiomC{\(\coeqJ{A}{A'}\)}
+        \AxiomC{\(\coeqJ{B}{B'}\)}
+        \BinaryInfC{\(\coeqJ{\appT{A}{B}}{\appT{A'}{B'}}\)}
     \end{prooftree}
     
     \begin{prooftree}
-        \alwaysNoLine
-        \AxiomC{\(\ctxnotni{E}{(A,A')}\)}
-        \UnaryInfC{\(A = \appT{B}{C}\)}
-        \UnaryInfC{\(A' = \appT{B'}{C'}\)}
-        \UnaryInfC{\(\coeqJ{E, (A,A')}{B}{B'}\)}
-        \UnaryInfC{\(\coeqJ{E, (A,A')}{C}{C'}\)}
-        \alwaysSingleLine
-        \UnaryInfC{\(\coeqJ{E}{A}{A'}\)}
+        \AxiomC{\(\coeqJ{\subst{\fixT{\alpha}{K}{A}}{\alpha}{A}}{A'}\)}
+        \UnaryInfC{\(\coeqJ{\fixT{\alpha}{K}{A}}{A'}\)}
     \end{prooftree}
     
     \begin{prooftree}
-        \alwaysNoLine
-        \AxiomC{\(\ctxnotni{E}{(A,A')}\)}
-        \UnaryInfC{\(A = \fixT{\alpha}{K}{B}\)}
-        \UnaryInfC{\(\coeqJ{E, (A,A')}{\subst{\fixT{\alpha}{K}{B}}{\alpha}{B}}{A'}\)}
-        \alwaysSingleLine
-        \UnaryInfC{\(\coeqJ{E}{A}{A'}\)}
+        \AxiomC{\(\coeqJ{A}{\subst{\fixT{\alpha'}{K'}{A'}}{\alpha'}{A'}}\)}
+        \UnaryInfC{\(\coeqJ{A}{\fixT{\alpha'}{K'}{A'}}\)}
     \end{prooftree}
     
     \begin{prooftree}
-        \alwaysNoLine
-        \AxiomC{\(\ctxnotni{E}{(A,A')}\)}
-        \UnaryInfC{\(A \not= \fixT{\alpha}{K}{T}\)}
-        \UnaryInfC{\(A = \fixT{\alpha'}{K'}{T'}\)}
-        \UnaryInfC{\(\coeqJ{E, (A,A')}{A}{\subst{\fixT{\alpha'}{K'}{B'}}{\alpha'}{B'}}\)}
-        \alwaysSingleLine
-        \UnaryInfC{\(\coeqJ{E}{A}{A'}\)}
-    \end{prooftree}
-    
-    \begin{prooftree}
-        \alwaysNoLine
-        \AxiomC{\(\ctxnotni{E}{(A,A')}\)}
-        \UnaryInfC{\(A = \conT{bt}\)}
-        \UnaryInfC{\(A' = \conT{bt}\)}
-        \alwaysSingleLine
-        \UnaryInfC{\(\coeqJ{E}{A}{A'}\)}
+        \AxiomC{}
+        \UnaryInfC{\(\coeqJ{\conT{bt}}{\conT{bt}}\)}
     \end{prooftree}
     
     \caption{Coinductive Equality}
     \label{fig:Plutus_core_coinductive_equality}
 \end{figure*}
 
+
+\begin{figure*}
+    $Q$ is a set of pairs of types, membership in which is strict on-the-nose syntactic equality.
+    
+    \begin{align*}
+        &\coeqF{Q}{A}{A'} ~|~ (A,A') \in Q ~ := ~ \mathbf{true}\\
+        &\coeqF{Q}{\alpha}{\alpha'} ~ := ~ \alpha = \alpha'\\
+        &\coeqF{Q}{\funT{A}{B}}{\funT{A'}{B'}} ~ :=\\
+          &\qquad \coeqF{(Q \cup \{(\funT{A}{B},\funT{A'}{B'})\})}{A}{A'} ~ \wedge ~\\
+          &\qquad \coeqF{(Q \cup \{(\funT{A}{B},\funT{A'}{B'})\})}{B}{B'}\\
+        &\coeqF{Q}{\allT{\alpha}{K}{A}}{\allT{\alpha'}{K'}{A'}} ~ :=\\
+          &\qquad K = K' ~ \wedge ~ \coeqF{(Q \cup \{(\allT{\alpha}{K}{A},\allT{\alpha'}{K'}{A'})\})}{A}{\subst{\alpha}{\alpha'}{A'}}\\
+        &\coeqF{Q}{\lamT{\alpha}{K}{A}}{\lamT{\alpha'}{K'}{A'}} ~ :=\\
+          &\qquad K = K' ~ \wedge ~ \coeqF{(Q \cup \{(\lamT{\alpha}{K}{A},\lamT{\alpha'}{K'}{A'})\})}{A}{\subst{\alpha}{\alpha'}{A'}}\\
+        &\coeqF{Q}{\appT{A}{B}}{\appT{A'}{B'}} ~ :=\\
+          &\qquad \coeqF{(Q \cup \{(\appT{A}{B},\appT{A'}{B'})\})}{A}{A'} ~ \wedge ~\\
+          &\qquad \coeqF{(Q \cup \{(\appT{A}{B},\appT{A'}{B'})\})}{B}{B'}\\
+        &\coeqF{Q}{\fixT{\alpha}{K}{A}}{A'} ~ :=\\
+          &\quad\coeqF{(Q \cup \{(\fixT{\alpha}{K}{A},A')\})}{(\subst{\fixT{\alpha}{K}{A}}{\alpha}{A})}{A'}\\
+        &\coeqF{Q}{A}{\fixT{\alpha'}{K'}{A'}} ~ :=\\
+          &\quad\coeqF{(Q \cup \{(A,\fixT{\alpha'}{K'}{A'}))\}}{A}{(\subst{\fixT{\alpha'}{K'}{A'}}{\alpha'}{A'})}\\
+        &\coeqF{Q}{\conT{bt}}{\conT{bt'}} ~ := ~ bt = bt'\\
+        &\coeqF{Q}{A}{A'} ~ := ~ \mathbf{false}\\
+    \end{align*}
+    
+    \caption{Algorithmic Coinductive Equality}
+    \label{fig:Plutus_core_computable_coinductive_equality}
+\end{figure*}
 
 
 

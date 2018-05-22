@@ -3,144 +3,191 @@
 \begin{document}
 
 \begin{figure*}[t]
-    In the following, $unit$ is shorthand for \(\allT{\alpha}{\typeK{}}{\funT{\alpha}{\alpha}}\), and $boolean$ is shorthand for \(\allT{\alpha}{\typeK{}}{\funT{\funT{unit}{\alpha}}{\funT{\funT{unit}{\alpha}}{\alpha}}}\)
-    
-    \centering
     \footnotesize
+    \centering
+    \begin{tabular}{ll}
+        \textrm{Name} & \textrm{Type}\\\\
+        
+        unit & \allT{\alpha}{\typeK{}}{\funT{\alpha}{\alpha}}\\\\
+        
+        boolean & \begin{tabular}{l}
+          \lpar{}\keyword{all}~$\alpha$~$\typeK{}$\\
+          \quad\lpar{}\keyword{fun}~\lpar{}\keyword{fun}~$unit$~$\alpha$\rpar{}\\
+          \qquad\lpar{}\keyword{fun}~\lpar{}\keyword{fun}~$unit$~$\alpha$\rpar{}\\
+          \qquad\qquad\quad$\alpha$\rpar{}\rpar{}\rpar{}
+        \end{tabular}\\\\
+        
+        
+        intop & \begin{tabular}{l}
+          \lpar{}\keyword{all}~$s$~$\sizeK{}$\\
+          \quad\lpar{}\keyword{fun}~\(\appT{\conT{\conIntegerType{}}}{s}\)\\
+          \qquad\lpar{}\keyword{fun}~\(\appT{\conT{\conIntegerType{}}}{s}\)\\
+          \qquad\qquad\quad\(\appT{\conT{\conIntegerType{}}}{s}\)\rpar{}\rpar{}\rpar{}\\
+        \end{tabular}\\\\
+        
+        intpred & \begin{tabular}{l}
+          \lpar{}\keyword{all}~$s$~$\sizeK{}$\\
+          \quad\lpar{}\keyword{fun}~\(\appT{\conT{\conIntegerType{}}}{s}\)\\
+          \qquad\lpar{}\keyword{fun}~\(\appT{\conT{\conIntegerType{}}}{s}\)\\
+          \qquad\qquad\quad$boolean$\rpar{}\rpar{}\rpar{}\\
+        \end{tabular}\\\\
+        
+        intresize & \begin{tabular}{l}
+          \lpar{}\keyword{all}~$s_0$~$\sizeK{}$\\
+          \quad\lpar{}\keyword{all}~$s_1$~$\sizeK{}$\\
+          \qquad\lpar{}\keyword{fun}~\(\appT{\conT{\conSizeType{}}}{s_1}\)\\
+          \qquad\quad\lpar{}\keyword{fun}~\(\appT{\conT{\conIntegerType{}}}{s_0}\)\\
+          \qquad\qquad\qquad\(\appT{\conT{\conIntegerType{}}}{s_1}\)\rpar{}\rpar{}\rpar{}\rpar{}\\
+        \end{tabular}\\\\
+        
+        intconv & \begin{tabular}{l}
+          \lpar{}\keyword{all}~$s_0$~$\sizeK{}$\\
+          \quad\lpar{}\keyword{all}~$s_1$~$\sizeK{}$\\
+          \qquad\lpar{}\keyword{fun}~\(\appT{\conT{\conSizeType{}}}{s_1}\)\\
+          \qquad\quad\lpar{}\keyword{fun}~\(\appT{\conT{\conIntegerType{}}}{s_0}\)\\
+          \qquad\qquad\qquad\(\appT{\conT{\conBytestringType{}{}}}{s_1}\)\rpar{}\rpar{}\rpar{}\rpar{}\\
+        \end{tabular}\\\\
+        
+        bsop & \begin{tabular}{l}
+          \lpar{}\keyword{all}~$s$~$\sizeK{}$\\
+          \quad\lpar{}\keyword{fun}~\(\appT{\conT{\conBytestringType{}}}{s}\)\\
+          \qquad\lpar{}\keyword{fun}~\(\appT{\conT{\conBytestringType{}}}{s}\)\\
+          \qquad\qquad\quad\(\appT{\conT{\conBytestringType{}}}{s}\)\rpar{}\rpar{}\rpar{}
+        \end{tabular}\\\\
+        
+        bsintop & \begin{tabular}{l}
+          \lpar{}\keyword{all}~$s_0$~$\sizeK{}$\\
+          \quad\lpar{}\keyword{all}~$s_1$~$\sizeK{}$\\
+          \qquad\lpar{}\keyword{fun}~\(\appT{\conT{\conBytestringType{}}}{s}\)\\
+          \qquad\quad\lpar{}\keyword{fun}~\(\appT{\conT{\conBytestringType{}}}{s}\)\\
+          \qquad\qquad\qquad\(\appT{\conT{\conBytestringType{}}}{s}\)\rpar{}\rpar{}\rpar{}\rpar{}
+        \end{tabular}\\\\
+        
+        cryptoop & \begin{tabular}{l}
+          \lpar{}\keyword{all}~$s$~$\sizeK{}$\\
+          \quad\lpar{}\keyword{fun}~\(\appT{\conT{\conBytestringType{}}}{s}\)\\
+          \qquad\qquad\(\appT{\conT{\conBytestringType{}}}{256}\)\rpar{}\rpar{}
+        \end{tabular}\\\\
+        
+        cryptover & \begin{tabular}{l}
+          \lpar{}\keyword{all}~$s_0$~$\sizeK{}$\\
+          \quad\lpar{}\keyword{all}~$s_1$~$\sizeK{}$\\
+          \qquad\lpar{}\keyword{all}~$s_2$~$\sizeK{}$\\
+          \qquad\quad\lpar{}\keyword{fun}~\(\appT{\conT{\conBytestringType{}}}{s_0}\)\\
+          \qquad\qquad\lpar{}\keyword{fun}~\(\appT{\conT{\conBytestringType{}}}{s_1}\)\\
+          \qquad\qquad\quad\lpar{}\keyword{fun}~\(\appT{\conT{\conBytestringType{}}}{s_2}\)\\
+          \qquad\qquad\qquad\qquad$boolean$\rpar{}\rpar{}\rpar{}\rpar{}\rpar{}\rpar{}
+        \end{tabular}\\\\
+        
+        bsresize & \begin{tabular}{l}
+          \lpar{}\keyword{all}~$s_0$~$\sizeK{}$\\
+          \quad\lpar{}\keyword{all}~$s_1$~$\sizeK{}$\\
+          \qquad\lpar{}\keyword{fun}~\(\appT{\conT{\conSizeType{}}}{s_1}\)\\
+          \qquad\quad\lpar{}\keyword{fun}~\(\appT{\conT{\conBytestringType{}}}{s_0}\)\\
+          \qquad\qquad\qquad\(\appT{\conT{\conBytestringType{}}}{s_1}\)\rpar{}\rpar{}\rpar{}\rpar{}
+        \end{tabular}\\\\
+        
+        bspred & \begin{tabular}{l}
+          \lpar{}\keyword{all}~$s$~$\sizeK{}$\\
+          \quad\lpar{}\keyword{fun}~\(\appT{\conT{\conBytestringType{}}}{s}\)\\
+          \qquad\lpar{}\keyword{fun}~\(\appT{\conT{\conBytestringType{}}}{s}\)\\
+          \qquad\qquad\quad$boolean$\rpar{}\rpar{}\rpar{}
+        \end{tabular}\\\\
+        
+        blocknum & \begin{tabular}{l}
+          \lpar{}\keyword{all}~$s$~$\sizeK{}$\\
+          \quad\lpar{}\keyword{fun}~\(\appT{\conT{\conSizeType{}}}{s}\)\\
+          \qquad\qquad\(\appT{\conT{\conIntegerType{}{}}}{s}\)\rpar{}\rpar{}
+        \end{tabular}\\\\
+        
+    \end{tabular}
     
-    \[\begin{array}{llll}
-        \textit{Builtin Name}               & \textit{Arguments} & \textit{Result} & \textit{Error Conditions}\\
-        &&\\
+    \caption{Type Abbreviations}
+    \label{fig:Plutus_core_type_abbreviations}
+\end{figure*}
+    
+    
+\begin{figure*}[t]
+    \footnotesize
+    \centering
+    
+    \[\begin{array}{lllll}
+        \textit{Builtin Type Name} & \textit{Kind} & \textit{Arguments} & \textit{Semantics} & \textit{Error Conditions}\\
         
-        \multicolumn{4}{l}{\funK{\sizeK{}}{\typeK{}}}\\
-        \mathrm{integer} & s & Integer ~ s & \textrm{None}\\
-        \mathrm{bytestring} & s & Bytestring ~ s & \textrm{None}\\
-        \mathrm{size} & s & Size ~ s & \textrm{None}\\
-        &&\\
+        \mathrm{integer} & \funK{\sizeK{}}{\typeK{}} & s & Integer ~ s & \textrm{---}\\
         
-        \multicolumn{4}{l}{
-          \appT{\conT{\conIntegerType{}}}{s}}\\
-        s!i & & si & \textrm{Insufficient Size Overflow}\\
-        &&\\
+        \mathrm{bytestring} & \funK{\sizeK{}}{\typeK{}} & s & Bytestring ~ s & \textrm{---}\\
         
-        \multicolumn{4}{l}{
-          \appT{\conT{\conBytestringType{}}}{s}}\\
-        s!b & & s!b & \textrm{Insufficient Size Overflow}\\
-        &&\\
-        
-        \multicolumn{4}{l}{
-          \appT{\conT{\conSizeType{}}}{s}}\\
-        s & & s & \textrm{None}\\
-        &&\\
-        
-        \multicolumn{4}{l}{
-          \allT{s}{\sizeK{}}{
-            \funT{\appT{\conT{\conIntegerType{}}}{s}}
-                 {\funT{\appT{\conT{\conIntegerType{}}}{s}}
-                       {\appT{\conT{\conIntegerType{}}}{s}}}}}\\
-        \mathrm{addInteger}                 &  i_0 , i_1   &   i_0 + i_1         &   \textrm{Addition Overflow}       \\
-        \mathrm{subtractInteger}            &  i_0 , i_1   &   i_0 - i_1         &   \textrm{Subtraction Overflow}    \\
-        \mathrm{multiplyInteger}            &  i_0 , i_1   &   i_0 \times i_1    &   \textrm{Multiplication Overflow} \\
-        \mathrm{divideInteger}              &  i_0 , i_1   &   div ~ i_0 ~ i_1   &   \textrm{Divide by Zero}          \\
-        \mathrm{remainderInteger}           &  i_0 , i_1   &   mod ~ i_0 ~ i_1   &   \textrm{Divide by Zero}          \\
-        &&\\
-        
-        \multicolumn{4}{l}{
-          \allT{s}{\sizeK{}}{
-            \funT{\appT{\conT{\conIntegerType{}}}{s}}
-                 {\funT{\appT{\conT{\conIntegerType{}}}{s}}
-                       {\mathit{boolean}}}}}\\
-        \mathrm{lessThanInteger}            &  i_0 , i_1   &   i_0 < i_1    &   \textrm{None}         \\
-        \mathrm{lessThanEqualsInteger}      &  i_0 , i_1   &   i_0 <= i_1   &   \textrm{None}         \\
-        \mathrm{greaterThanInteger}         &  i_0 , i_1   &   i_0 > i_1    &   \textrm{None}         \\
-        \mathrm{greaterThanEqualsInteger}   &  i_0 , i_1   &   i_0 >= i_1   &   \textrm{None}         \\
-        \mathrm{equalsInteger}              &  i_0 , i_1   &   i_0 == i_1   &   \textrm{None}         \\
-        &&\\
-        
-        \multicolumn{4}{l}{
-          \allT{s_0,s_1}{\sizeK{}}{
-            \funT{\appT{\conT{\conSizeType{}}}{s_1}}
-                 {\funT{\appT{\conT{\conIntegerType{}}}{s_0}}
-                       {\appT{\conT{\conIntegerType{}}}{s_1}}}}} \\
-        \mathrm{resizeInteger}   &   z, i   &   resizeInteger ~ z ~ i   &   \textrm{Resizing Overflow} \\
-        &&\\
-        
-        \multicolumn{4}{l}{
-          \allT{s_0,s_1}{\sizeK{}}{
-            \funT{\appT{\conT{\conSizeType{}}}{s_1}}
-                 {\funT{\appT{\conT{\conIntegerType{}}}{s_0}}
-                       {\appT{\conT{\conBytestringType{}}}{s_1}}}}}\\
-        \mathrm{intToByteString}            &  z, i           &   intToByteString ~ z ~ i   &   \textrm{Insufficient Size Overflow} \\
-        &&\\
-        
-        
-        \multicolumn{4}{l}{
-          \allT{s}{\sizeK{}}{
-            \funT{\appT{\conT{\conBytestringType{}}}{s}}
-                 {\funT{\appT{\conT{\conBytestringType{}}}{s}}
-                       {\appT{\conT{\conBytestringType{}}}{s}}}}}\\
-        \mathrm{concatenate}       &   b_0 , b_1   & concat ~ [b_0,b_1]   &   \textrm{Concatenation Overflow} \\
-        &&\\
-        
-        \multicolumn{4}{l}{
-          \allT{s_0,s_1}{\sizeK{}}{
-            \funT{\appT{\conT{\conBytestringType{}}}{s_0}}
-                 {\funT{\appT{\conT{\conIntegerType{}}}{s_1}}
-                       {\appT{\conT{\conBytestringType{}}}{s_0}}}}}\\
-        \mathrm{takeByteString}    &   i, b     & take ~ (fromIntegral ~ i) ~ b   &   \textrm{None} \\
-        \mathrm{dropByteString}    &   i, b     & drop ~ (fromIntegral ~ i) ~ b   &   \textrm{None} \\
-        &&\\
-        
-        \multicolumn{4}{l}{
-          \allT{s}{\sizeK{}}{
-            \funT{\appT{\conT{\conBytestringType{}}}{s}}
-                 {\appT{\conT{\conBytestringType{}}}{\size{256}}}}}\\
-        \mathrm{sha2\_256}         &   b           & sha2\_256 ~ b    & \textrm{None}                \\
-        \mathrm{sha3\_256}         &   b           & sha3\_256~ b     & \textrm{None}                \\
-        &&\\
-        
-        \multicolumn{4}{l}{
-          \allT{s_0,s_1,s_2}{\sizeK{}}{
-            \funT{\appT{\conT{\conBytestringType{}}}{s_0}}
-                 {\funT{\appT{\conT{\conBytestringType{}}}{s_1}}
-                       {\funT{\appT{\conT{\conBytestringType{}}}{s_2}}
-                             {\mathit{boolean}}}}}}\\
-        \mathrm{verifySignature}   &   b_0, b_1, b_2           & verifySignature ~ b_0 ~ b_1 ~ b_2   &   \textrm{None}          \\
-        &&\\
-        
-        \multicolumn{4}{l}{
-          \allT{s_0,s_1}{\sizeK{}}{
-            \funT{\appT{\conT{\conSizeType{}}}{s_1}}
-                 {\funT{\appT{\conT{\conBytestringType{}}}{s_0}}
-                       {\appT{\conT{\conIntegerType{}}}{s_1}}}}} \\
-        \mathrm{resizeBytestring}   &   z, b   &   resizeBytestring ~ z ~ b   &   \textrm{Resizing Overflow} \\
-        &&\\
-        
-        \multicolumn{4}{l}{
-          \allT{s}{\sizeK{}}{
-            \funT{\appT{\conT{\conBytestringType{}}}{s}}
-                 {\funT{\appT{\conT{\conBytestringType{}}}{s}}
-                       {\mathit{boolean}}}}}\\
-        \mathrm{equalsByteString}  &   b_0 , b_1   & b_0 == b_1   &   \textrm{None}  \\
-        &&\\
-        
-        \multicolumn{4}{l}{\appT{\conT{\conBytestringType{}}}{\size{256}}}\\
-        \mathrm{txhash} & & \textit{the transaction hash}   &   \textrm{None}  \\
-        &&\\
-        
-        \multicolumn{4}{l}{
-          \allT{s}{\sizeK{}}{
-            \funT{\appT{\conT{\conSizeType{}}}{s}}
-                 {\appT{\conT{\conIntegerType{}}}{s}}}}\\
-        \mathrm{blocknum} & s, z & \textit{the block number}   &   \textrm{Insufficient Size Overflow}  \\
-        &&\\
-        
-        \multicolumn{4}{l}{\mathit{datetime}}\\
-        \mathrm{blocktime} & & \textit{the block time}   &   \textrm{}  \\
+        \mathrm{size} & \funK{\sizeK{}}{\typeK{}} & s & Size ~ s & \textrm{---}\\
     \end{array}\]
-    \normalsize
+    
+    \[\begin{array}{lllll}
+        \textit{Builtin Name} & \textit{Type} & \textit{Arguments} & \textit{Semantics} & \textit{Error Conditions}\\
+        %&&\\
+        
+        s!i   & \appT{\conT{\conIntegerType{}}}{s}      &   \textrm{---}   &    s!i    &   \textrm{Insufficient Size Overflow}\\
+        %&&\\
+        
+        s!b   & \appT{\conT{\conBytestringType{}}}{s}   &   \textrm{---}   &    s!b    &   \textrm{Insufficient Size Overflow}\\
+        %&&\\
+        
+        s     & \appT{\conT{\conSizeType{}}}{s}         &   \textrm{---}   &    s      &   \textrm{---}\\
+        %&&\\
+        
+        \mathrm{addInteger}        &  intop  &  i_0 , i_1   &   i_0 + i_1         &   \textrm{Addition Overflow}       \\
+        \mathrm{subtractInteger}   &  intop  &  i_0 , i_1   &   i_0 - i_1         &   \textrm{Subtraction Overflow}    \\
+        \mathrm{multiplyInteger}   &  intop  &  i_0 , i_1   &   i_0 \times i_1    &   \textrm{Multiplication Overflow} \\
+        \mathrm{divideInteger}     &  intop  &  i_0 , i_1   &   div ~ i_0 ~ i_1   &   \textrm{Divide by Zero}          \\
+        \mathrm{remainderInteger}  &  intop  &  i_0 , i_1   &   mod ~ i_0 ~ i_1   &   \textrm{Divide by Zero}          \\
+        %&&\\
+        
+        \mathrm{lessThanInteger}            &  intpred  &  i_0 , i_1   &   i_0 < i_1    &   \textrm{---}         \\
+        \mathrm{lessThanEqualsInteger}      &  intpred  &  i_0 , i_1   &   i_0 <= i_1   &   \textrm{---}         \\
+        \mathrm{greaterThanInteger}         &  intpred  &  i_0 , i_1   &   i_0 > i_1    &   \textrm{---}         \\
+        \mathrm{greaterThanEqualsInteger}   &  intpred  &  i_0 , i_1   &   i_0 >= i_1   &   \textrm{---}         \\
+        \mathrm{equalsInteger}              &  intpred  &  i_0 , i_1   &   i_0 == i_1   &   \textrm{---}         \\
+        %&&\\
+        
+        \mathrm{resizeInteger}   &  intresize  &   z, i   &   resizeInteger ~ z ~ i   &   \textrm{Resizing Overflow} \\
+        %&&\\
+        
+        \mathrm{intToByteString}  &   intconv  &  z, i           &   intToByteString ~ z ~ i   &   \textrm{Insufficient Size Overflow} \\
+        %&&\\
+        
+        
+        \mathrm{concatenate}   &   bsop   &   b_0 , b_1   & concat ~ [b_0,b_1]   &   \textrm{Concatenation Overflow} \\
+        %&&\\
+        
+        \mathrm{takeByteString}    &   bsintop   &   i, b     & take ~ (fromIntegral ~ i) ~ b   &   \textrm{---} \\
+        \mathrm{dropByteString}    &   bsintop   &   i, b     & drop ~ (fromIntegral ~ i) ~ b   &   \textrm{---} \\
+        %&&\\
+        
+        \mathrm{sha2\_256}         &  cryptoop  &   b           & sha2\_256 ~ b    & \textrm{---}                \\
+        \mathrm{sha3\_256}         &  cryptoop  &   b           & sha3\_256~ b     & \textrm{---}                \\
+        %&&\\
+        
+        \mathrm{verifySignature}   &  cryptover  &   b_0, b_1, b_2           & verifySignature ~ b_0 ~ b_1 ~ b_2   &   \textrm{---}          \\
+        %&&\\
+        
+        \mathrm{resizeBytestring}   &   bsresize   &   z, b   &   resizeBytestring ~ z ~ b   &   \textrm{Resizing Overflow} \\
+        %&&\\
+        
+        \mathrm{equalsByteString}  &   bspred   &   b_0 , b_1   & b_0 == b_1   &   \textrm{---}  \\
+        %&&\\
+        
+        \mathrm{txhash}   &   \appT{\conT{\conBytestringType{}}}{\size{256}}   &   \textrm{---}  & \textit{the transaction hash}   &   \textrm{---}  \\
+        %&&\\
+        
+        \mathrm{blocknum}  &  blocknum  & s, z & \textit{the block number}   &   \textrm{Insufficient Size Overflow}  \\
+        %&&\\
+        
+        \mathrm{blocktime} &  \mathit{datetime}  &  \textit{None}  & \textit{the block time}   &   \textrm{}  \\
+    \end{array}\]
+    
     \caption{Builtin Types and Reductions}
     \label{fig:Plutus_core_builtins}
 \end{figure*}
+
+\normalsize
 
 \end{document}
