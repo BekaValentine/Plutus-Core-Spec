@@ -11,7 +11,7 @@
     \[\begin{array}{lrclr}
         \textrm{Type Frame} & f  & ::= & \inFunTLeft{\_}{A}                        & \textrm{left arrow}\\
                             &    &     & \inFunTRight{S}{\_}                       & \textrm{right arrow}\\
-                            &    &     & \inAllT{\alpha}{K}{\_}                    & \textrm{forall}\\
+                            &    &     & \inAllT{\alpha}{K}{\_}                    & \textrm{all}\\
                             &    &     & \inLamT{\alpha}{K}{\_}                    & \textrm{$\lambda$}\\
                             &    &     & \inAppTLeft{\_}{A}                        & \textrm{left app}\\
                             &    &     & \inAppTRight{S}{\_}                       & \textrm{right app}\\
@@ -51,10 +51,13 @@
 \begin{figure*}[t]
     \centering
     \[\begin{array}{lrclr}
-        \textrm{Frame} & f & ::= & \inInstLeft{\_}{A}                     & \textrm{left instantiation}\\
-                       &   &     & \inInstRight{V}{\_}                    & \textrm{right instantiation}\\
-                       &   &     & \inAppLeft{\_}{M}                      & \textrm{left app}\\
-                       &   &     & \inAppRight{V}{\_}                     & \textrm{right app}\\
+        \textrm{Frame} & f & ::= & \inInstLeftFrame{A}                     & \textrm{left instantiation}\\
+                       &   &     & \inInstRightFrame{V}                    & \textrm{right instantiation}\\
+                       &   &     & \inWrapLeftFrame{\alpha}{M}             & \textrm{wrap}\\
+                       &   &     & \inWrapRightFrame{\alpha}{A}            & \textrm{wrap}\\
+                       &   &     & \inUnwrapFrame{}                        & \textrm{unwrap}\\
+                       &   &     & \inAppLeftFrame{M}                      & \textrm{left app}\\
+                       &   &     & \inAppRightFrame{V}                     & \textrm{right app}\\
     \end{array}\]
     \caption{Grammar of Reduction Frames}
     \label{fig:Plutus_core_reduction_frames}
@@ -73,6 +76,11 @@
     
     \begin{prooftree}
         \AxiomC{}
+        \UnaryInfC{\(\step{\unwrap{\wrap{\alpha}{A}{M}}}{M}\)}
+    \end{prooftree}
+    
+    \begin{prooftree}
+        \AxiomC{}
         \UnaryInfC{\(\step{\app{\lam{x}{A}{M}}{V}}{\subst{V}{x}{M}}\)}
     \end{prooftree}
     
@@ -87,8 +95,9 @@
     \end{prooftree}
     
     \begin{prooftree}
-        \AxiomC{\(\step{M}{\error{A}}\)}
-        \UnaryInfC{\(\step{\ctxsubst{f}{M}}{\error{A}}\)}
+        \AxiomC{\(\step{M}{M'}\)}
+        \AxiomC{\(M' = \error{A}\)}
+        \BinaryInfC{\(\step{\ctxsubst{f}{M}}{\error{A}}\)}
     \end{prooftree}
     
     \begin{prooftree}
@@ -132,12 +141,17 @@
     \begin{align*}
         &\cksteps{\ckforward{s}{\abs{\alpha}{K}{M}}}{\ckbackward{s}{\abs{\alpha}{K}{M}}}\\
         &\cksteps{\ckforward{s}{\inst{M}{A}}}{\ckforward{s, \inInstLeftFrame{A}}{M}}\\
+        &\cksteps{\ckforward{s}{\wrap{\alpha}{A}{M}}}{\ckforward{s, \inWrapLeftFrame{\alpha}{M}}{A}}\\
+        &\cksteps{\ckforward{s}{\unwrap{M}}}{\ckforward{s, \inUnwrapFrame{}}{M}}\\
         &\cksteps{\ckforward{s}{\lam{x}{A}{M}}}{\ckbackward{s}{\lam{x}{A}{M}}}\\
         &\cksteps{\ckforward{s}{\app{M}{N}}}{\ckforward{s, \inAppLeftFrame{N}}{M}}\\
         &\cksteps{\ckforward{s}{\error{A}}}{\ckbackward{s}{\error{A}}}\\
         &\cksteps{\ckbackward{s, \inAnnLeftFrame{A}}{V}}{\ckbackward{s}{V}}\\
         &\cksteps{\ckbackward{s, \inInstLeftFrame{A}}{V}}{\ckforward{s, \inInstRightFrame{V}{\_}}{A}}\\
-        &\cksteps{\ckbackward{s, \inInstRightFrame{\abs{\alpha}{K}{M}}{\_}}{S}}{\ckforward{s}{\subst{S}{\alpha}{M}}}\\
+        &\cksteps{\ckbackward{s, \inInstRightFrame{\abs{\alpha}{K}{M}}}{S}}{\ckforward{s}{\subst{S}{\alpha}{M}}}\\
+        &\cksteps{\ckbackward{s, \inWrapLeftFrame{\alpha}{M}}{S}}{\ckforward{s, \inWrapRightFrame{\alpha}{S}}{M}}\\
+        &\cksteps{\ckbackward{s, \inWrapRightFrame{\alpha}{S}}{V}}{\ckbackward{s}{\wrap{\alpha}{S}{V}}}\\
+        &\cksteps{\ckbackward{s, \inUnwrapFrame{}}{\wrap{\alpha}{A}{V}}}{\ckbackward{s}{V}}\\
         &\cksteps{\ckbackward{s, \inAppLeftFrame{N}}{V}}{\ckforward{s, \inAppRightFrame{V}}{N}}\\
         &\cksteps{\ckbackward{s, \inAppRightFrame{\lam{x}{A}{M}}}{V}}{\ckforward{s}{\subst{V}{x}{M}}}\\
         &\cksteps{\ckbackward{s, f}{\error{A}}}{\ckbackward{s}{\error{A}}}\\

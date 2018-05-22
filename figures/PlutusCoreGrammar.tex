@@ -9,24 +9,27 @@
                                   &        &     & \fix{x}{A}{M}              & \textrm{fixed point term}\\
                                   &        &     & \abs{\alpha}{K}{M}         & \textrm{type abstraction}\\
                                   &        &     & \inst{M}{A^+}              & \textrm{type instantiation}\\
+                                  &        &     & \wrap{\alpha}{A}{M}        & \textrm{fix type's wrap}\\
+                                  &        &     & \unwrap{M}                 & \textrm{fix type's unwrap}\\
                                   &        &     & \lam{x}{A}{M}              & \textrm{$\lambda$ abstraction}\\
                                   &        &     & \app{M}{N^+}               & \textrm{function application}\\
                                   &        &     & \con{bi}                   & \textrm{builtin}\\
                                   &        &     & \error{A}                  & \textrm{error}\\
         \textrm{Value}            & V,W    & ::= & \abs{\alpha}{K}{M}         & \textrm{type abstraction}\\
+                                  &        &     & \wrap{\alpha}{A}{M}        & \textrm{fix type's wrap}\\
                                   &        &     & \lam{x}{A}{M}              & \textrm{$\lambda$ abstraction}\\
                                   &        &     & \con{bi}                   & \textrm{builtin}\\
                                   &        &     & \error{A}                  & \textrm{error}\\
         \textrm{Type}             & A,B,C  & ::= & \alpha                     & \textrm{type variable}\\
                                   &        &     & \funT{A}{B}                & \textrm{function type}\\
                                   &        &     & \allT{\alpha}{K}{A}        & \textrm{polymorphic type}\\
-                                  &        &     & \fixT{\alpha}{K}{A}        & \textrm{fixed point type}\\
+                                  &        &     & \fixT{\alpha}{A}           & \textrm{fixed point type}\\
                                   &        &     & \lamT{\alpha}{K}{A}        & \textrm{$\lambda$ abstraction}\\
                                   &        &     & \appT{A}{B^+}              & \textrm{function application}\\
                                   &        &     & \conT{bt}                  & \textrm{builtin type}\\
         \textrm{Type Value}       & R,S,T  & ::= & \funT{S}{T}                & \textrm{function type}\\
                                   &        &     & \allT{\alpha}{K}{A}        & \textrm{polymorphic type}\\
-                                  &        &     & \fixT{\alpha}{K}{A}        & \textrm{fixed point type}\\
+                                  &        &     & \fixT{\alpha}{A}           & \textrm{fixed point type}\\
                                   &        &     & \lamT{\alpha}{K}{A}        & \textrm{$\lambda$ abstraction}\\
                                   &        &     & \conT{bt}                  & \textrm{builtin type}\\
         \textrm{Kind}             & J,K    & ::= & \typeK{}                   & \textrm{type kind}\\
