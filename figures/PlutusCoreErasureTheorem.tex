@@ -1,0 +1,33 @@
+\documentclass[../main.tex]{subfiles}
+
+\begin{document}
+
+\begin{figure*}
+    \begin{align*}
+        \erase{x} &= x\\
+        \erase{\fix{x}{A}{M}} &= \fixE{x}{\erase{M}}\\
+        \erase{\abs{\alpha}{K}{M}} &= \erase{M}\\
+        \erase{\inst{M}{A}} &= \erase{M}\\
+        \erase{\wrap{\alpha}{A}{M}} &= \erase{M}\\
+        \erase{\unwrap{M}} &= \erase{M}\\
+        \erase{\lam{x}{A}{M}} &= \lamE{x}{\erase{M}}\\
+        \erase{\app{M}{N}} &= \appE{\erase{M}}{\erase{N}}\\
+        \erase{\con{bi}} &= \conE{bi}\\
+        \erase{\error{A}} &= \errorE    {}\\
+    \end{align*}
+
+
+    Theorem: if \(\hypJ{\Gamma}{\istermJ{M}{A}}\) and \(\step{M}{M'}\) then \(\multistep{\erase{M}}{\erase{M'}}\)
+    
+    Proof: Induction on the proof of \(\step{M}{M'}\)
+    
+    Lemma: \(\erase{\subst{A}{\alpha}{M}} = \erase{M}\)
+    
+    Lemma: \(\erase{\subst{M}{x}{N}} = \subst{\erase{M}}{x}{\erase{N}}\)
+
+    \caption{Plutus Core Erasure Theorem}
+    \label{fig:Plutus_core_erasure_theorem}
+\end{figure*}          
+
+
+\end{document}

@@ -35,7 +35,7 @@
     
     \begin{prooftree}
         \AxiomC{\(\typeStep{A}{A'}\)}
-        \UnaryInfC{\(\typeStep{\ctxsubst{F}{A}}{\ctxsubst{F}{A'}}\)}
+        \UnaryInfC{\(\typeStep{\ctxsubst{f}{A}}{\ctxsubst{f}{A'}}\)}
     \end{prooftree}
     
     
@@ -53,9 +53,10 @@
     \[\begin{array}{lrclr}
         \textrm{Frame} & f & ::= & \inInstLeftFrame{A}                     & \textrm{left instantiation}\\
                        &   &     & \inInstRightFrame{V}                    & \textrm{right instantiation}\\
-                       &   &     & \inWrapLeftFrame{\alpha}{M}             & \textrm{wrap}\\
-                       &   &     & \inWrapRightFrame{\alpha}{A}            & \textrm{wrap}\\
+                       &   &     & \inWrapLeftFrame{\alpha}{M}             & \textrm{left wrap}\\
+                       &   &     & \inWrapRightFrame{\alpha}{A}            & \textrm{right wrap}\\
                        &   &     & \inUnwrapFrame{}                        & \textrm{unwrap}\\
+                       &   &     & \inLamLeftFrame{x}{M}                   & \textrm{$\lambda$}\\
                        &   &     & \inAppLeftFrame{M}                      & \textrm{left app}\\
                        &   &     & \inAppRightFrame{V}                     & \textrm{right app}\\
     \end{array}\]
@@ -71,7 +72,7 @@
     
     \begin{prooftree}
         \AxiomC{}
-        \UnaryInfC{\(\step{\inst{\abs{\alpha}{K}{M}}{A}}{\subst{A}{\alpha}{M}}\)}
+        \UnaryInfC{\(\step{\inst{\abs{\alpha}{K}{M}}{S}}{\subst{S}{\alpha}{M}}\)}
     \end{prooftree}
     
     \begin{prooftree}

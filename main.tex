@@ -416,9 +416,12 @@
 \newcommand{\abs}[3]{\construct{\keyword{abs} ~ #1 ~ #2 ~ #3}}
 \newcommand{\inst}[2]{\texttt{\{}#1 ~ #2\texttt{\}}}
 \newcommand{\lam}[3]{\construct{\keyword{lam} ~ #1 ~ #2 ~ #3}}
+\newcommand{\lamE}[2]{\construct{\keyword{lam} ~ #1 ~ #2}}
 %\newcommand{\app}[2]{(\keyword{app} ~ #1 ~ #2)}
 \newcommand{\app}[2]{\texttt{[} #1 ~ #2 \texttt{]}}
+\newcommand{\appE}[2]{\texttt{[} #1 ~ #2 \texttt{]}}
 \newcommand{\fix}[3]{\construct{\keyword{fix} ~ #1 ~ #2 ~ #3}}
+\newcommand{\fixE}[2]{\construct{\keyword{fix} ~ #1 ~ #2}}
 \newcommand{\wrap}[3]{\construct{\keyword{wrap} ~ #1 ~ #2 ~ #3}}
 \newcommand{\unwrap}[1]{\construct{\keyword{unwrap} ~ #1}}
 \newcommand{\conNullary}[1]{\construct{\keyword{con} ~ #1}}
@@ -434,7 +437,9 @@
 \newcommand{\blocktime}{\construct{\keyword{blocktime}}}
 \newcommand{\bind}[3]{\construct{\keyword{bind} ~ #1 ~ #2 ~ #3}}
 \newcommand{\con}[1]{\construct{\keyword{con} ~ #1}}
+\newcommand{\conE}[1]{\construct{\keyword{con} ~ #1}}
 \newcommand{\error}[1]{\construct{\keyword{error} ~ #1}}
+\newcommand{\errorE}{\construct{\keyword{error}}}
 \newcommand{\sizedBuiltin}[2]{#1\keyword{!}#2}
 \newcommand{\prim}[1]{\construct{\keyword{prim} ~ #1}}
 %\newcommand{\primInt}[1]{(\keyword{primInteger} ~ #1)}
@@ -487,6 +492,7 @@
 \newcommand{\tyconarity}[1]{\construct{#1}}
 \newcommand{\typesignature}[2]{\construct{#1 ~ #2}}
 \newcommand{\kindsignature}[2]{\construct{#1 ~ #2}}
+\newcommand{\erase}[1]{\lfloor #1 \rfloor}
 
 \newcommand{\istermJ}[2]{#1 : #2}
 \newcommand{\checkJ}[2]{#1 \ni #2}
@@ -605,8 +611,11 @@
 \newcommand{\inWrapLeftFrame}[2]{\wrap{#1}{\_}{#2}}
 \newcommand{\inWrapRightFrame}[2]{\wrap{#1}{#2}{\_}}
 \newcommand{\inUnwrapFrame}{\unwrap{\_}}
+\newcommand{\inLamLeftFrame}[2]{\lam{#1}{\_}{#2}}
 \newcommand{\inAppLeftFrame}[1]{\app{\_}{#1}}
+\newcommand{\inAppELeftFrame}[1]{\app{\_}{#1}}
 \newcommand{\inAppRightFrame}[1]{\app{#1}{\_}}
+\newcommand{\inAppERightFrame}[1]{\app{#1}{\_}}
 \newcommand{\inConFrame}[3]{\con{#1}{#2 ~ \_ ~ #3}}
 \newcommand{\inCaseFrame}[1]{\case{\_}{#1}}
 \newcommand{\inSuccessFrame}{\success{\_}}
@@ -850,6 +859,16 @@ The basic way that validation is done in Plutus Core is somewhat similar to what
 
 
 
+
+\section{Erasure}
+
+TO WRITE
+
+\subfile{figures/PlutusCoreErasureGrammar}
+
+\subfile{figures/PlutusCoreErasureReduction}
+
+\subfile{figures/PlutusCoreErasureTheorem}
 
 
 
