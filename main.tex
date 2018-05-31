@@ -358,6 +358,7 @@
 
 % *** IMPORTS FOR PLUTUS LANGUAGE ***
 
+\usepackage[T1]{fontenc}
 \usepackage{bussproofs,amsmath,amssymb}
 
 
@@ -382,6 +383,9 @@
 \newcommand{\some}[2]{\exists #1(#2)}
 \newcommand{\lpar}{\texttt{(}}
 \newcommand{\rpar}{\texttt{)}}
+\newcommand{\iffbecause}[1]{\Leftrightarrow~\textrm{\{#1\}}}
+\newcommand{\qed}{\square}
+\newcommand{\qedbecause}[1]{\square~\textrm{\{#1\}}}
 
 \newcommand{\keyword}[1]{\texttt{#1}}
 \newcommand{\size}[1]{\texttt{#1}}
@@ -606,6 +610,7 @@
 \newcommand{\executesIndexed}[4]{#2 ~\rightsquigarrow^{#3}_{#1}~ #4}
 \newcommand{\cksteps}[2]{#1 ~\mapsto~ #2}
 \newcommand{\inAnnLeftFrame}[1]{\isa{\_}{#1}}
+\newcommand{\inFixFrame}[2]{\fix{#1}{\_}{#2}}
 \newcommand{\inInstLeftFrame}[1]{\inst{\_}{#1}}
 \newcommand{\inInstRightFrame}[1]{\inst{#1}{\_}}
 \newcommand{\inWrapLeftFrame}[2]{\wrap{#1}{\_}{#2}}
@@ -684,7 +689,7 @@
 %
 % paper title
 % can use linebreaks \\ within to get better formatting as desired
-\title{Formal Specification of\\the Plutus Core Language (RC3)}
+\title{Formal Specification of\\the Plutus Core Language v1.0 (RC4)}
 
 
 % author names and affiliations

@@ -15,8 +15,8 @@
                                   &        &     & \app{M}{N^+}               & \textrm{function application}\\
                                   &        &     & \con{bi}                   & \textrm{builtin}\\
                                   &        &     & \error{A}                  & \textrm{error}\\
-        \textrm{Value}            & V,W    & ::= & \abs{\alpha}{K}{M}         & \textrm{type abstraction}\\
-                                  &        &     & \wrap{\alpha}{A}{M}        & \textrm{fix type's wrap}\\
+        \textrm{Value}            & V      & ::= & \abs{\alpha}{K}{M}         & \textrm{type abstraction}\\
+                                  &        &     & \wrap{\alpha}{A}{V}        & \textrm{fix type's wrap}\\
                                   &        &     & \lam{x}{A}{M}              & \textrm{$\lambda$ abstraction}\\
                                   &        &     & \con{bi}                   & \textrm{builtin}\\
                                   &        &     & \error{A}                  & \textrm{error}\\
@@ -28,9 +28,9 @@
                                   &        &     & \appT{A}{B^+}              & \textrm{function application}\\
                                   &        &     & \conT{bt}                  & \textrm{builtin type}\\
         \textrm{Type Value}       & R,S,T  & ::= & \funT{S}{T}                & \textrm{function type}\\
-                                  &        &     & \allT{\alpha}{K}{A}        & \textrm{polymorphic type}\\
-                                  &        &     & \fixT{\alpha}{A}           & \textrm{fixed point type}\\
-                                  &        &     & \lamT{\alpha}{K}{A}        & \textrm{$\lambda$ abstraction}\\
+                                  &        &     & \allT{\alpha}{K}{T}        & \textrm{polymorphic type}\\
+                                  &        &     & \fixT{\alpha}{T}           & \textrm{fixed point type}\\
+                                  &        &     & \lamT{\alpha}{K}{T}        & \textrm{$\lambda$ abstraction}\\
                                   &        &     & \conT{bt}                  & \textrm{builtin type}\\
         \textrm{Kind}             & J,K    & ::= & \typeK{}                   & \textrm{type kind}\\
                                   &        &     & \funK{J}{K}                & \textrm{arrow kind}\\

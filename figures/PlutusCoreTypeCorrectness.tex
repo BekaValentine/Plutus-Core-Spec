@@ -174,9 +174,10 @@
     \end{prooftree}
     
     \begin{prooftree}
-        \AxiomC{\(\hypJ{\Gamma}{\istypeJ{A}{\typeK{}}}\)}
+        \AxiomC{\(\hypJ{\Gamma}{\istypeJ{A}{K}}\)}
+        \AxiomC{\(K = \typeK{}\)}
         \RightLabel{error}
-        \UnaryInfC{\(\hypJ{\Gamma}{\istermJ{\error{A}}{A}}\)}
+        \BinaryInfC{\(\hypJ{\Gamma}{\istermJ{\error{A}}{A}}\)}
     \end{prooftree}
     
     \caption{Type Synthesis}

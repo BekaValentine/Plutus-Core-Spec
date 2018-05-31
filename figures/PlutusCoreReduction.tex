@@ -51,7 +51,8 @@
 \begin{figure*}[t]
     \centering
     \[\begin{array}{lrclr}
-        \textrm{Frame} & f & ::= & \inInstLeftFrame{A}                     & \textrm{left instantiation}\\
+        \textrm{Frame} & f & ::= & \inFixFrame{x}{M}                        & \textrm{fix}\\
+                       &   &     & \inInstLeftFrame{A}                     & \textrm{left instantiation}\\
                        &   &     & \inInstRightFrame{V}                    & \textrm{right instantiation}\\
                        &   &     & \inWrapLeftFrame{\alpha}{M}             & \textrm{left wrap}\\
                        &   &     & \inWrapRightFrame{\alpha}{A}            & \textrm{right wrap}\\
