@@ -5,14 +5,22 @@
 \begin{figure*}[t]
     \centering
     \[\begin{array}{lrclr}
-        \textrm{Var}     & x  & ::= & [\texttt{a}\!\hyphen{}\!\texttt{z}][\texttt{a}\!\hyphen{}\!\texttt{zA}\!\hyphen{}\!\texttt{Z0}\!\hyphen{}\!\texttt{9\_'}]^*                                                           & \textrm{term variable}\\
-        \textrm{TyVar}   & \alpha & ::= & [\texttt{a}\!\hyphen{}\!\texttt{z}][\texttt{a}\!\hyphen{}\!\texttt{zA}\!\hyphen{}\!\texttt{Z0}\!\hyphen{}\!\texttt{9\_'}]^*                                                      & \textrm{type variable}\\
-        \textrm{BuiltinName}    & bn  & ::= & [\texttt{a}\!\hyphen{}\!\texttt{z}][\texttt{a}\!\hyphen{}\!\texttt{zA}\!\hyphen{}\!\texttt{Z0}\!\hyphen{}\!\texttt{9\_'}]^*                                                          & \textrm{builtin term name}\\
-        \textrm{TyBuiltinName}    & bt  & ::= & [\texttt{a}\!\hyphen{}\!\texttt{z}][\texttt{a}\!\hyphen{}\!\texttt{zA}\!\hyphen{}\!\texttt{Z0}\!\hyphen{}\!\texttt{9\_'}]^* & \textrm{builtin type name}\\
-        \textrm{Integer} & i  & ::= & [\texttt{+-}]^?[\texttt{0}\!\hyphen{}\!\texttt{9}]^+                                                                                                                                  & \textrm{integer}\\
+        
+        \textrm{Name}        & n      & ::= & [\texttt{a}\!\hyphen{}\!\texttt{z}\texttt{A}\!\hyphen{}\!\texttt{Z}][\texttt{a}\!\hyphen{}\!\texttt{zA}\!\hyphen{}\!\texttt{Z0}\!\hyphen{}\!\texttt{9\_'}]^*   & \textrm{name}\\
+        
+        \textrm{Var}           & x      & ::= & n & \textrm{term variable}\\
+        \textrm{TyVar}         & \alpha & ::= & n & \textrm{type variable}\\
+        \textrm{BuiltinName}   & bn     & ::= & n & \textrm{builtin term name}\\
+        \textrm{TyBuiltinName} & bt     & ::= & n & \textrm{builtin type name}\\
+        
+        \textrm{Integer} & i  & ::= & [\texttt{+-}]^?[\texttt{0}\!\hyphen{}\!\texttt{9}]^+ & \textrm{integer}\\
+        
         \textrm{ByteString}   & b  & ::= & \texttt{\#}([\texttt{a}\!\hyphen{}\!\texttt{fA}\!\hyphen{}\!\texttt{F0}\!\hyphen{}\!\texttt{9}][\texttt{a}\!\hyphen{}\!\texttt{fA}\!\hyphen{}\!\texttt{F0}\!\hyphen{}\!\texttt{9}])^+ & \textrm{hex string}\\
+        
         \textrm{Size} & s  & ::= & [\texttt{0}\!\hyphen{}\!\texttt{9}]^+ & \textrm{size}\\
+        
         \textrm{Version} & v & ::= & [\texttt{0}\!\hyphen{}\!\texttt{9}]^+(.[\texttt{0}\!\hyphen{}\!\texttt{9}]^+)^* & \textrm{version}\\
+        
         \textrm{Constant} & bi & ::= & \sizedBuiltin{s}{i} & \textrm{integer constant}\\
                           &    &     & \sizedBuiltin{s}{b} & \textrm{bytestring constant}\\
                           &    &     & s & \textrm{size constant}\\

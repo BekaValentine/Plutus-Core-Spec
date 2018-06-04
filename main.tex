@@ -386,6 +386,7 @@
 \newcommand{\iffbecause}[1]{\Leftrightarrow~\textrm{\{#1\}}}
 \newcommand{\qed}{\square}
 \newcommand{\qedbecause}[1]{\square~\textrm{\{#1\}}}
+\newcommand{\Fomega}{F$^{\omega}$}
 
 \newcommand{\keyword}[1]{\texttt{#1}}
 \newcommand{\size}[1]{\texttt{#1}}
@@ -689,7 +690,7 @@
 %
 % paper title
 % can use linebreaks \\ within to get better formatting as desired
-\title{Formal Specification of\\the Plutus Core Language v1.0 (RC4)}
+\title{Formal Specification of\\the Plutus Core Language v1.0 (RC4.1)}
 
 
 % author names and affiliations
@@ -785,11 +786,55 @@
 
 \section{Plutus Core}
 
-Plutus Core is a typed, strict, eagerly-reduced $\lambda$-calculus design to run as a transaction validation scripting language on blockchain systems. It's designed to be simple and easy to reason about using mechanized proof assistants and automated theorem provers. The grammar of the language is given in Figures \ref{fig:Plutus_core_grammar} and \ref{fig:Plutus_core_lexical_grammar}, using a modified s-expression format. The language can be described as a higher-kinded Church-style/intrinsically-typed System F variant with fixedpoint terms, equirecursive fixedpoint types, constant terms, constant types, and size-indexed types. As such, we have the following syntactic constructs at the term level: variables, type annotation, type abstraction, type instantiation, $\lambda$ abstraction, application, term-level fixed points, and term constants. At the type level, we have the following syntactic constructs: variables, polymorphic types, function types, fixedpoint types, $\lambda$ abstraction, application, and constant types. Additionally we have the following kind-level constructs: type kind, function kind, and size kind. The language also explicitly tracks versions for tracking which version of the normalizer is to be run.
+Plutus Core is the target for compilation of Plutus TX, the smart
+contract language to validate transactions on Cardano. Plutus Core is
+designed to be simple and easy to reason about using proof assistants
+and automated theorem provers.
 
-By using a variant of System F, we're able to capture various desirable abstraction properties via the continuation-based encoding of existential types. The choice to use fixedpoint types is so that we can represent recursive types via Scott encodings (instead of the less efficient and harder-to-program Church encodings typical of pure System F). Higher-kindedness makes it possible to define type operators like $\textit{List}$ rather than defining the non-parametric types $\textit{ListOfA}$ for each choice of $A$. Finally, sized types make it possible to specify for certain constant types precise what kind of memory usage they'll have. In particular, we track the size of integers and bytestrings explicitly in the types for them, which makes many kinds of formal reasoning about computation time possible.
+Plutus Core has a strong formal basis. For those familiar with
+programming language theory, it can be described in one line: System
+\Fomega{}, with equirecursive types, recursive functions, and suitable
+primitive types and values. There are no constructs for data types,
+which are represented using Scott encodings---we do not use Church
+encodings since they may require linear rather than constant time to
+access the components of a data structure. Primitive types, such as
+Integer and Bytestring, are indexed by their size, which allows the
+cost (in gas) of operations such as addition to be determined at
+compile time. In contrast, IELE uses unbounded integers, which never
+overflow, but require that the gas used is calculated at run time. We
+use \Fomega{} (as opposed to F) because it supports types indexed by
+size and parameterised types (such as ``List of A'').
 
-In this grammar, we have multi-argument application, both in types (\(\appT{A}{B^+}\)) and in terms (\(\app{M}{N^+}\)), as well as multi-argument instantiation in terms (\(\inst{M}{A^*}\)). This is to be understood as a convenient form of syntactic sugar for iterated binary application associated to the left, and the formal rules treat only the binary case.
+%Plutus Core is a typed, strict, eagerly-reduced $\lambda$-calculus design to run as a transaction validation scripting language on blockchain systems. It's designed to be simple and easy to reason about using mechanized proof assistants and automated theorem provers. The grammar of the language is given in Figures \ref{fig:Plutus_core_grammar} and \ref{fig:Plutus_core_lexical_grammar}, using a modified s-expression format. The language can be described as a higher-kinded Church-style/intrinsically-typed System F variant with fixedpoint terms, equirecursive fixedpoint types, constant terms, constant types, and size-indexed types. As such, we have the following syntactic constructs at the term level: variables, type annotation, type abstraction, type instantiation, $\lambda$ abstraction, application, term-level fixed points, and term constants. At the type level, we have the following syntactic constructs: variables, polymorphic types, function types, fixedpoint types, $\lambda$ abstraction, application, and constant types. Additionally we have the following kind-level constructs: type kind, function kind, and size kind. The language also explicitly tracks versions for tracking which version of the normalizer is to be run.
+
+%By using a variant of System F, we're able to capture various desirable abstraction properties via the continuation-based encoding of existential types. The choice to use fixedpoint types is so that we can represent recursive types via Scott encodings (instead of the less efficient and harder-to-program Church encodings typical of pure System F). Higher-kindedness makes it possible to define type operators like $\textit{List}$ rather than defining the non-parametric types $\textit{ListOfA}$ for each choice of $A$. Finally, sized types make it possible to specify for certain constant types precise what kind of memory usage they'll have. In particular, we track the size of integers and bytestrings explicitly in the types for them, which makes many kinds of formal reasoning about computation time possible.
+
+\section{Syntax}
+
+The lexical syntax of Plutus Core is described in Figure 1.  Lexemes
+are described in standard regular expression notation.  The only other
+lexemes are round \texttt{()}, square \texttt{[]}, and curly \texttt{\{\}}
+brackets.  Spaces and tabs are allowed anywhere, and have no effect
+save to separate lexemes.
+
+The syntax of Plutus Core is described in Figure 2. Most constructs
+resemble Lisp, with round brackets and a keyword. Variables appear on
+their own.
+
+Iterated application in both terms and types is indicated by square
+brackets, and iterated instantiation in terms is indicated by curly brackets.
+For instance,
+\[
+  [M_0 ~ M_1 ~ M_2 ~ M_3]
+\] 
+is equivalent to 
+\[
+  [[[M_0 ~ M_1] ~ M_2] ~ M_3]
+\]
+All subsequent definitions assume iterated application and instantiation
+has been expanded out, and use only the binary form.
+
+%In this grammar, we have multi-argument application, both in types (\(\appT{A}{B^+}\)) and in terms (\(\app{M}{N^+}\)), as well as multi-argument instantiation in terms (\(\inst{M}{A^*}\)). This is to be understood as a convenient form of syntactic sugar for iterated binary application associated to the left, and the formal rules treat only the binary case.
 
 
 
@@ -820,7 +865,7 @@ In this grammar, we have multi-argument application, both in types (\(\appT{A}{B
 
 We define for Plutus Core a number of typing judgments which explain ways that a program can be well-formed. First, in Figure \ref{fig:Plutus_core_contexts}, we define the grammar of variable contexts that these judgments hold under. Variable contexts contain information about the nature of variables --- type variables with their kind, and term variables with their type.
 
-Then, in Figure \ref{fig:Plutus_core_kind_synthesis}, we define what it means for a type synthesize a kind. Plutus Core is a higher-kinded version of System-F, so we have a number of standard System-F rules together with some obvious extensions. In Figure \ref{fig:Plutus_core_type_synthesis}, we define the type synthesis judgment, which explains how a term synthesizes a type.
+Then, in Figure \ref{fig:Plutus_core_kind_synthesis}, we define what it means for a type synthesize a kind. Plutus Core is a higher-kinded version of System F, so we have a number of standard System F rules together with some obvious extensions. In Figure \ref{fig:Plutus_core_type_synthesis}, we define the type synthesis judgment, which explains how a term synthesizes a type.
 
 Finally, type synthesis for constants ($\con{bn}$ and $\conT{bt}$) is given in tabular form rather than in inference rule form, in Figure \ref{fig:Plutus_core_builtins}, which also gives the reduction semantics. This table also specifies what conditions trigger an error.
 
@@ -841,7 +886,7 @@ Finally, type synthesis for constants ($\con{bn}$ and $\conT{bt}$) is given in t
 
 \section{Reduction and Execution}
 
-In figure \ref{fig:Plutus_core_reduction}, we define a standard eager, small-step contextual semantics for Plutus Core in terms of the local ($\beta$) reduction relation for types (\(\typeReduces{A}{A'}\)) and terms (\(\reduces{M}{M'}\)), which lifts to stepping terms in arbitrary contexts (\(\typeStep{A}{A'}\) and \(\step{M}{M'}\), respectively). We make use of the transitive closure of these stepping relations via the usual Kleene star notation.
+In figure \ref{fig:Plutus_core_reduction}, we define a standard eager, small-step contextual semantics for Plutus Core in terms of the reduction relation for types (\(\typeStep{A}{A'}\)) and terms (\(\step{M}{M'}\)), which incorporates both $\beta$ reduction and contextual congruence. We make use of the transitive closure of these stepping relations via the usual Kleene star notation.
 
 In the context of a blockchain system, it can be useful to also have a step indexed version of stepping, indicated by a superscript count of steps (\(\multistepIndexed{M}{n}{M'}\)). In order to prevent transaction validation from looping indefinitely, or from simply taking an inordinate amount of time, which would be a serious security flaw in the blockchain system, we can use step indexing to put an upper bound on the number of computational steps that a program can have. In this setting, we would pick some upper bound $\mathit{max}$ and then perform steps of terms $M$ by computing which $M'$ is such that \(\multistepIndexed{M}{\mathit{max}}{M'}\).
 
