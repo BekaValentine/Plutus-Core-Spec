@@ -58,9 +58,9 @@
         bsintop & \begin{tabular}{l}
           \lpar{}\keyword{all}~$s_0$~$\sizeK{}$\\
           \quad\lpar{}\keyword{all}~$s_1$~$\sizeK{}$\\
-          \qquad\lpar{}\keyword{fun}~\(\appT{\conT{\conBytestringType{}}}{s}\)\\
-          \qquad\quad\lpar{}\keyword{fun}~\(\appT{\conT{\conBytestringType{}}}{s}\)\\
-          \qquad\qquad\qquad\(\appT{\conT{\conBytestringType{}}}{s}\)\rpar{}\rpar{}\rpar{}\rpar{}
+          \qquad\lpar{}\keyword{fun}~\(\appT{\conT{\conBytestringType{}}}{s_0}\)\\
+          \qquad\quad\lpar{}\keyword{fun}~\(\appT{\conT{\conIntegerType{}}}{s_1}\)\\
+          \qquad\qquad\qquad\(\appT{\conT{\conBytestringType{}}}{s_0}\)\rpar{}\rpar{}\rpar{}\rpar{}
         \end{tabular}\\\\
         
         cryptoop & \begin{tabular}{l}
@@ -166,7 +166,7 @@
         \mathrm{sha3\_256}         &  cryptoop  &   b           & sha3\_256~ b     & \textrm{---}                \\
         %&&\\
         
-        \mathrm{verifySignature}   &  cryptover  &   b_0, b_1, b_2           & verifySignature ~ b_0 ~ b_1 ~ b_2   &   \textrm{---}          \\
+        \mathrm{verifySignature}   &  cryptover  &   key, dat, sig           & verifySignature ~ key ~ dat ~ sig   &   \textrm{---}          \\
         %&&\\
         
         \mathrm{resizeBytestring}   &   bsresize   &   z, b   &   resizeBytestring ~ z ~ b   &   \textrm{Resizing Overflow} \\

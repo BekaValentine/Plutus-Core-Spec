@@ -92,6 +92,14 @@
     \end{prooftree}
     
     \begin{prooftree}
+        \alwaysNoLine
+        \AxiomC{$M$ is a fully saturated constant}
+        \UnaryInfC{$M$ computes to $V$ according to Fig \ref{Plutus_core_builtins}}
+        \alwaysSingleLine
+        \UnaryInfC{\(\step{M}{V}\)}
+    \end{prooftree}
+    
+    \begin{prooftree}
         \AxiomC{\(\typeStep{A}{A'}\)}
         \UnaryInfC{\(\step{\ctxsubst{f}{A}}{\ctxsubst{f}{A'}}\)}
     \end{prooftree}
