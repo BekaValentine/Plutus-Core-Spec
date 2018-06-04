@@ -8,9 +8,9 @@
     \begin{tabular}{ll}
         \textrm{Name} & \textrm{Type}\\\\
         
-        unit & \(\allT{\alpha}{\typeK{}}{\funT{\alpha}{\alpha}}\)\\\\
+        $unit$ & \(\allT{\alpha}{\typeK{}}{\funT{\alpha}{\alpha}}\)\\\\
         
-        boolean & \begin{tabular}{l}
+        $boolean$ & \begin{tabular}{l}
           \lpar{}\keyword{all}~$\alpha$~$\typeK{}$\\
           \quad\lpar{}\keyword{fun}~\lpar{}\keyword{fun}~$unit$~$\alpha$\rpar{}\\
           \qquad\lpar{}\keyword{fun}~\lpar{}\keyword{fun}~$unit$~$\alpha$\rpar{}\\
@@ -18,21 +18,21 @@
         \end{tabular}\\\\
         
         
-        intop & \begin{tabular}{l}
+        $intop$ & \begin{tabular}{l}
           \lpar{}\keyword{all}~$s$~$\sizeK{}$\\
           \quad\lpar{}\keyword{fun}~\(\appT{\conT{\conIntegerType{}}}{s}\)\\
           \qquad\lpar{}\keyword{fun}~\(\appT{\conT{\conIntegerType{}}}{s}\)\\
           \qquad\qquad\quad\(\appT{\conT{\conIntegerType{}}}{s}\)\rpar{}\rpar{}\rpar{}\\
         \end{tabular}\\\\
         
-        intpred & \begin{tabular}{l}
+        $intpred$ & \begin{tabular}{l}
           \lpar{}\keyword{all}~$s$~$\sizeK{}$\\
           \quad\lpar{}\keyword{fun}~\(\appT{\conT{\conIntegerType{}}}{s}\)\\
           \qquad\lpar{}\keyword{fun}~\(\appT{\conT{\conIntegerType{}}}{s}\)\\
           \qquad\qquad\quad$boolean$\rpar{}\rpar{}\rpar{}\\
         \end{tabular}\\\\
         
-        intresize & \begin{tabular}{l}
+        $intresize$ & \begin{tabular}{l}
           \lpar{}\keyword{all}~$s_0$~$\sizeK{}$\\
           \quad\lpar{}\keyword{all}~$s_1$~$\sizeK{}$\\
           \qquad\lpar{}\keyword{fun}~\(\appT{\conT{\conSizeType{}}}{s_1}\)\\
@@ -40,7 +40,7 @@
           \qquad\qquad\qquad\(\appT{\conT{\conIntegerType{}}}{s_1}\)\rpar{}\rpar{}\rpar{}\rpar{}\\
         \end{tabular}\\\\
         
-        intconv & \begin{tabular}{l}
+        $intconv$ & \begin{tabular}{l}
           \lpar{}\keyword{all}~$s_0$~$\sizeK{}$\\
           \quad\lpar{}\keyword{all}~$s_1$~$\sizeK{}$\\
           \qquad\lpar{}\keyword{fun}~\(\appT{\conT{\conSizeType{}}}{s_1}\)\\
@@ -48,14 +48,14 @@
           \qquad\qquad\qquad\(\appT{\conT{\conBytestringType{}{}}}{s_1}\)\rpar{}\rpar{}\rpar{}\rpar{}\\
         \end{tabular}\\\\
         
-        bsop & \begin{tabular}{l}
+        $bsop$ & \begin{tabular}{l}
           \lpar{}\keyword{all}~$s$~$\sizeK{}$\\
           \quad\lpar{}\keyword{fun}~\(\appT{\conT{\conBytestringType{}}}{s}\)\\
           \qquad\lpar{}\keyword{fun}~\(\appT{\conT{\conBytestringType{}}}{s}\)\\
           \qquad\qquad\quad\(\appT{\conT{\conBytestringType{}}}{s}\)\rpar{}\rpar{}\rpar{}
         \end{tabular}\\\\
         
-        bsintop & \begin{tabular}{l}
+        $bsintop$ & \begin{tabular}{l}
           \lpar{}\keyword{all}~$s_0$~$\sizeK{}$\\
           \quad\lpar{}\keyword{all}~$s_1$~$\sizeK{}$\\
           \qquad\lpar{}\keyword{fun}~\(\appT{\conT{\conBytestringType{}}}{s_0}\)\\
@@ -63,13 +63,13 @@
           \qquad\qquad\qquad\(\appT{\conT{\conBytestringType{}}}{s_0}\)\rpar{}\rpar{}\rpar{}\rpar{}
         \end{tabular}\\\\
         
-        cryptoop & \begin{tabular}{l}
+        $cryptoop$ & \begin{tabular}{l}
           \lpar{}\keyword{all}~$s$~$\sizeK{}$\\
           \quad\lpar{}\keyword{fun}~\(\appT{\conT{\conBytestringType{}}}{s}\)\\
           \qquad\qquad\(\appT{\conT{\conBytestringType{}}}{256}\)\rpar{}\rpar{}
         \end{tabular}\\\\
         
-        cryptover & \begin{tabular}{l}
+        $cryptover$ & \begin{tabular}{l}
           \lpar{}\keyword{all}~$s_0$~$\sizeK{}$\\
           \quad\lpar{}\keyword{all}~$s_1$~$\sizeK{}$\\
           \qquad\lpar{}\keyword{all}~$s_2$~$\sizeK{}$\\
@@ -79,7 +79,7 @@
           \qquad\qquad\qquad\qquad$boolean$\rpar{}\rpar{}\rpar{}\rpar{}\rpar{}\rpar{}
         \end{tabular}\\\\
         
-        bsresize & \begin{tabular}{l}
+        $bsresize$ & \begin{tabular}{l}
           \lpar{}\keyword{all}~$s_0$~$\sizeK{}$\\
           \quad\lpar{}\keyword{all}~$s_1$~$\sizeK{}$\\
           \qquad\lpar{}\keyword{fun}~\(\appT{\conT{\conSizeType{}}}{s_1}\)\\
@@ -87,14 +87,14 @@
           \qquad\qquad\qquad\(\appT{\conT{\conBytestringType{}}}{s_1}\)\rpar{}\rpar{}\rpar{}\rpar{}
         \end{tabular}\\\\
         
-        bspred & \begin{tabular}{l}
+        $bspred$ & \begin{tabular}{l}
           \lpar{}\keyword{all}~$s$~$\sizeK{}$\\
           \quad\lpar{}\keyword{fun}~\(\appT{\conT{\conBytestringType{}}}{s}\)\\
           \qquad\lpar{}\keyword{fun}~\(\appT{\conT{\conBytestringType{}}}{s}\)\\
           \qquad\qquad\quad$boolean$\rpar{}\rpar{}\rpar{}
         \end{tabular}\\\\
         
-        blocknum & \begin{tabular}{l}
+        $blocknum$ & \begin{tabular}{l}
           \lpar{}\keyword{all}~$s$~$\sizeK{}$\\
           \quad\lpar{}\keyword{fun}~\(\appT{\conT{\conSizeType{}}}{s}\)\\
           \qquad\qquad\(\appT{\conT{\conIntegerType{}{}}}{s}\)\rpar{}\rpar{}
@@ -112,17 +112,17 @@
     \centering
     
     \[\begin{array}{lllll}
-        \textit{Builtin Type Name} & \textit{Kind} & \textit{Arguments} & \textit{Semantics} & \textit{Error Conditions}\\
+        \textrm{Builtin Type Name} & \textrm{Kind} & \textrm{Arguments} & \textrm{Semantics} & \textrm{Error Conditions}\\
         
-        \mathrm{integer} & \funK{\sizeK{}}{\typeK{}} & s & Integer ~ s & \textrm{---}\\
+        integer & \funK{\sizeK{}}{\typeK{}} & s & Integer ~ s & \textrm{---}\\
         
-        \mathrm{bytestring} & \funK{\sizeK{}}{\typeK{}} & s & Bytestring ~ s & \textrm{---}\\
+        bytestring & \funK{\sizeK{}}{\typeK{}} & s & Bytestring ~ s & \textrm{---}\\
         
-        \mathrm{size} & \funK{\sizeK{}}{\typeK{}} & s & Size ~ s & \textrm{---}\\
+        size & \funK{\sizeK{}}{\typeK{}} & s & Size ~ s & \textrm{---}\\
     \end{array}\]
     
     \[\begin{array}{lllll}
-        \textit{Builtin Name} & \textit{Type} & \textit{Arguments} & \textit{Semantics} & \textit{Error Conditions}\\
+        \textrm{Builtin Name} & \textrm{Type} & \textrm{Arguments} & \textrm{Semantics} & \textrm{Error Conditions}\\
         %&&\\
         
         s!i   & \appT{\conT{\conIntegerType{}}}{s}      &   \textrm{---}   &    s!i    &   \textrm{Insufficient Size Overflow}\\
@@ -134,54 +134,54 @@
         s     & \appT{\conT{\conSizeType{}}}{s}         &   \textrm{---}   &    s      &   \textrm{---}\\
         %&&\\
         
-        \mathrm{addInteger}        &  intop  &  i_0 , i_1   &   i_0 + i_1         &   \textrm{Addition Overflow}       \\
-        \mathrm{subtractInteger}   &  intop  &  i_0 , i_1   &   i_0 - i_1         &   \textrm{Subtraction Overflow}    \\
-        \mathrm{multiplyInteger}   &  intop  &  i_0 , i_1   &   i_0 \times i_1    &   \textrm{Multiplication Overflow} \\
-        \mathrm{divideInteger}     &  intop  &  i_0 , i_1   &   div ~ i_0 ~ i_1   &   \textrm{Divide by Zero}          \\
-        \mathrm{remainderInteger}  &  intop  &  i_0 , i_1   &   mod ~ i_0 ~ i_1   &   \textrm{Divide by Zero}          \\
+        addInteger        &  intop  &  i_0 , i_1   &   i_0 + i_1         &   \textrm{Addition Overflow}       \\
+        subtractInteger   &  intop  &  i_0 , i_1   &   i_0 - i_1         &   \textrm{Subtraction Overflow}    \\
+        multiplyInteger   &  intop  &  i_0 , i_1   &   i_0 \times i_1    &   \textrm{Multiplication Overflow} \\
+        divideInteger     &  intop  &  i_0 , i_1   &   div ~ i_0 ~ i_1   &   \textrm{Divide by Zero}          \\
+        remainderInteger  &  intop  &  i_0 , i_1   &   mod ~ i_0 ~ i_1   &   \textrm{Divide by Zero}          \\
         %&&\\
         
-        \mathrm{lessThanInteger}            &  intpred  &  i_0 , i_1   &   i_0 < i_1    &   \textrm{---}         \\
-        \mathrm{lessThanEqualsInteger}      &  intpred  &  i_0 , i_1   &   i_0 <= i_1   &   \textrm{---}         \\
-        \mathrm{greaterThanInteger}         &  intpred  &  i_0 , i_1   &   i_0 > i_1    &   \textrm{---}         \\
-        \mathrm{greaterThanEqualsInteger}   &  intpred  &  i_0 , i_1   &   i_0 >= i_1   &   \textrm{---}         \\
-        \mathrm{equalsInteger}              &  intpred  &  i_0 , i_1   &   i_0 == i_1   &   \textrm{---}         \\
+        lessThanInteger            &  intpred  &  i_0 , i_1   &   i_0 < i_1    &   \textrm{---}         \\
+        lessThanEqualsInteger      &  intpred  &  i_0 , i_1   &   i_0 <= i_1   &   \textrm{---}         \\
+        greaterThanInteger         &  intpred  &  i_0 , i_1   &   i_0 > i_1    &   \textrm{---}         \\
+        greaterThanEqualsInteger   &  intpred  &  i_0 , i_1   &   i_0 >= i_1   &   \textrm{---}         \\
+        equalsInteger              &  intpred  &  i_0 , i_1   &   i_0 == i_1   &   \textrm{---}         \\
         %&&\\
         
-        \mathrm{resizeInteger}   &  intresize  &   z, i   &   resizeInteger ~ z ~ i   &   \textrm{Resizing Overflow} \\
+        resizeInteger   &  intresize  &   z, i   &   resizeInteger ~ z ~ i   &   \textrm{Resizing Overflow} \\
         %&&\\
         
-        \mathrm{intToByteString}  &   intconv  &  z, i           &   intToByteString ~ z ~ i   &   \textrm{Insufficient Size Overflow} \\
+        intToByteString  &   intconv  &  z, i           &   intToByteString ~ z ~ i   &   \textrm{Insufficient Size Overflow} \\
         %&&\\
         
         
-        \mathrm{concatenate}   &   bsop   &   b_0 , b_1   & concat ~ [b_0,b_1]   &   \textrm{Concatenation Overflow} \\
+        concatenate   &   bsop   &   b_0 , b_1   & concat ~ [b_0,b_1]   &   \textrm{Concatenation Overflow} \\
         %&&\\
         
-        \mathrm{takeByteString}    &   bsintop   &   i, b     & take ~ (fromIntegral ~ i) ~ b   &   \textrm{---} \\
-        \mathrm{dropByteString}    &   bsintop   &   i, b     & drop ~ (fromIntegral ~ i) ~ b   &   \textrm{---} \\
+        takeByteString    &   bsintop   &   i, b     & take ~ (fromIntegral ~ i) ~ b   &   \textrm{---} \\
+        dropByteString    &   bsintop   &   i, b     & drop ~ (fromIntegral ~ i) ~ b   &   \textrm{---} \\
         %&&\\
         
-        \mathrm{sha2\_256}         &  cryptoop  &   b           & sha2\_256 ~ b    & \textrm{---}                \\
-        \mathrm{sha3\_256}         &  cryptoop  &   b           & sha3\_256~ b     & \textrm{---}                \\
+        sha2\_256         &  cryptoop  &   b           & sha2\_256 ~ b    & \textrm{---}                \\
+        sha3\_256         &  cryptoop  &   b           & sha3\_256~ b     & \textrm{---}                \\
         %&&\\
         
-        \mathrm{verifySignature}   &  cryptover  &   key, dat, sig           & verifySignature ~ key ~ dat ~ sig   &   \textrm{---}          \\
+        verifySignature   &  cryptover  &   key, dat, sig           & verifySignature ~ key ~ dat ~ sig   &   \textrm{---}          \\
         %&&\\
         
-        \mathrm{resizeBytestring}   &   bsresize   &   z, b   &   resizeBytestring ~ z ~ b   &   \textrm{Resizing Overflow} \\
+        resizeBytestring   &   bsresize   &   z, b   &   resizeBytestring ~ z ~ b   &   \textrm{Resizing Overflow} \\
         %&&\\
         
-        \mathrm{equalsByteString}  &   bspred   &   b_0 , b_1   & b_0 == b_1   &   \textrm{---}  \\
+        equalsByteString  &   bspred   &   b_0 , b_1   & b_0 == b_1   &   \textrm{---}  \\
         %&&\\
         
-        \mathrm{txhash}   &   \appT{\conT{\conBytestringType{}}}{\size{256}}   &   \textrm{---}  & \textit{the transaction hash}   &   \textrm{---}  \\
+        txhash   &   \appT{\conT{\conBytestringType{}}}{\size{256}}   &   \textrm{---}  & \textit{the transaction hash}   &   \textrm{---}  \\
         %&&\\
         
-        \mathrm{blocknum}  &  blocknum  & s, z & \textit{the block number}   &   \textrm{Insufficient Size Overflow}  \\
+        blocknum  &  blocknum  & s, z & \textit{the block number}   &   \textrm{Insufficient Size Overflow}  \\
         %&&\\
         
-        \mathrm{blocktime} &  \mathit{datetime}  &  \textit{None}  & \textit{the block time}   &   \textrm{}  \\
+        blocktime &  \mathit{datetime}  &  \textit{None}  & \textit{the block time}   &   \textrm{}  \\
     \end{array}\]
     
     \caption{Builtin Types and Reductions}

@@ -156,6 +156,8 @@
         &\cksteps{\ckforward{s}{\lam{x}{A}{M}}}{\ckbackward{s}{\lam{x}{A}{M}}}\\
         &\cksteps{\ckforward{s}{\app{M}{N}}}{\ckforward{s, \inAppLeftFrame{N}}{M}}\\
         &\cksteps{\ckforward{s}{\error{A}}}{\ckbackward{s}{\error{A}}}\\
+        &\cksteps{\ckforward{s}{M}}{\ckbackward{s}{V}} ~~~~ \textit{if $M$ is a fully saturated constant and computes to $V$ in Fig \ref{fig:Plutus_core_builtins}}\\
+        &\cksteps{\ckforward{s}{M}}{\ckbackward{s}{M}} ~~~~ \textit{if $M$ is a partially saturated constant}\\
         &\cksteps{\ckbackward{s, \inAnnLeftFrame{A}}{V}}{\ckbackward{s}{V}}\\
         &\cksteps{\ckbackward{s, \inInstLeftFrame{A}}{V}}{\ckforward{s, \inInstRightFrame{V}{\_}}{A}}\\
         &\cksteps{\ckbackward{s, \inInstRightFrame{\abs{\alpha}{K}{M}}}{S}}{\ckforward{s}{\subst{S}{\alpha}{M}}}\\
