@@ -1,0 +1,31 @@
+\documentclass[../main.tex]{subfiles}
+
+\begin{document}
+
+\begin{figure*}
+We expect as input a bytestring of size 256, 
+\begin{lstlisting}[basicstyle=\ttfamily,mathescape]
+> (lam signed [(con bytestring) 256]
+\end{lstlisting}
+and we use the case statement for booleans, which has \texttt{[case true t f] $\rightarrow$ t} and \\ \texttt{[case false t f] $\rightarrow$ f} to branch on the result of \ldots
+\begin{lstlisting}[basicstyle=\ttfamily,mathescape]
+>     [(abs a (type) (lam b boolean (lam t a (lam f a
+>            [{b a} (lam x unit t) (lam x unit f)]))))
+\end{lstlisting}
+\ldots using the built in operation \texttt{verifySignature} to check whether or not our input is the result of Alice signing the current block number
+\begin{lstlisting}[basicstyle=\ttfamily,mathescape]
+>      [{verifySignature 256 128 2048}
+>          signed
+>          txhash
+>          aliceKey]
+\end{lstlisting}
+If it is, we return $\texttt{one} : \texttt{unit}$ and terminate successfully. If not, we throw an $\texttt{error}$.
+\begin{lstlisting}[basicstyle=\ttfamily]
+>      (abs a (type) (lam x a x))
+>      (error unit)])
+\end{lstlisting}
+\caption{An example Plutus Core program}
+\end{figure*}
+
+\end{document}
+
