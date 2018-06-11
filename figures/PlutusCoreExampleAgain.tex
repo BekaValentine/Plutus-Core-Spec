@@ -115,6 +115,43 @@ Notice that we must supply $blocknum$ with the size we wish to use to store the 
 \caption{Imaginary result of compiling the above names}
 \label{fig:Continuized_Let_Example}
 \end{figure*}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Unused Version of Example (figure collecting high-level definitions) %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\begin{figure*}
+%\begin{lstlisting}[basicstyle=\ttfamily,mathescape]
+%  one : $unit$
+%  one = (abs $a$ (type) (lam $x$ $a$ $x$))
+
+%  true : $boolean$
+%  true = (abs $a$ (type) (lam $x$ (fun $unit$ $a$) (lam $y$ (fun $unit$ $a$) [$x$ one])))
+
+%  false : $boolean$
+%  false = (abs $a$ (type) (lam $x$ (fun $unit$ $a$) (lam $y$ (fun $unit$ $a$) [$y$ one])))
+
+%  case : (all $a$ (type) (fun $boolean$ (fun $a$ (fun $a$ $a$))))
+%  case = (abs $a$ (type)
+%           (lam $b$ $boolean$
+%           (lam $t$ $a$ 
+%           (lam $f$ $a$ 
+%             [ {$b$ $a$} (lam $x$ $unit$ $t$) (lam $x$ $unit$ $f$)]))))
+
+%  verifyIdentity : (fun [(con bytestring) 2048]
+%  verifyIdentity =
+%    (lam $pubkey$ [(con bytestring) 2048]
+%    (lam $signed$ [(con bytestring) 256]
+%      [ case [{$verifySignature$ 256 256 2048} $signed$ $txhash$ $pubkey$]
+%             one
+%             (error unit)]))
+%\end{lstlisting}    
+%\end{figure*}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Unused Version of Example (actual literate program) %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 %\begin{figure*}
 %We expect as input a bytestring of size 256, 
 %\begin{lstlisting}[basicstyle=\ttfamily,mathescape]
