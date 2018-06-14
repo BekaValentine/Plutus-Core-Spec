@@ -65,9 +65,10 @@
     \end{prooftree}
     
     \begin{prooftree}
-        \AxiomC{\(\hypJ{\Gamma, \typeJ{\alpha}{\typeK{}}}{\istypeJ{A}{\typeK{}}}\)}
+        \AxiomC{\(\hypJ{\Gamma, \typeJ{\alpha}{\typeK{}}}{\istypeJ{A}{K}}\)}
+        \AxiomC{\(K = \typeK{}\)}
         \RightLabel{tyfix}
-        \UnaryInfC{\(\hypJ{\Gamma}{\istypeJ{\fixT{\alpha}{A}}{\typeK{}}}\)}
+        \BinaryInfC{\(\hypJ{\Gamma}{\istypeJ{\fixT{\alpha}{A}}{\typeK{}}}\)}
     \end{prooftree}
     
     \begin{prooftree}
@@ -139,16 +140,16 @@
         \alwaysNoLine
         \AxiomC{\(\hypJ{\Gamma, \typeJ{\alpha}{\typeK{}}}{\istypeJ{A}{K}}\)}
         \UnaryInfC{\(K = \typeK{}\)}
-        \UnaryInfC{\(\hypJ{\Gamma}{\istermJ{M}{\subst{\fix{\alpha}{\typeK{}}{A}}{\alpha}{A}}}\)}
+        \UnaryInfC{\(\hypJ{\Gamma}{\istermJ{M}{\subst{\fixT{\alpha}{A}}{\alpha}{A}}}\)}
         \alwaysSingleLine
         \RightLabel{wrap}
-        \UnaryInfC{\(\hypJ{\Gamma}{\istermJ{\wrap{\alpha}{A}{M}}{\fix{\alpha}{\typeK{}}{A}}}\)}
+        \UnaryInfC{\(\hypJ{\Gamma}{\istermJ{\wrap{\alpha}{A}{M}}{\fixT{\alpha}{A}}}\)}
     \end{prooftree}
     
     \begin{prooftree}
-        \AxiomC{\(\hypJ{\Gamma}{\istermJ{M}{\fix{\alpha}{\typeK{}}{A}}}\)}
+        \AxiomC{\(\hypJ{\Gamma}{\istermJ{M}{\fixT{\alpha}{A}}}\)}
         \RightLabel{unwrap}
-        \UnaryInfC{\(\hypJ{\Gamma}{\istermJ{\unwrap{M}}{\subst{\fix{\alpha}{\typeK{}}{A}}{\alpha}{A}}}\)}
+        \UnaryInfC{\(\hypJ{\Gamma}{\istermJ{\unwrap{M}}{\subst{\fixT{\alpha}{A}}{\alpha}{A}}}\)}
     \end{prooftree}
     
     \begin{prooftree}
