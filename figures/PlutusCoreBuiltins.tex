@@ -122,40 +122,66 @@
     \end{array}\]
     
     \[\begin{array}{lllll}
-        \textrm{Builtin Name} & \textrm{Type} & \textrm{Arguments} & \textrm{Semantics} & \textrm{Error Conditions}\\
+        \textrm{Builtin Name} & \textrm{Type} & \textrm{Arguments} & \textrm{Semantics}\\
         %&&\\
         
-        s!i   & \appT{\conT{\conIntegerType{}}}{s}      &   \textrm{---}   &    s!i    &   \textrm{Insufficient Size Overflow}\\
+        s!i   & \appT{\conT{\conIntegerType{}}}{s}      &   \textrm{---}   &    s!i\\
         %&&\\
         
-        s!b   & \appT{\conT{\conBytestringType{}}}{s}   &   \textrm{---}   &    s!b    &   \textrm{Insufficient Size Overflow}\\
+        s!b   & \appT{\conT{\conBytestringType{}}}{s}   &   \textrm{---}   &    s!b    &\\
         %&&\\
         
-        s     & \appT{\conT{\conSizeType{}}}{s}         &   \textrm{---}   &    s      &   \textrm{---}\\
+        s     & \appT{\conT{\conSizeType{}}}{s}         &   \textrm{---}   &    s      &\\
         %&&\\
         
-        addInteger        &  intop  &  i_0 , i_1   &   i_0 + i_1         &   \textrm{Addition Overflow}       \\
-        subtractInteger   &  intop  &  i_0 , i_1   &   i_0 - i_1         &   \textrm{Subtraction Overflow}    \\
-        multiplyInteger   &  intop  &  i_0 , i_1   &   i_0 \times i_1    &   \textrm{Multiplication Overflow} \\
-        divideInteger     &  intop  &  i_0 , i_1   &   div ~ i_0 ~ i_1   &   \textrm{Divide by Zero}          \\
-        remainderInteger  &  intop  &  i_0 , i_1   &   mod ~ i_0 ~ i_1   &   \textrm{Divide by Zero}          \\
+        addInteger        &  intop  &  s!i_0 , s!i_1   & \begin{cases}
+          s!(i_0 + i_1)                     & \text{if $-2^{8s-1} \leq i_0 + i_1 < 2^{8s-1}$}\\
+          \error{\appT{\conT{\conIntegerType{}}}{s}}  & \text{otherwise}\\
+        \end{cases} \\
+        subtractInteger   &  intop  &  s!i_0 , s!i_1 & \begin{cases}
+          s!(i_0 - i_1)                     & \text{if $-2^{8s-1} \leq i_0 - i_1 < 2^{8s-1}$}\\
+          \error{\appT{\conT{\conIntegerType{}}}{s}}  & \text{otherwise}\\
+        \end{cases} \\
+        multiplyInteger   &  intop  &  s!i_0 , s!i_1   & \begin{cases}
+          s!(i_0 * i_1)                     & \text{if $-2^{8s-1} \leq i_0 * i_1 < 2^{8s-1}$}\\
+          \error{\appT{\conT{\conIntegerType{}}}{s}}  & \text{otherwise}\\
+        \end{cases} \\
+        divideInteger     &  intop  &  s!i_0 , s!i_1   & \begin{cases}
+          s!(div ~ i_0 ~ i_1)                     & \text{if $i_1 \not= 0$}\\
+          \error{\appT{\conT{\conIntegerType{}}}{s}}  & \text{otherwise}
+        \end{cases}\\
+        remainderInteger  &  intop  &  s!i_0 , s!i_1   & \begin{cases}
+          s!(mod ~ i_0 ~ i_1)                     & \text{if $i_1 \not= 0$}\\
+          \error{\appT{\conT{\conIntegerType{}}}{s}}  & \text{otherwise}
+        \end{cases}\\
         %&&\\
         
-        lessThanInteger            &  intpred  &  i_0 , i_1   &   i_0 < i_1    &   \textrm{---}         \\
-        lessThanEqualsInteger      &  intpred  &  i_0 , i_1   &   i_0 <= i_1   &   \textrm{---}         \\
-        greaterThanInteger         &  intpred  &  i_0 , i_1   &   i_0 > i_1    &   \textrm{---}         \\
-        greaterThanEqualsInteger   &  intpred  &  i_0 , i_1   &   i_0 >= i_1   &   \textrm{---}         \\
-        equalsInteger              &  intpred  &  i_0 , i_1   &   i_0 == i_1   &   \textrm{---}         \\
+        lessThanInteger            &  intpred  &  s!i_0 , s!i_1   &   i_0 < i_1    &   \textrm{---}         \\
+        lessThanEqualsInteger      &  intpred  &  s!i_0 , s!i_1   &   i_0 <= i_1   &   \textrm{---}         \\
+        greaterThanInteger         &  intpred  &  s!i_0 , s!i_1   &   i_0 > i_1    &   \textrm{---}         \\
+        greaterThanEqualsInteger   &  intpred  &  s!i_0 , s!i_1   &   i_0 >= i_1   &   \textrm{---}         \\
+        equalsInteger              &  intpred  &  s!i_0 , s!i_1   &   i_0 == i_1   &   \textrm{---}         \\
         %&&\\
         
-        resizeInteger   &  intresize  &   z, i   &   resizeInteger ~ z ~ i   &   \textrm{Resizing Overflow} \\
+        resizeInteger   &  intresize  &   z, \sizeTermToSize{z}!i   & \begin{cases}
+            \sizeTermToSize{z}!i & \text{if $-2^{8\sizeTermToSize{z}-1} \leq i < 2^{8\sizeTermToSize{z}-1}$}\\
+            \error{\appT{\conT{\conIntegerType{}}}{s}} & \text{otherwise}\\
+        \end{cases}\\
         %&&\\
         
-        intToByteString  &   intconv  &  z, i           &   intToByteString ~ z ~ i   &   \textrm{Insufficient Size Overflow} \\
+        intToByteString  &   intconv  &  z, \sizeTermToSize{z}!i           & \begin{cases}
+            \text{the binary representation of $i$} \\
+            \quad\text{$0$ padded to a big-endian}\\
+            \quad\text{$\sizeTermToSize{z}$-byte bytestring}&\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\text{if $-2^{8\sizeTermToSize{z}-1} \leq i < -2^{\sizeTermToSize{z}-1}$}\\
+            \error{\appT{\conT{\conBytestringType{}}}{\sizeTermToSize{z}}} & \text{otherwise}\\
+        \end{cases}\\
         %&&\\
         
         
-        concatenate   &   bsop   &   b_0 , b_1   & concat ~ [b_0,b_1]   &   \textrm{Concatenation Overflow} \\
+        concatenate   &   bsop   &   s!b_0 , s!b_1   & \begin{cases}
+            concat ~ [b_0,b_1] & \!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\text{if $-2^{8s-1} \leq |concat ~ [b_0,b_1]| < 2^{8s-1}$}\\
+            \error{\appT{\conT{\conBytestringType{}}}{s}} & \text{otherwise}\\
+        \end{cases}\\
         %&&\\
         
         takeByteString    &   bsintop   &   i, b     & take ~ (fromIntegral ~ i) ~ b   &   \textrm{---} \\
