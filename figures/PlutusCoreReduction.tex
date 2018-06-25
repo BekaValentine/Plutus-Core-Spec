@@ -78,7 +78,7 @@
     
     \begin{prooftree}
         \AxiomC{}
-        \UnaryInfC{\(\step{\unwrap{\wrap{\alpha}{A}{M}}}{M}\)}
+        \UnaryInfC{\(\step{\unwrap{\wrap{\alpha}{A}{V}}}{V}\)}
     \end{prooftree}
     
     \begin{prooftree}
@@ -106,13 +106,14 @@
     
     \begin{prooftree}
         \AxiomC{\(\step{M}{M'}\)}
-        \AxiomC{\(M' = \error{A}\)}
+        \AxiomC{\(M' = \error{B}\)}
+        \RightLabel{\footnotesize\textit{($A$ is the type of the frame, $B$ is the type of its hole)}}
         \BinaryInfC{\(\step{\ctxsubst{f}{M}}{\error{A}}\)}
     \end{prooftree}
     
     \begin{prooftree}
         \AxiomC{\(\step{M}{M'}\)}
-        \AxiomC{\(M' \not= \error{A}\)}
+        \AxiomC{\(M' \not= \error{B}\)}
         \BinaryInfC{\(\step{\ctxsubst{f}{M}}{\ctxsubst{f}{M'}}\)}
     \end{prooftree}
     
