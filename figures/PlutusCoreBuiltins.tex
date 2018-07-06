@@ -8,7 +8,9 @@
     \begin{tabular}{ll}
         \textrm{Abbreviation} & \textrm{Expanded}\\\\
         
-        $\forall \alpha :: K. B$ & \(\allT{\alpha}{K}{B}\)\\\\
+        $\forall \alpha :: K.\ B$ & \(\allT{\alpha}{K}{B}\)\\\\
+        
+        $\forall \alpha, \beta, \ldots :: K, \ldots.\ C$ & \(\forall \alpha :: K.\ \forall \beta :: K.\ \ldots.\ C\)\\\\
         
         $A \to B$ & \(\funT{A}{B}\)\\\\
         
@@ -24,9 +26,15 @@
         
         $size$ & \(\sizeK{}\)\\\\
         
-        $unit$ & \(\forall \alpha :: \star. \alpha \to \alpha\)\\\\
+        $unit$ & \(\forall \alpha :: \star.\ \alpha \to \alpha\)\\\\
         
-        $boolean$ & \(\forall \alpha :: \star. (unit \to \alpha) \to (unit \to \alpha) \to \alpha\)\\\\
+        $unitval$ & \(\abs{\alpha}{\typeK{}}{\lam{x}{\alpha}{x}}\)\\\\
+        
+        $boolean$ & \(\forall \alpha :: \star.\ (unit \to \alpha) \to (unit \to \alpha) \to \alpha\)\\\\
+        
+        $true$ & \(\abs{\alpha}{\typeK{}}{\lam{t}{(unit \to \alpha)}{\lam{f}{(unit \to \alpha)}{\app{t}{unitval}}}}\)\\\\
+        
+        $false$ & \(\abs{\alpha}{\typeK{}}{\lam{t}{(unit \to \alpha)}{\lam{f}{(unit \to \alpha)}{\app{f}{unitval}}}}\)\\\\
         
     \end{tabular}
     
@@ -40,17 +48,17 @@
     \centering
     
     \hspace{-25em}\(\begin{array}{lllll}
-        \textrm{Builtin Type Name} & \textrm{Kind} & \textrm{Arguments} & \textrm{Semantics} & \textrm{Error Conditions}\\
+        \textrm{Builtin Type Name} & \textrm{Kind} & \textrm{Arguments} & \textrm{Semantics}\\
         
-        integer & \funK{\sizeK{}}{\typeK{}} & s & Integer ~ s & \textrm{---}\\
+        integer & \funK{\sizeK{}}{\typeK{}} & s & [-2^{8s-1},2^{8s-1})\\
         
-        bytestring & \funK{\sizeK{}}{\typeK{}} & s & Bytestring ~ s & \textrm{---}\\
+        bytestring & \funK{\sizeK{}}{\typeK{}} & s & \cup_{0\leq s' \leq s}\{0,1\}^{8s'}\\
         
-        size & \funK{\sizeK{}}{\typeK{}} & s & Size ~ s & \textrm{---}\\
+        size & \funK{\sizeK{}}{\typeK{}} & s & [0,maxsize]\\
     \end{array}\)\vspace{2em}
     
     \hspace{-30em}\(\begin{array}{lllll}
-        \textrm{Builtin Name} & \textrm{Type} & \textrm{Arguments} & \textrm{Semantics}\\
+        \textrm{Builtin Name} & \textrm{Type} & \textrm{Arguments} & \textrm{Semantics} & \textrm{Success Conditions}\\
         %&&\\
         
         s!i   & integer_s      &   \textrm{---}   &    s!i\\
@@ -62,77 +70,53 @@
         s     & size_s         &   \textrm{---}   &    s      &\\
         %&&\\
         
-        addInteger        &  \forall s :: size. integer_s \to integer_s \to integer_s  &  s!i_0 , s!i_1   & \begin{cases}
-          s!(i_0 + i_1)                     & \text{if $-2^{8s-1} \leq i_0 + i_1 < 2^{8s-1}$}\\
-          err(integer_s)  & \text{otherwise}\\
-        \end{cases} \\
-        subtractInteger   &  \forall s :: size. integer_s \to integer_s \to integer_s  &  s!i_0 , s!i_1 & \begin{cases}
-          s!(i_0 - i_1)                     & \text{if $-2^{8s-1} \leq i_0 - i_1 < 2^{8s-1}$}\\
-          err(integer_s)  & \text{otherwise}\\
-        \end{cases} \\
-        multiplyInteger   &  \forall s :: size. integer_s \to integer_s \to integer_s  &  s!i_0 , s!i_1   & \begin{cases}
-          s!(i_0 * i_1)                     & \text{if $-2^{8s-1} \leq i_0 * i_1 < 2^{8s-1}$}\\
-          err(integer_s)  & \text{otherwise}\\
-        \end{cases} \\
-        divideInteger     &  \forall s :: size. integer_s \to integer_s \to integer_s  &  s!i_0 , s!i_1   & \begin{cases}
-          s!(div ~ i_0 ~ i_1)                     & \text{if $i_1 \not= 0$}\\
-          err(integer_s)  & \text{otherwise}
-        \end{cases}\\
-        remainderInteger  &  \forall s :: size. integer_s \to integer_s \to integer_s  &  s!i_0 , s!i_1   & \begin{cases}
-          s!(mod ~ i_0 ~ i_1)                     & \text{if $i_1 \not= 0$}\\
-          err(integer_s)  & \text{otherwise}
-        \end{cases}\\
+        addInteger        &  \forall s :: size.\ integer_s \to integer_s \to integer_s  &  s!i_0 , s!i_1   & s!(i_0 + i_1)                     & -2^{8s-1} \leq i_0 + i_1 < 2^{8s-1}\\
+        subtractInteger   &  \forall s :: size.\ integer_s \to integer_s \to integer_s  &  s!i_0 , s!i_1 & s!(i_0 - i_1)                     & -2^{8s-1} \leq i_0 - i_1 < 2^{8s-1}\\
+        multiplyInteger   &  \forall s :: size.\ integer_s \to integer_s \to integer_s  &  s!i_0 , s!i_1   & s!(i_0 * i_1)                     & -2^{8s-1} \leq i_0 * i_1 < 2^{8s-1}\\
+        divideInteger     &  \forall s :: size.\ integer_s \to integer_s \to integer_s  &  s!i_0 , s!i_1   & s!(\operatorname{div}\ i_0\ i_1)                     & i_1 \not= 0\\
+        remainderInteger  &  \forall s :: size.\ integer_s \to integer_s \to integer_s  &  s!i_0 , s!i_1   & s!(\operatorname{mod} \ i_0 \ i_1)                     & i_1 \not= 0\\
         %&&\\
         
-        lessThanInteger            &  \forall s :: size. integer_s \to integer_s \to bool  &  s!i_0 , s!i_1   &   i_0 < i_1\\
-        lessThanEqualsInteger      &  \forall s :: size. integer_s \to integer_s \to bool  &  s!i_0 , s!i_1   &   i_0 <= i_1\\
-        greaterThanInteger         &  \forall s :: size. integer_s \to integer_s \to bool  &  s!i_0 , s!i_1   &   i_0 > i_1\\
-        greaterThanEqualsInteger   &  \forall s :: size. integer_s \to integer_s \to bool  &  s!i_0 , s!i_1   &   i_0 >= i_1\\
-        equalsInteger              &  \forall s :: size. integer_s \to integer_s \to bool  &  s!i_0 , s!i_1   &   i_0 == i_1\\
+        lessThanInteger            &  \forall s :: size.\ integer_s \to integer_s \to bool  &  s!i_0 , s!i_1   &   i_0 < i_1\\
+        lessThanEqualsInteger      &  \forall s :: size.\ integer_s \to integer_s \to bool  &  s!i_0 , s!i_1   &   i_0 <= i_1\\
+        greaterThanInteger         &  \forall s :: size.\ integer_s \to integer_s \to bool  &  s!i_0 , s!i_1   &   i_0 > i_1\\
+þ        greaterThanEqualsInteger   &  \forall s :: size.\ integer_s \to integer_s \to bool  &  s!i_0 , s!i_1   &   i_0 >= i_1\\
+        equalsInteger              &  \forall s :: size.\ integer_s \to integer_s \to bool  &  s!i_0 , s!i_1   &   i_0 == i_1\\
         %&&\\
         
-        resizeInteger   &  \forall s_0, s_1 :: size. size_{s_1} \to integer_{s_0} \to integer_{s_1}  &   z, \sizeTermToSize{z}!i   & \begin{cases}
-            \sizeTermToSize{z}!i & \text{if $-2^{8\sizeTermToSize{z}-1} \leq i < 2^{8\sizeTermToSize{z}-1}$}\\
-            err(integer_s) & \text{otherwise}\\
-        \end{cases}\\
+        resizeInteger   &  \forall s_0, s_1 :: size.\ size_{s_1} \to integer_{s_0} \to integer_{s_1}  &   z, s_1!i   & s_1!i & -2^{8s_1-1} \leq i < 2^{8s_1-1}\\
         %&&\\
         
-        intToByteString  &   \forall s_0, s_1 :: size. size_{s_1} \to integer_{s_0} \to bytestring_{s_1}  &  z, \sizeTermToSize{z}!i           & \begin{cases}
-            \text{the binary representation of $i$} \\
-            \quad\text{$0$ padded to a big-endian}\\
-            \quad\text{$\sizeTermToSize{z}$-byte bytestring}&\text{if $-2^{8\sizeTermToSize{z}-1} \leq i < -2^{\sizeTermToSize{z}-1}$}\\
-            err(bytestring_{\sizeTermToSize{z}}) & \text{otherwise}\\
-        \end{cases}\\
+        intToByteString  &   \forall s_0, s_1 :: size.\ size_{s_1} \to integer_{s_0} \to bytestring_{s_1}  &  z, s_1!i           & \text{the binary representation of $i$} &-2^{8s_1-1} \leq i < -2^{s_1-1}\\
+            &&&\quad\text{$0$ padded to a big-endian}\\
+            &&&\quad\text{$s_1$-byte bytestring}\\
         %&&\\
         
         
-        concatenate   &   \forall s :: size. bytestring_s \to bytestring_s \to bytestring_s   &   s!b_0 , s!b_1   & \begin{cases}
-            concat ~ [b_0,b_1] & \text{if $-2^{8s-1} \leq |concat ~ [b_0,b_1]| < 2^{8s-1}$}\\
-            err(bytestring_s) & \text{otherwise}\\
-        \end{cases}\\
+        concatenate   &   \forall s :: size.\ bytestring_s \to bytestring_s \to bytestring_s   &   s!b_0 , s!b_1   & s!(b_0\cdot  b_1) & |b_0\cdot  b_1| \leq s\\
         %&&\\
         
-        takeByteString    &   \forall s_0, s_1 :: size. integer_{s_0} \to bytestring_{s_1} \to bytestring_{s_1}   &   i, b     & take ~ (fromIntegral ~ i) ~ b\\
-        dropByteString    &   \forall s_0, s_1 :: size. integer_{s_0} \to bytestring_{s_1} \to bytestring_{s_1}   &   i, b     & drop ~ (fromIntegral ~ i) ~ b\\
+        takeByteString    &   \forall s_0, s_1 :: size.\ integer_{s_0} \to bytestring_{s_1} \to bytestring_{s_1}   &   i, b     & take \  (fromIntegral \  i) \  b\\
+        dropByteString    &   \forall s_0, s_1 :: size.\ integer_{s_0} \to bytestring_{s_1} \to bytestring_{s_1}   &   i, b     & drop \  (fromIntegral \  i) \  b\\
         %&&\\
         
-        sha2\_256         &  \forall s :: size. bytestring_s \to bytestring_{256}  &   b           & sha2\_256 ~ b\\
-        sha3\_256         &  \forall s :: size. bytestring_s \to bytestring_{256}  &   b           & sha3\_256~ b\\
+        sha2\_256         &  \forall s :: size.\ bytestring_s \to bytestring_{256}  &   b           & sha2\_256 \  b\\
+        sha3\_256         &  \forall s :: size.\ bytestring_s \to bytestring_{256}  &   b           & sha3\_256\  b\\
         %&&\\
         
-        verifySignature   &  \forall s_0, s_1, s_2 :: size. bytestring_{s_0} \to bytestring_{s_1} \to bytestring_{s_2} \to bool  &   key, dat, sig           & verifySignature ~ key ~ dat ~ sig\\
+        verifySignature   &  \forall s_0, s_1, s_2 :: size.\ bytestring_{s_0} \to bytestring_{s_1} \to bytestring_{s_2} \to bool  &   key, dat, sig           & verifySignature \  key \  dat \  sig\\
         %&&\\
         
-        resizeByteString   &   \forall s_0, s_1 :: size. size_{s_1} \to bytestring_{s_0} \to bytestring_{s_1}   &   z, b   &   resizeBytestring ~ z ~ b\\
+        resizeByteString   &   \forall s_0, s_1 :: size.\ size_{s_1} \to bytestring_{s_0} \to bytestring_{s_1}   &   z, s_0!b   &   s_1!b & |b| \leq s_1\\
         %&&\\
         
-        equalsByteString  &   \forall s :: size. bytestring_s \to bytestring_s \to bool   &   b_0 , b_1   & b_0 == b_1\\
+        equalsByteString  &   \forall s :: size.\ bytestring_s \to bytestring_s \to bool   &   b_0 , b_1   & b_0 == b_1\\
         %&&\\
         
         txhash   &   bytestring_{256}   &   \textrm{---}  & \textit{the transaction hash}\\
         %&&\\
         
-        blocknum  &  \forall s :: size. size_s \to integer_s  & z & \textit{the block number}\\
+        blocknum  &  \forall s :: size.\ size_s \to integer_s  & z & \textit{the block number}\\
         %&&\\
         
         blocktime &  \mathit{datetime}  &  \textit{None}  & \textit{the block time}\\
@@ -160,92 +144,92 @@
         $unit$ & \(\allT{\alpha}{\typeK{}}{\funT{\alpha}{\alpha}}\)\\\\
         
         $boolean$ & \begin{tabular}{l}
-          \lpar{}\keyword{all}~$\alpha$~$\typeK{}$\\
-          \quad\lpar{}\keyword{fun}~\lpar{}\keyword{fun}~$unit$~$\alpha$\rpar{}\\
-          \qquad\lpar{}\keyword{fun}~\lpar{}\keyword{fun}~$unit$~$\alpha$\rpar{}\\
+          \lpar{}\keyword{all}\ $\alpha$\ $\typeK{}$\\
+          \quad\lpar{}\keyword{fun}\ \lpar{}\keyword{fun}\ $unit$\ $\alpha$\rpar{}\\
+          \qquad\lpar{}\keyword{fun}\ \lpar{}\keyword{fun}\ $unit$\ $\alpha$\rpar{}\\
           \qquad\qquad\quad$\alpha$\rpar{}\rpar{}\rpar{}
         \end{tabular}\\\\
         
         
         $intop$ & \begin{tabular}{l}
-          \lpar{}\keyword{all}~$s$~$\sizeK{}$\\
-          \quad\lpar{}\keyword{fun}~\(\appT{\conT{\conIntegerType{}}}{s}\)\\
-          \qquad\lpar{}\keyword{fun}~\(\appT{\conT{\conIntegerType{}}}{s}\)\\
+          \lpar{}\keyword{all}\ $s$\ $\sizeK{}$\\
+          \quad\lpar{}\keyword{fun}\ \(\appT{\conT{\conIntegerType{}}}{s}\)\\
+          \qquad\lpar{}\keyword{fun}\ \(\appT{\conT{\conIntegerType{}}}{s}\)\\
           \qquad\qquad\quad\(\appT{\conT{\conIntegerType{}}}{s}\)\rpar{}\rpar{}\rpar{}\\
         \end{tabular}\\\\
         
         $intpred$ & \begin{tabular}{l}
-          \lpar{}\keyword{all}~$s$~$\sizeK{}$\\
-          \quad\lpar{}\keyword{fun}~\(\appT{\conT{\conIntegerType{}}}{s}\)\\
-          \qquad\lpar{}\keyword{fun}~\(\appT{\conT{\conIntegerType{}}}{s}\)\\
+          \lpar{}\keyword{all}\ $s$\ $\sizeK{}$\\
+          \quad\lpar{}\keyword{fun}\ \(\appT{\conT{\conIntegerType{}}}{s}\)\\
+          \qquad\lpar{}\keyword{fun}\ \(\appT{\conT{\conIntegerType{}}}{s}\)\\
           \qquad\qquad\quad$boolean$\rpar{}\rpar{}\rpar{}\\
         \end{tabular}\\\\
         
         $intresize$ & \begin{tabular}{l}
-          \lpar{}\keyword{all}~$s_0$~$\sizeK{}$\\
-          \quad\lpar{}\keyword{all}~$s_1$~$\sizeK{}$\\
-          \qquad\lpar{}\keyword{fun}~\(\appT{\conT{\conSizeType{}}}{s_1}\)\\
-          \qquad\quad\lpar{}\keyword{fun}~\(\appT{\conT{\conIntegerType{}}}{s_0}\)\\
+          \lpar{}\keyword{all}\ $s_0$\ $\sizeK{}$\\
+          \quad\lpar{}\keyword{all}\ $s_1$\ $\sizeK{}$\\
+          \qquad\lpar{}\keyword{fun}\ \(\appT{\conT{\conSizeType{}}}{s_1}\)\\
+          \qquad\quad\lpar{}\keyword{fun}\ \(\appT{\conT{\conIntegerType{}}}{s_0}\)\\
           \qquad\qquad\qquad\(\appT{\conT{\conIntegerType{}}}{s_1}\)\rpar{}\rpar{}\rpar{}\rpar{}\\
         \end{tabular}\\\\
         
         $intconv$ & \begin{tabular}{l}
-          \lpar{}\keyword{all}~$s_0$~$\sizeK{}$\\
-          \quad\lpar{}\keyword{all}~$s_1$~$\sizeK{}$\\
-          \qquad\lpar{}\keyword{fun}~\(\appT{\conT{\conSizeType{}}}{s_1}\)\\
-          \qquad\quad\lpar{}\keyword{fun}~\(\appT{\conT{\conIntegerType{}}}{s_0}\)\\
+          \lpar{}\keyword{all}\ $s_0$\ $\sizeK{}$\\
+          \quad\lpar{}\keyword{all}\ $s_1$\ $\sizeK{}$\\
+          \qquad\lpar{}\keyword{fun}\ \(\appT{\conT{\conSizeType{}}}{s_1}\)\\
+          \qquad\quad\lpar{}\keyword{fun}\ \(\appT{\conT{\conIntegerType{}}}{s_0}\)\\
           \qquad\qquad\qquad\(\appT{\conT{\conBytestringType{}{}}}{s_1}\)\rpar{}\rpar{}\rpar{}\rpar{}\\
         \end{tabular}\\\\
         
         $bsop$ & \begin{tabular}{l}
-          \lpar{}\keyword{all}~$s$~$\sizeK{}$\\
-          \quad\lpar{}\keyword{fun}~\(\appT{\conT{\conBytestringType{}}}{s}\)\\
-          \qquad\lpar{}\keyword{fun}~\(\appT{\conT{\conBytestringType{}}}{s}\)\\
+          \lpar{}\keyword{all}\ $s$\ $\sizeK{}$\\
+          \quad\lpar{}\keyword{fun}\ \(\appT{\conT{\conBytestringType{}}}{s}\)\\
+          \qquad\lpar{}\keyword{fun}\ \(\appT{\conT{\conBytestringType{}}}{s}\)\\
           \qquad\qquad\quad\(\appT{\conT{\conBytestringType{}}}{s}\)\rpar{}\rpar{}\rpar{}
         \end{tabular}\\\\
         
         $bsintop$ & \begin{tabular}{l}
-          \lpar{}\keyword{all}~$s_0$~$\sizeK{}$\\
-          \quad\lpar{}\keyword{all}~$s_1$~$\sizeK{}$\\
-          \qquad\lpar{}\keyword{fun}~\(\appT{\conT{\conBytestringType{}}}{s_0}\)\\
-          \qquad\quad\lpar{}\keyword{fun}~\(\appT{\conT{\conIntegerType{}}}{s_1}\)\\
+          \lpar{}\keyword{all}\ $s_0$\ $\sizeK{}$\\
+          \quad\lpar{}\keyword{all}\ $s_1$\ $\sizeK{}$\\
+          \qquad\lpar{}\keyword{fun}\ \(\appT{\conT{\conBytestringType{}}}{s_0}\)\\
+          \qquad\quad\lpar{}\keyword{fun}\ \(\appT{\conT{\conIntegerType{}}}{s_1}\)\\
           \qquad\qquad\qquad\(\appT{\conT{\conBytestringType{}}}{s_0}\)\rpar{}\rpar{}\rpar{}\rpar{}
         \end{tabular}\\\\
         
         $cryptoop$ & \begin{tabular}{l}
-          \lpar{}\keyword{all}~$s$~$\sizeK{}$\\
-          \quad\lpar{}\keyword{fun}~\(\appT{\conT{\conBytestringType{}}}{s}\)\\
+          \lpar{}\keyword{all}\ $s$\ $\sizeK{}$\\
+          \quad\lpar{}\keyword{fun}\ \(\appT{\conT{\conBytestringType{}}}{s}\)\\
           \qquad\qquad\(\appT{\conT{\conBytestringType{}}}{256}\)\rpar{}\rpar{}
         \end{tabular}\\\\
         
         $cryptover$ & \begin{tabular}{l}
-          \lpar{}\keyword{all}~$s_0$~$\sizeK{}$\\
-          \quad\lpar{}\keyword{all}~$s_1$~$\sizeK{}$\\
-          \qquad\lpar{}\keyword{all}~$s_2$~$\sizeK{}$\\
-          \qquad\quad\lpar{}\keyword{fun}~\(\appT{\conT{\conBytestringType{}}}{s_0}\)\\
-          \qquad\qquad\lpar{}\keyword{fun}~\(\appT{\conT{\conBytestringType{}}}{s_1}\)\\
-          \qquad\qquad\quad\lpar{}\keyword{fun}~\(\appT{\conT{\conBytestringType{}}}{s_2}\)\\
+          \lpar{}\keyword{all}\ $s_0$\ $\sizeK{}$\\
+          \quad\lpar{}\keyword{all}\ $s_1$\ $\sizeK{}$\\
+          \qquad\lpar{}\keyword{all}\ $s_2$\ $\sizeK{}$\\
+          \qquad\quad\lpar{}\keyword{fun}\ \(\appT{\conT{\conBytestringType{}}}{s_0}\)\\
+          \qquad\qquad\lpar{}\keyword{fun}\ \(\appT{\conT{\conBytestringType{}}}{s_1}\)\\
+          \qquad\qquad\quad\lpar{}\keyword{fun}\ \(\appT{\conT{\conBytestringType{}}}{s_2}\)\\
           \qquad\qquad\qquad\qquad$boolean$\rpar{}\rpar{}\rpar{}\rpar{}\rpar{}\rpar{}
         \end{tabular}\\\\
         
         $bsresize$ & \begin{tabular}{l}
-          \lpar{}\keyword{all}~$s_0$~$\sizeK{}$\\
-          \quad\lpar{}\keyword{all}~$s_1$~$\sizeK{}$\\
-          \qquad\lpar{}\keyword{fun}~\(\appT{\conT{\conSizeType{}}}{s_1}\)\\
-          \qquad\quad\lpar{}\keyword{fun}~\(\appT{\conT{\conBytestringType{}}}{s_0}\)\\
+          \lpar{}\keyword{all}\ $s_0$\ $\sizeK{}$\\
+          \quad\lpar{}\keyword{all}\ $s_1$\ $\sizeK{}$\\
+          \qquad\lpar{}\keyword{fun}\ \(\appT{\conT{\conSizeType{}}}{s_1}\)\\
+          \qquad\quad\lpar{}\keyword{fun}\ \(\appT{\conT{\conBytestringType{}}}{s_0}\)\\
           \qquad\qquad\qquad\(\appT{\conT{\conBytestringType{}}}{s_1}\)\rpar{}\rpar{}\rpar{}\rpar{}
         \end{tabular}\\\\
         
         $bspred$ & \begin{tabular}{l}
-          \lpar{}\keyword{all}~$s$~$\sizeK{}$\\
-          \quad\lpar{}\keyword{fun}~\(\appT{\conT{\conBytestringType{}}}{s}\)\\
-          \qquad\lpar{}\keyword{fun}~\(\appT{\conT{\conBytestringType{}}}{s}\)\\
+          \lpar{}\keyword{all}\ $s$\ $\sizeK{}$\\
+          \quad\lpar{}\keyword{fun}\ \(\appT{\conT{\conBytestringType{}}}{s}\)\\
+          \qquad\lpar{}\keyword{fun}\ \(\appT{\conT{\conBytestringType{}}}{s}\)\\
           \qquad\qquad\quad$boolean$\rpar{}\rpar{}\rpar{}
         \end{tabular}\\\\
         
         $blocknum$ & \begin{tabular}{l}
-          \lpar{}\keyword{all}~$s$~$\sizeK{}$\\
-          \quad\lpar{}\keyword{fun}~\(\appT{\conT{\conSizeType{}}}{s}\)\\
+          \lpar{}\keyword{all}\ $s$\ $\sizeK{}$\\
+          \quad\lpar{}\keyword{fun}\ \(\appT{\conT{\conSizeType{}}}{s}\)\\
           \qquad\qquad\(\appT{\conT{\conIntegerType{}{}}}{s}\)\rpar{}\rpar{}
         \end{tabular}\\\\
         
@@ -263,11 +247,11 @@
     \[\begin{array}{lllll}
         \textrm{Builtin Type Name} & \textrm{Kind} & \textrm{Arguments} & \textrm{Semantics} & \textrm{Error Conditions}\\
         
-        integer & \funK{\sizeK{}}{\typeK{}} & s & Integer ~ s & \textrm{---}\\
+        integer & \funK{\sizeK{}}{\typeK{}} & s & Integer \  s & \textrm{---}\\
         
-        bytestring & \funK{\sizeK{}}{\typeK{}} & s & Bytestring ~ s & \textrm{---}\\
+        bytestring & \funK{\sizeK{}}{\typeK{}} & s & Bytestring \  s & \textrm{---}\\
         
-        size & \funK{\sizeK{}}{\typeK{}} & s & Size ~ s & \textrm{---}\\
+        size & \funK{\sizeK{}}{\typeK{}} & s & Size \  s & \textrm{---}\\
     \end{array}\]
     
     \[\begin{array}{lllll}
@@ -296,11 +280,11 @@
           err(integer_s)  & \text{otherwise}\\
         \end{cases} \\
         divideInteger     &  intop  &  s!i_0 , s!i_1   & \begin{cases}
-          s!(div ~ i_0 ~ i_1)                     & \text{if $i_1 \not= 0$}\\
+          s!(div \  i_0 \  i_1)                     & \text{if $i_1 \not= 0$}\\
           err(integer_s)  & \text{otherwise}
         \end{cases}\\
         remainderInteger  &  intop  &  s!i_0 , s!i_1   & \begin{cases}
-          s!(mod ~ i_0 ~ i_1)                     & \text{if $i_1 \not= 0$}\\
+          s!(mod \  i_0 \  i_1)                     & \text{if $i_1 \not= 0$}\\
           err(integer_s)  & \text{otherwise}
         \end{cases}\\
         %&&\\
@@ -328,23 +312,23 @@
         
         
         concatenate   &   bsop   &   s!b_0 , s!b_1   & \begin{cases}
-            concat ~ [b_0,b_1] & \text{if $-2^{8s-1} \leq |concat ~ [b_0,b_1]| < 2^{8s-1}$}\\
+            concat \  [b_0,b_1] & \text{if $-2^{8s-1} \leq |concat \  [b_0,b_1]| < 2^{8s-1}$}\\
             err(bytestring_s) & \text{otherwise}\\
         \end{cases}\\
         %&&\\
         
-        takeByteString    &   bsintop   &   i, b     & take ~ (fromIntegral ~ i) ~ b\\
-        dropByteString    &   bsintop   &   i, b     & drop ~ (fromIntegral ~ i) ~ b\\
+        takeByteString    &   bsintop   &   i, b     & take \  (fromIntegral \  i) \  b\\
+        dropByteString    &   bsintop   &   i, b     & drop \  (fromIntegral \  i) \  b\\
         %&&\\
         
-        sha2\_256         &  cryptoop  &   b           & sha2\_256 ~ b\\
-        sha3\_256         &  cryptoop  &   b           & sha3\_256~ b\\
+        sha2\_256         &  cryptoop  &   b           & sha2\_256 \  b\\
+        sha3\_256         &  cryptoop  &   b           & sha3\_256\  b\\
         %&&\\
         
-        verifySignature   &  cryptover  &   key, dat, sig           & verifySignature ~ key ~ dat ~ sig\\
+        verifySignature   &  cryptover  &   key, dat, sig           & verifySignature \  key \  dat \  sig\\
         %&&\\
         
-        resizeByteString   &   bsresize   &   z, b   &   resizeBytestring ~ z ~ b\\
+        resizeByteString   &   bsresize   &   z, b   &   resizeBytestring \  z \  b\\
         %&&\\
         
         equalsByteString  &   bspred   &   b_0 , b_1   & b_0 == b_1\\

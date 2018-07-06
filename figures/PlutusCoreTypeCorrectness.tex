@@ -9,6 +9,10 @@
                      &         &     & \Gamma, \termJ{x}{A}        & \textrm{term variable} \\
     \end{array}\]
     
+    
+    
+    \judgmentdef{\(\ctxni{\Gamma}{J}\)}{Context $\Gamma$ contains judgment $J$}
+    
     \begin{prooftree}
         \AxiomC{}
         \UnaryInfC{\(\ctxni{\Gamma, \typeJ{\alpha}{K}}{\typeJ{\alpha}{K}}\)}
@@ -40,6 +44,29 @@
         \AxiomC{\(x \not= y\)}
         \BinaryInfC{\(\ctxni{\Gamma, \termJ{y}{B}}{\termJ{x}{A}}\)}
     \end{prooftree}
+    
+    
+    
+    \judgmentdef{\(\validJ{\Gamma}\)}{Context $\Gamma$ is valid}
+    
+    \begin{prooftree}
+        \AxiomC{}
+        \UnaryInfC{\(\validJ{\epsilon}\)}
+    \end{prooftree}
+    
+    \begin{prooftree}
+        \AxiomC{\(\validJ{\Gamma}\)}
+        \AxiomC{$\alpha$ is free in $\Gamma$}
+        \BinaryInfC{\(\Gamma, \typeJ{\alpha}{K}\)}
+    \end{prooftree}
+    
+    \begin{prooftree}
+        \AxiomC{\(\validJ{\Gamma}\)}
+        \AxiomC{$x$ is free in $\Gamma$}
+        \AxiomC{\(\hypJ{\Gamma}{\istypeJ{A}{\typeK{}}}\)}
+        \TrinaryInfC{\(\Gamma, \termJ{x}{A}\)}
+    \end{prooftree}
+    
     
     \caption{Contexts}
     \label{fig:Plutus_core_contexts}
