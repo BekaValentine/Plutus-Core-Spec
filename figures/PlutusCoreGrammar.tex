@@ -6,20 +6,20 @@
     \centering
     \[\begin{array}{lrclr}
         \textrm{Term}             & L,M,N  &     & x                          & \textrm{variable}\\
-                                  &        &     & \fix{x}{A}{M}              & \textrm{fixed point term}\\
+                                  &        &     & \fix{x}{S}{M}              & \textrm{fixed point term}\\
                                   &        &     & \abs{\alpha}{K}{M}         & \textrm{type abstraction}\\
-                                  &        &     & \inst{M}{A^+}              & \textrm{type instantiation}\\
-                                  &        &     & \wrap{\alpha}{A}{M}        & \textrm{fix type's wrap}\\
+                                  &        &     & \inst{M}{S^+}              & \textrm{type instantiation}\\
+                                  &        &     & \wrap{\alpha}{S}{M}        & \textrm{fix type's wrap}\\
                                   &        &     & \unwrap{M}                 & \textrm{fix type's unwrap}\\
-                                  &        &     & \lam{x}{A}{M}              & \textrm{$\lambda$ abstraction}\\
+                                  &        &     & \lam{x}{S}{M}              & \textrm{$\lambda$ abstraction}\\
                                   &        &     & \app{M}{N^+}               & \textrm{function application}\\
                                   &        &     & \con{bi}                   & \textrm{builtin}\\
-                                  &        &     & \error{A}                  & \textrm{error}\\
+                                  &        &     & \error{S}                  & \textrm{error}\\
         \textrm{Value}            & V      & ::= & \abs{\alpha}{K}{M}         & \textrm{type abstraction}\\
-                                  &        &     & \wrap{\alpha}{A}{V}        & \textrm{fix type's wrap}\\
-                                  &        &     & \lam{x}{A}{M}              & \textrm{$\lambda$ abstraction}\\
+                                  &        &     & \wrap{\alpha}{S}{V}        & \textrm{fix type's wrap}\\
+                                  &        &     & \lam{x}{S}{M}              & \textrm{$\lambda$ abstraction}\\
                                   &        &     & \con{bi}                   & \textrm{builtin}\\
-                                  &        &     & \error{A}                  & \textrm{error}\\
+                                  &        &     & \error{S}                  & \textrm{error}\\
         \textrm{Type}             & A,B,C  & ::= & \alpha                     & \textrm{type variable}\\
                                   &        &     & \funT{A}{B}                & \textrm{function type}\\
                                   &        &     & \allT{\alpha}{K}{A}        & \textrm{polymorphic type}\\
@@ -28,10 +28,13 @@
                                   &        &     & \appT{A}{B^+}              & \textrm{function application}\\
                                   &        &     & \conT{bt}                  & \textrm{builtin type}\\
         \textrm{Type Value}       & R,S,T  & ::= & \funT{S}{T}                & \textrm{function type}\\
-                                  &        &     & \allT{\alpha}{K}{A}        & \textrm{polymorphic type}\\
-                                  &        &     & \fixT{\alpha}{A}           & \textrm{fixed point type}\\
-                                  &        &     & \lamT{\alpha}{K}{A}        & \textrm{$\lambda$ abstraction}\\
+                                  &        &     & \allT{\alpha}{K}{S}        & \textrm{polymorphic type}\\
+                                  &        &     & \fixT{\alpha}{S}           & \textrm{fixed point type}\\
+                                  &        &     & \lamT{\alpha}{K}{S}        & \textrm{$\lambda$ abstraction}\\
                                   &        &     & \conT{bt}                  & \textrm{builtin type}\\
+                                  &        &     & W                          & \textrm{neutral type}\\
+        \textrm{Neutral Type}     & W      &     & \alpha                     & \textrm{type variable}\\
+                                  &        &     & \appT{W}{S^*}              & \textrm{function application}\\
         \textrm{Kind}             & J,K    & ::= & \typeK{}                   & \textrm{type kind}\\
                                   &        &     & \funK{J}{K}                & \textrm{arrow kind}\\
                                   &        &     & \sizeK{}                   & \textrm{size kind}\\
