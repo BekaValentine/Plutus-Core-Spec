@@ -51,13 +51,12 @@
 \begin{figure*}[t]
     \centering
     \[\begin{array}{lrclr}
-        \textrm{Frame} & f & ::= & \inFixFrame{x}{M}                        & \textrm{fix}\\
-                       &   &     & \inInstLeftFrame{A}                     & \textrm{left instantiation}\\
-                       &   &     & \inInstRightFrame{V}                    & \textrm{right instantiation}\\
-                       &   &     & \inWrapLeftFrame{\alpha}{M}             & \textrm{left wrap}\\
+        \textrm{Frame} &   &     & \inInstLeftFrame{A}                     & \textrm{left instantiation}\\
+                       %&   &     & \inInstRightFrame{V}                    & \textrm{right instantiation}\\
+                       %&   &     & \inWrapLeftFrame{\alpha}{M}             & \textrm{left wrap}\\
                        &   &     & \inWrapRightFrame{\alpha}{A}            & \textrm{right wrap}\\
                        &   &     & \inUnwrapFrame{}                        & \textrm{unwrap}\\
-                       &   &     & \inLamLeftFrame{x}{M}                   & \textrm{$\lambda$}\\
+                       %&   &     & \inLamLeftFrame{x}{M}                   & \textrm{$\lambda$}\\
                        &   &     & \inAppLeftFrame{M}                      & \textrm{left app}\\
                        &   &     & \inAppRightFrame{V}                     & \textrm{right app}\\
     \end{array}\]
@@ -99,10 +98,10 @@
         \UnaryInfC{\(\step{M}{V}\)}
     \end{prooftree}
     
-    \begin{prooftree}
-        \AxiomC{\(\typeStep{A}{A'}\)}
-        \UnaryInfC{\(\step{\ctxsubst{f}{A}}{\ctxsubst{f}{A'}}\)}
-    \end{prooftree}
+    %\begin{prooftree}
+    %    \AxiomC{\(\typeStep{A}{A'}\)}
+    %    \UnaryInfC{\(\step{\ctxsubst{f}{A}}{\ctxsubst{f}{A'}}\)}
+    %\end{prooftree}
     
     \begin{prooftree}
         \AxiomC{\(\step{M}{M'}\)}
@@ -135,9 +134,9 @@
     \[\begin{array}{lrclr}
         \textrm{Stack} & s      & ::= & f^*                               & \textrm{stacks}\\
         \textrm{State} & \sigma & ::= & \ckforward{s}{M}                  & \textrm{computing a term}\\
-                       &        &     & \ckforward{s}{A}                  & \textrm{computing a type}\\
+                       %&        &     & \ckforward{s}{A}                  & \textrm{computing a type}\\
                        &        &     & \ckbackward{s}{V}                 & \textrm{returning a term value}\\
-                       &        &     & \ckbackward{s}{S}                 & \textrm{returning a type value}\\
+                       %&        &     & \ckbackward{s}{S}                 & \textrm{returning a type value}\\
     \end{array}\]
     
     \caption{Grammar of CK Machine States}
@@ -152,18 +151,16 @@
     \begin{align*}
         &\cksteps{\ckforward{s}{\abs{\alpha}{K}{M}}}{\ckbackward{s}{\abs{\alpha}{K}{M}}}\\
         &\cksteps{\ckforward{s}{\inst{M}{A}}}{\ckforward{s, \inInstLeftFrame{A}}{M}}\\
-        &\cksteps{\ckforward{s}{\wrap{\alpha}{A}{M}}}{\ckforward{s, \inWrapLeftFrame{\alpha}{M}}{A}}\\
+        &\cksteps{\ckforward{s}{\fix{x}{A}{M}}}{\ckforward{s}{\subst{\fix{x}{A}{M}}{x}{M}}}\\
+        &\cksteps{\ckforward{s}{\wrap{\alpha}{A}{M}}}{\ckforward{s, \inWrapRightFrame{\alpha}{A}}{M}}\\
         &\cksteps{\ckforward{s}{\unwrap{M}}}{\ckforward{s, \inUnwrapFrame{}}{M}}\\
         &\cksteps{\ckforward{s}{\lam{x}{A}{M}}}{\ckbackward{s}{\lam{x}{A}{M}}}\\
         &\cksteps{\ckforward{s}{\app{M}{N}}}{\ckforward{s, \inAppLeftFrame{N}}{M}}\\
         &\cksteps{\ckforward{s}{\error{A}}}{\ckbackward{s}{\error{A}}}\\
         &\cksteps{\ckforward{s}{M}}{\ckbackward{s}{V}} ~~~~ \textit{if $M$ is a fully saturated constant and computes to $V$ in Fig \ref{fig:Plutus_core_builtins}}\\
         &\cksteps{\ckforward{s}{M}}{\ckbackward{s}{M}} ~~~~ \textit{if $M$ is a partially saturated constant}\\
-        &\cksteps{\ckbackward{s, \inAnnLeftFrame{A}}{V}}{\ckbackward{s}{V}}\\
-        &\cksteps{\ckbackward{s, \inInstLeftFrame{A}}{V}}{\ckforward{s, \inInstRightFrame{V}{\_}}{A}}\\
-        &\cksteps{\ckbackward{s, \inInstRightFrame{\abs{\alpha}{K}{M}}}{S}}{\ckforward{s}{\subst{S}{\alpha}{M}}}\\
-        &\cksteps{\ckbackward{s, \inWrapLeftFrame{\alpha}{M}}{S}}{\ckforward{s, \inWrapRightFrame{\alpha}{S}}{M}}\\
-        &\cksteps{\ckbackward{s, \inWrapRightFrame{\alpha}{S}}{V}}{\ckbackward{s}{\wrap{\alpha}{S}{V}}}\\
+        &\cksteps{\ckbackward{s, \inInstLeftFrame{A}}{\abs{\alpha}{K}{M}}}{\ckforward{s}{M}}\\
+        &\cksteps{\ckbackward{s, \inWrapRightFrame{\alpha}{A}}{V}}{\ckbackward{s}{\wrap{\alpha}{A}{V}}}\\
         &\cksteps{\ckbackward{s, \inUnwrapFrame{}}{\wrap{\alpha}{A}{V}}}{\ckbackward{s}{V}}\\
         &\cksteps{\ckbackward{s, \inAppLeftFrame{N}}{V}}{\ckforward{s, \inAppRightFrame{V}}{N}}\\
         &\cksteps{\ckbackward{s, \inAppRightFrame{\lam{x}{A}{M}}}{V}}{\ckforward{s}{\subst{V}{x}{M}}}\\
