@@ -139,6 +139,7 @@
                        %&        &     & \ckforward{s}{A}                  & \textrm{computing a type}\\
                        &        &     & \ckbackward{s}{V}                 & \textrm{returning a term value}\\
                        %&        &     & \ckbackward{s}{S}                 & \textrm{returning a type value}\\
+                       &        &     & \ckerror{s}                       & \textrm{throwing an error}
     \end{array}\]
     
     \caption{Grammar of CK Machine States}
@@ -159,16 +160,16 @@
         &\cksteps{\ckforward{s}{\unwrap{M}}}{\ckforward{s, \inUnwrapFrame{}}{M}}\\
         &\cksteps{\ckforward{s}{\lam{x}{A}{M}}}{\ckbackward{s}{\lam{x}{A}{M}}}\\
         &\cksteps{\ckforward{s}{\app{M}{N}}}{\ckforward{s, \inAppLeftFrame{N}}{M}}\\
-        &\cksteps{\ckforward{s}{\error{A}}}{\ckbackward{s}{\error{A}}}\\
         &\cksteps{\ckforward{s}{M}}{\ckbackward{s}{V}} ~~~~ \textit{if $M$ is a fully saturated constant and computes to $V$ in Fig \ref{fig:Plutus_core_builtins}}\\
         &\cksteps{\ckforward{s}{M}}{\ckbackward{s}{M}} ~~~~ \textit{if $M$ is a partially saturated constant}\\
+        &\cksteps{\ckforward{s}{\error{S}}}{\ckerror{s}}\\
         &\cksteps{\ckbackward{s, \inRunFrame{}}{\fix{x}{S}{M}}}{\ckforward{s}{\subst{\fix{x}{S}{M}}{x}{M}}}\\
         &\cksteps{\ckbackward{s, \inInstLeftFrame{A}}{\abs{\alpha}{K}{M}}}{\ckforward{s}{M}}\\
         &\cksteps{\ckbackward{s, \inWrapRightFrame{\alpha}{A}}{V}}{\ckbackward{s}{\wrap{\alpha}{A}{V}}}\\
         &\cksteps{\ckbackward{s, \inUnwrapFrame{}}{\wrap{\alpha}{A}{V}}}{\ckbackward{s}{V}}\\
         &\cksteps{\ckbackward{s, \inAppLeftFrame{N}}{V}}{\ckforward{s, \inAppRightFrame{V}}{N}}\\
         &\cksteps{\ckbackward{s, \inAppRightFrame{\lam{x}{A}{M}}}{V}}{\ckforward{s}{\subst{V}{x}{M}}}\\
-        &\cksteps{\ckbackward{s, f}{\error{A}}}{\ckbackward{s}{\error{A}}}\\
+        &\cksteps{\ckerror{s, f}}{\ckerror{s}}\\
     \end{align*}
     
     \caption{CK Machine}
