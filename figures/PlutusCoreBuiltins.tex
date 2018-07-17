@@ -103,8 +103,8 @@
         dropByteString    &   \forall s_0, s_1 :: size.\ integer_{s_0} \to bytestring_{s_1} \to bytestring_{s_1}   &   s_01i, s_1!b     & s_1!(drop \ i \  b)\\
         %&&\\
         
-        sha2\_256         &  \forall s :: size.\ bytestring_s \to bytestring_{256}  &   s!b           & 256!(sha2\_256 \  b)\\
-        sha3\_256         &  \forall s :: size.\ bytestring_s \to bytestring_{256}  &   s!b           & 256!(sha3\_256\  b)\\
+        sha2\_256         &  \forall s :: size.\ bytestring_s \to bytestring_{\conT{256}}  &   s!b           & 256!(sha2\_256 \  b)\\
+        sha3\_256         &  \forall s :: size.\ bytestring_s \to bytestring_{\conT{256}}  &   s!b           & 256!(sha3\_256\  b)\\
         %&&\\
         
         verifySignature   &  \forall s_0, s_1, s_2 :: size.\ bytestring_{s_0} \to bytestring_{s_1} \to bytestring_{s_2} \to bool  &   key, dat, sig           & verifySignature \  key \  dat \  sig\\
@@ -116,7 +116,7 @@
         equalsByteString  &   \forall s :: size.\ bytestring_s \to bytestring_s \to bool   &   b_0 , b_1   & b_0 == b_1\\
         %&&\\
         
-        txhash   &   bytestring_{256}   &   \textrm{---}  & \textit{the transaction hash}\\
+        txhash   &   bytestring_{\conT{256}}   &   \textrm{---}  & \textit{the transaction hash}\\
         %&&\\
         
         blocknum  &  \forall s :: size.\ size_s \to integer_s  & z & \textit{the block number}&\textit{the block number fits in $s$ bytes}\\
