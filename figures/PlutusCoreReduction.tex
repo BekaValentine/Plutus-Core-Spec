@@ -9,7 +9,8 @@
 \begin{figure*}
     \centering
     \[\begin{array}{lrclr}
-        \textrm{Type Frame} & f  & ::= & \inFunTLeft{\_}{A}                        & \textrm{left arrow}\\
+        \textrm{Type Frame} & f  & ::= & \inRecT{\_}                               & \textrm{recursion}\\
+                            &    &     & \inFunTLeft{\_}{A}                        & \textrm{left arrow}\\
                             &    &     & \inFunTRight{S}{\_}                       & \textrm{right arrow}\\
                             &    &     & \inAllT{\alpha}{K}{\_}                    & \textrm{all}\\
                             &    &     & \inLamT{\alpha}{K}{\_}                    & \textrm{$\lambda$}\\
@@ -54,6 +55,7 @@
         \textrm{Frame} &   &     & \inInstLeftFrame{A}                     & \textrm{left instantiation}\\
                        %&   &     & \inInstRightFrame{V}                    & \textrm{right instantiation}\\
                        %&   &     & \inWrapLeftFrame{\alpha}{M}             & \textrm{left wrap}\\
+                       &   &     & \inRunFrame{}                           & \textrm{run}\\
                        &   &     & \inWrapRightFrame{\alpha}{A}            & \textrm{right wrap}\\
                        &   &     & \inUnwrapFrame{}                        & \textrm{unwrap}\\
                        %&   &     & \inLamLeftFrame{x}{M}                   & \textrm{$\lambda$}\\
@@ -72,6 +74,11 @@
     
     \begin{prooftree}
         \AxiomC{}
+        \UnaryInfC{\(\step{\run{\fix{x}{S}{M}}}{\subst{\fix{x}{A}{M}}{x}{M}}\)}
+    \end{prooftree}
+    
+    \begin{prooftree}
+        \AxiomC{}
         \UnaryInfC{\(\step{\inst{\abs{\alpha}{K}{M}}{S}}{\subst{S}{\alpha}{M}}\)}
     \end{prooftree}
     
@@ -83,11 +90,6 @@
     \begin{prooftree}
         \AxiomC{}
         \UnaryInfC{\(\step{\app{\lam{x}{A}{M}}{V}}{\subst{V}{x}{M}}\)}
-    \end{prooftree}
-    
-    \begin{prooftree}
-        \AxiomC{}
-        \UnaryInfC{\(\step{\fix{x}{A}{M}}{\subst{\fix{x}{A}{M}}{x}{M}}\)}
     \end{prooftree}
     
     \begin{prooftree}
@@ -149,9 +151,10 @@
     \judgmentdef{\(\cksteps{\sigma}{\sigma'}\)}{Machine state $\sigma$ transitions in one step to machine state $\sigma'$}
     
     \begin{align*}
+        &\cksteps{\ckforward{s}{\fix{x}{A}{M}}}{\ckbackward{s}{\fix{x}{A}{M}}}\\
+        &\cksteps{\ckforward{s}{\run{M}}}{\ckforward{s, \inRunFrame{}}{M}}\\
         &\cksteps{\ckforward{s}{\abs{\alpha}{K}{M}}}{\ckbackward{s}{\abs{\alpha}{K}{M}}}\\
         &\cksteps{\ckforward{s}{\inst{M}{A}}}{\ckforward{s, \inInstLeftFrame{A}}{M}}\\
-        &\cksteps{\ckforward{s}{\fix{x}{A}{M}}}{\ckforward{s}{\subst{\fix{x}{A}{M}}{x}{M}}}\\
         &\cksteps{\ckforward{s}{\wrap{\alpha}{A}{M}}}{\ckforward{s, \inWrapRightFrame{\alpha}{A}}{M}}\\
         &\cksteps{\ckforward{s}{\unwrap{M}}}{\ckforward{s, \inUnwrapFrame{}}{M}}\\
         &\cksteps{\ckforward{s}{\lam{x}{A}{M}}}{\ckbackward{s}{\lam{x}{A}{M}}}\\
@@ -159,6 +162,7 @@
         &\cksteps{\ckforward{s}{\error{A}}}{\ckbackward{s}{\error{A}}}\\
         &\cksteps{\ckforward{s}{M}}{\ckbackward{s}{V}} ~~~~ \textit{if $M$ is a fully saturated constant and computes to $V$ in Fig \ref{fig:Plutus_core_builtins}}\\
         &\cksteps{\ckforward{s}{M}}{\ckbackward{s}{M}} ~~~~ \textit{if $M$ is a partially saturated constant}\\
+        &\cksteps{\ckbackward{s, \inRunFrame{}}{\fix{x}{S}{M}}}{\ckforward{s}{\subst{\fix{x}{S}{M}}{x}{M}}}\\
         &\cksteps{\ckbackward{s, \inInstLeftFrame{A}}{\abs{\alpha}{K}{M}}}{\ckforward{s}{M}}\\
         &\cksteps{\ckbackward{s, \inWrapRightFrame{\alpha}{A}}{V}}{\ckbackward{s}{\wrap{\alpha}{A}{V}}}\\
         &\cksteps{\ckbackward{s, \inUnwrapFrame{}}{\wrap{\alpha}{A}{V}}}{\ckbackward{s}{V}}\\

@@ -86,6 +86,12 @@
     \end{prooftree}
     
     \begin{prooftree}
+        \AxiomC{\(\hypJ{\Gamma}{\istypeJ{A}{\typeK{}}}\)}
+        \RightLabel{tyrec}
+        \UnaryInfC{\(\hypJ{\Gamma}{\istypeJ{\recT{A}}{\typeK{}}}\)}
+    \end{prooftree}
+    
+    \begin{prooftree}
         \AxiomC{\(\hypJ{\Gamma, \typeJ{\alpha}{K}}{\istypeJ{A}{\typeK{}}}\)}
         \RightLabel{tyall}
         \UnaryInfC{\(\hypJ{\Gamma}{\istypeJ{\allT{\alpha}{K}{A}}{\typeK{}}}\)}
@@ -142,9 +148,15 @@
     \end{prooftree}
     
     \begin{prooftree}
-        \AxiomC{\(\hypJ{\Gamma, \termJ{x}{S}}{\istermJ{M}{S}}\)}
+        \AxiomC{\(\hypJ{\Gamma, \termJ{x}{\recT{S}}}{\istermJ{M}{S}}\)}
         \RightLabel{fix}
-        \UnaryInfC{\(\hypJ{\Gamma}{\istermJ{\fix{x}{S}{M}}{S}}\)}
+        \UnaryInfC{\(\hypJ{\Gamma}{\istermJ{\fix{x}{S}{M}}{\recT{S}}}\)}
+    \end{prooftree}
+    
+    \begin{prooftree}
+        \AxiomC{\(\hypJ{\Gamma}{\istermJ{M}{\recT{S}}}\)}
+        \RightLabel{run}
+        \UnaryInfC{\(\hypJ{\Gamma}{\istermJ{\run{M}}{S}}\)}
     \end{prooftree}
     
     \begin{prooftree}
@@ -156,14 +168,16 @@
     \begin{prooftree}
         \AxiomC{\(\hypJ{\Gamma}{\istermJ{L}{\allT{\alpha}{K}{S}}}\)}
         \AxiomC{\(\hypJ{\Gamma}{\istypeJ{T}{K}}\)}
+        \AxiomC{\(\typeMultistep{\subst{T}{\alpha}{S}}{R}\)}
         \RightLabel{inst}
-        \BinaryInfC{\(\hypJ{\Gamma}{\istermJ{\inst{L}{T}}{\subst{T}{\alpha}{S}}}\)}
+        \TrinaryInfC{\(\hypJ{\Gamma}{\istermJ{\inst{L}{T}}{R}}\)}
     \end{prooftree}
     
     \begin{prooftree}
         \alwaysNoLine
         \AxiomC{\(\hypJ{\Gamma, \typeJ{\alpha}{\typeK{}}}{\istypeJ{S}{\typeK{}}}\)}
-        \UnaryInfC{\(\hypJ{\Gamma}{\istermJ{M}{\subst{\fixT{\alpha}{S}}{\alpha}{S}}}\)}
+        \UnaryInfC{\(\typeMultistep{\subst{\fixT{\alpha}{S}}{\alpha}{S}}{R}\)}
+        \UnaryInfC{\(\hypJ{\Gamma}{\istermJ{M}{R}}\)}
         \alwaysSingleLine
         \RightLabel{wrap}
         \UnaryInfC{\(\hypJ{\Gamma}{\istermJ{\wrap{\alpha}{S}{M}}{\fixT{\alpha}{S}}}\)}
@@ -171,8 +185,9 @@
     
     \begin{prooftree}
         \AxiomC{\(\hypJ{\Gamma}{\istermJ{M}{\fixT{\alpha}{S}}}\)}
+        \AxiomC{\(\typeMultistep{\subst{\fixT{\alpha}{S}}{\alpha}{S}}{R}\)}
         \RightLabel{unwrap}
-        \UnaryInfC{\(\hypJ{\Gamma}{\istermJ{\unwrap{M}}{\subst{\fixT{\alpha}{S}}{\alpha}{S}}}\)}
+        \BinaryInfC{\(\hypJ{\Gamma}{\istermJ{\unwrap{M}}{R}}\)}
     \end{prooftree}
     
     \begin{prooftree}

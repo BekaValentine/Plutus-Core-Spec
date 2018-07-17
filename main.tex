@@ -428,6 +428,7 @@
 \newcommand{\app}[2]{\texttt{[} #1 ~ #2 \texttt{]}}
 \newcommand{\appE}[2]{\texttt{[} #1 ~ #2 \texttt{]}}
 \newcommand{\fix}[3]{\construct{\keyword{fix} ~ #1 ~ #2 ~ #3}}
+\newcommand{\run}[1]{\construct{\keyword{run} ~ #1}}
 \newcommand{\fixE}[2]{\construct{\keyword{fix} ~ #1 ~ #2}}
 \newcommand{\wrap}[3]{\construct{\keyword{wrap} ~ #1 ~ #2 ~ #3}}
 \newcommand{\unwrap}[1]{\construct{\keyword{unwrap} ~ #1}}
@@ -477,6 +478,7 @@
 %\newcommand{\loccon}[2]{(\keyword{loccon} ~ \name{#1} ~ #2)}
 \newcommand{\defdecl}[2]{\construct{\keyword{define} ~ #1 ~ #2}}
 \newcommand{\funT}[2]{\construct{\keyword{fun} ~ #1 ~ #2}}
+\newcommand{\recT}[1]{\construct{\keyword{rec} ~ #1}}
 \newcommand{\fixT}[2]{\construct{\keyword{fix} ~ #1 ~ #2}}
 \newcommand{\compT}[1]{\construct{\keyword{comp} ~ #1}}
 \newcommand{\allT}[3]{\construct{\keyword{all} ~ #1 ~ #2 ~ #3}}
@@ -574,6 +576,7 @@
 \newcommand{\ok}[1]{\texttt{(} \keyword{ok} ~ #1 \texttt{)}}
 \newcommand{\err}{\keyword{err}}
 \newcommand{\hole}{\circ}
+\newcommand{\inRecT}[1]{\recT{#1}}
 \newcommand{\inAppTLeft}[2]{\appT{#1}{#2}}
 \newcommand{\inAppTRight}[2]{\appT{#1}{#2}}
 \newcommand{\inFunTLeft}[2]{\funT{#1}{#2}}
@@ -614,6 +617,7 @@
 \newcommand{\executesIndexed}[4]{#2 ~\rightsquigarrow^{#3}_{#1}~ #4}
 \newcommand{\cksteps}[2]{#1 ~\mapsto~ #2}
 \newcommand{\inAnnLeftFrame}[1]{\isa{\_}{#1}}
+\newcommand{\inRunFrame}{\run{\_}}
 \newcommand{\inFixFrame}[2]{\fix{#1}{\_}{#2}}
 \newcommand{\inInstLeftFrame}[1]{\inst{\_}{#1}}
 \newcommand{\inInstRightFrame}[1]{\inst{#1}{\_}}
@@ -827,13 +831,15 @@ The syntax of Plutus Core is described in Figure 2. Most constructs
 resemble Lisp, with round brackets and a keyword. Variables appear on
 their own.
 
-Iterated application in both terms and types is indicated by square
-brackets, and iterated instantiation in terms is indicated by curly brackets.
+Aapplication in both terms and types is indicated by square
+brackets, and instantiation in terms is indicated by curly brackets. We
+permit the use of multi-argument application and instantiation as
+syntactic sugar for iterated application.
 For instance,
 \[
   [M_0 ~ M_1 ~ M_2 ~ M_3]
 \] 
-is equivalent to 
+is sugar for
 \[
   [[[M_0 ~ M_1] ~ M_2] ~ M_3]
 \]
