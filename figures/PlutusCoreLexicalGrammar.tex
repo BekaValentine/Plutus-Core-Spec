@@ -21,10 +21,12 @@
         
         \textrm{Version} & v & ::= & [\texttt{0}\!\hyphen{}\!\texttt{9}]^+(.[\texttt{0}\!\hyphen{}\!\texttt{9}]^+)^* & \textrm{version}\\
         
-        \textrm{Constant} & bi & ::= & \sizedBuiltin{s}{i} & \textrm{integer constant}\\
+        \textrm{Constant} & cn & ::= & \sizedBuiltin{s}{i} & \textrm{integer constant}\\
                           &    &     & \sizedBuiltin{s}{b} & \textrm{bytestring constant}\\
                           &    &     & s & \textrm{size constant}\\
                           &    &     & bn & \textrm{builtin name}\\
+        \textrm{TyConstant} & tcn & ::= & s & \textrm{size}\\
+                            &     &     & bt & \textrm{builtin type name}\\
         
     \end{array}\]
     \caption{Lexical Grammar of Plutus Core}

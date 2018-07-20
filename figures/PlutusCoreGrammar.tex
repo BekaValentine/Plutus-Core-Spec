@@ -14,13 +14,13 @@
                                   &        &     & \unwrap{M}                 & \textrm{fix type's unwrap}\\
                                   &        &     & \lam{x}{S}{M}              & \textrm{$\lambda$ abstraction}\\
                                   &        &     & \app{M}{N}                 & \textrm{function application}\\
-                                  &        &     & \con{bi}                   & \textrm{builtin}\\
+                                  &        &     & \con{cn}                   & \textrm{builtin}\\
                                   &        &     & \error{S}                  & \textrm{error}\\
         \textrm{Value}            & V      & ::= & \fix{x}{S}{M}              & \textrm{fixed point value}\\
                                   &        &     & \abs{\alpha}{K}{V}         & \textrm{type abstraction}\\
                                   &        &     & \wrap{\alpha}{S}{V}        & \textrm{fix type's wrap}\\
                                   &        &     & \lam{x}{S}{M}              & \textrm{$\lambda$ abstraction}\\
-                                  &        &     & \con{bi}                   & \textrm{builtin}\\
+                                  &        &     & \con{cn}                   & \textrm{builtin}\\
         \textrm{Type}             & A,B,C  & ::= & \alpha                     & \textrm{type variable}\\
                                   &        &     & \recT{A}                   & \textrm{general recursion type}\\
                                   &        &     & \funT{A}{B}                & \textrm{function type}\\
@@ -28,13 +28,13 @@
                                   &        &     & \fixT{\alpha}{A}           & \textrm{fixed point type}\\
                                   &        &     & \lamT{\alpha}{K}{A}        & \textrm{$\lambda$ abstraction}\\
                                   &        &     & \appT{A}{B}                & \textrm{function application}\\
-                                  &        &     & \conT{bt}                  & \textrm{builtin type}\\
+                                  &        &     & \conT{tcn}                  & \textrm{builtin type}\\
         \textrm{Type Value}       & R,S,T  & ::= & \recT{S}                   & \textrm{general recursion type}\\
                                   &        &     & \funT{S}{T}                & \textrm{function type}\\
                                   &        &     & \allT{\alpha}{K}{S}        & \textrm{polymorphic type}\\
                                   &        &     & \fixT{\alpha}{S}           & \textrm{fixed point type}\\
                                   &        &     & \lamT{\alpha}{K}{S}        & \textrm{$\lambda$ abstraction}\\
-                                  &        &     & \conT{bt}                  & \textrm{builtin type}\\
+                                  &        &     & \conT{tcn}                  & \textrm{builtin type}\\
                                   &        &     & W                          & \textrm{neutral type}\\
         \textrm{Neutral Type}     & W      &     & \alpha                     & \textrm{type variable}\\
                                   &        &     & \appT{W}{S}                & \textrm{function application}\\
