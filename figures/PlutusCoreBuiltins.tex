@@ -44,6 +44,7 @@
 
 \begin{landscape}
 \thispagestyle{empty}
+
 \begin{figure*}[t]
     \footnotesize
     \centering
@@ -60,7 +61,10 @@
         s & \sizeK{} & & s\\
     \end{array}\)\vspace{2em}
     
-    \hspace{-30em}\(\begin{array}{lllll}
+    \hspace{-50em}Let $txh$ be the transaction hash, $bnum$ be the block number, and $btime$ be the block time, all as global parameters to normalization.
+    \vspace{1em}
+    
+    \hspace{-35em}\qquad\quad\(\begin{array}{lllll}
         \textrm{Builtin Name} & \textrm{Type} & \textrm{Arguments} & \textrm{Semantics} & \textrm{Success Conditions}\\
         %&&\\
         
@@ -80,11 +84,11 @@
         remainderInteger  &  \forall s :: size.\ integer_s \to integer_s \to integer_s  &  s!i_0 , s!i_1   & s!(\operatorname{mod} \ i_0 \ i_1)                     & i_1 \not= 0\\
         %&&\\
         
-        lessThanInteger            &  \forall s :: size.\ integer_s \to integer_s \to bool  &  s!i_0 , s!i_1   &   i_0 < i_1\\
-        lessThanEqualsInteger      &  \forall s :: size.\ integer_s \to integer_s \to bool  &  s!i_0 , s!i_1   &   i_0 <= i_1\\
-        greaterThanInteger         &  \forall s :: size.\ integer_s \to integer_s \to bool  &  s!i_0 , s!i_1   &   i_0 > i_1\\
-þ        greaterThanEqualsInteger   &  \forall s :: size.\ integer_s \to integer_s \to bool  &  s!i_0 , s!i_1   &   i_0 >= i_1\\
-        equalsInteger              &  \forall s :: size.\ integer_s \to integer_s \to bool  &  s!i_0 , s!i_1   &   i_0 == i_1\\
+        lessThanInteger            &  \forall s :: size.\ integer_s \to integer_s \to boolean  &  s!i_0 , s!i_1   &   i_0 < i_1\\
+        lessThanEqualsInteger      &  \forall s :: size.\ integer_s \to integer_s \to boolean  &  s!i_0 , s!i_1   &   i_0 <= i_1\\
+        greaterThanInteger         &  \forall s :: size.\ integer_s \to integer_s \to boolean  &  s!i_0 , s!i_1   &   i_0 > i_1\\
+þ        greaterThanEqualsInteger   &  \forall s :: size.\ integer_s \to integer_s \to boolean  &  s!i_0 , s!i_1   &   i_0 >= i_1\\
+        equalsInteger              &  \forall s :: size.\ integer_s \to integer_s \to boolean  &  s!i_0 , s!i_1   &   i_0 == i_1\\
         %&&\\
         
         resizeInteger   &  \forall s_0, s_1 :: size.\ size_{s_1} \to integer_{s_0} \to integer_{s_1}  &   z, s_1!i   & s_1!i & -2^{8s_1-1} \leq i < 2^{8s_1-1}\\
@@ -107,22 +111,22 @@
         sha3\_256         &  \forall s :: size.\ bytestring_s \to bytestring_{\conT{256}}  &   s!b           & 256!(sha3\_256\  b)\\
         %&&\\
         
-        verifySignature   &  \forall s_0, s_1, s_2 :: size.\ bytestring_{s_0} \to bytestring_{s_1} \to bytestring_{s_2} \to bool  &   key, dat, sig           & verifySignature \  key \  dat \  sig\\
+        verifySignature   &  \forall s_0, s_1, s_2 :: size.\ bytestring_{s_0} \to bytestring_{s_1} \to bytestring_{s_2} \to boolean  &   key, dat, sig           & verifySignature \  key \  dat \  sig\\
         %&&\\
         
         resizeByteString   &   \forall s_0, s_1 :: size.\ size_{s_1} \to bytestring_{s_0} \to bytestring_{s_1}   &   z, s_0!b   &   s_1!b & |b| \leq s_1\\
         %&&\\
         
-        equalsByteString  &   \forall s :: size.\ bytestring_s \to bytestring_s \to bool   &   b_0 , b_1   & b_0 == b_1\\
+        equalsByteString  &   \forall s :: size.\ bytestring_s \to bytestring_s \to boolean   &   b_0 , b_1   & b_0 == b_1\\
         %&&\\
         
-        txhash   &   bytestring_{\conT{256}}   &   \textrm{---}  & \textit{the transaction hash}\\
+        txhash   &   bytestring_{\conT{256}}   &   \textrm{---}  & txh\\
         %&&\\
         
-        blocknum  &  \forall s :: size.\ size_s \to integer_s  & z & \textit{the block number}&\textit{the block number fits in $s$ bytes}\\
+        blocknum  &  \forall s :: size.\ size_s \to integer_s  & z & bnum & 0 \leq bnum < 2^{8s-1}\\
         %&&\\
         
-        blocktime &  \mathit{datetime}  &  \textit{None}  & \textit{the block time}\\
+        blocktime &  \mathit{datetime}  &  \textit{---}  & btime\\
     \end{array}\)
     
     \caption{Builtin Types and Reductions}
