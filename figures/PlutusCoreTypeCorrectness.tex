@@ -148,18 +148,6 @@
     \end{prooftree}
     
     \begin{prooftree}
-        \AxiomC{\(\hypJ{\Gamma, \termJ{x}{\recT{S}}}{\istermJ{M}{S}}\)}
-        \RightLabel{fix}
-        \UnaryInfC{\(\hypJ{\Gamma}{\istermJ{\fix{x}{S}{M}}{\recT{S}}}\)}
-    \end{prooftree}
-    
-    \begin{prooftree}
-        \AxiomC{\(\hypJ{\Gamma}{\istermJ{M}{\recT{S}}}\)}
-        \RightLabel{run}
-        \UnaryInfC{\(\hypJ{\Gamma}{\istermJ{\run{M}}{S}}\)}
-    \end{prooftree}
-    
-    \begin{prooftree}
         \AxiomC{\(\hypJ{\Gamma, \typeJ{\alpha}{K}}{\istermJ{M}{S}}\)}
         \RightLabel{abs}
         \UnaryInfC{\(\hypJ{\Gamma}{\istermJ{\abs{\alpha}{K}{M}}{\allT{\alpha}{K}{S}}}\)}

@@ -55,7 +55,6 @@
         \textrm{Frame} &   &     & \inInstLeftFrame{A}                     & \textrm{left instantiation}\\
                        %&   &     & \inInstRightFrame{V}                    & \textrm{right instantiation}\\
                        %&   &     & \inWrapLeftFrame{\alpha}{M}             & \textrm{left wrap}\\
-                       &   &     & \inRunFrame{}                           & \textrm{run}\\
                        &   &     & \inWrapRightFrame{\alpha}{A}            & \textrm{right wrap}\\
                        &   &     & \inUnwrapFrame{}                        & \textrm{unwrap}\\
                        %&   &     & \inLamLeftFrame{x}{M}                   & \textrm{$\lambda$}\\
@@ -71,11 +70,6 @@
 
 \begin{figure*}[t]
     \judgmentdef{\(\step{M}{M'}\)}{Term $M$ reduces in one step to term $M'$}
-    
-    \begin{prooftree}
-        \AxiomC{}
-        \UnaryInfC{\(\step{\run{\fix{x}{S}{M}}}{\subst{\fix{x}{A}{M}}{x}{M}}\)}
-    \end{prooftree}
     
     \begin{prooftree}
         \AxiomC{}
@@ -152,23 +146,23 @@
     \judgmentdef{\(\cksteps{\sigma}{\sigma'}\)}{Machine state $\sigma$ transitions in one step to machine state $\sigma'$}
     
     \begin{align*}
-        &\cksteps{\ckforward{s}{\fix{x}{A}{M}}}{\ckbackward{s}{\fix{x}{A}{M}}}\\
-        &\cksteps{\ckforward{s}{\run{M}}}{\ckforward{s, \inRunFrame{}}{M}}\\
         &\cksteps{\ckforward{s}{\abs{\alpha}{K}{M}}}{\ckbackward{s}{\abs{\alpha}{K}{M}}}\\
         &\cksteps{\ckforward{s}{\inst{M}{A}}}{\ckforward{s, \inInstLeftFrame{A}}{M}}\\
         &\cksteps{\ckforward{s}{\wrap{\alpha}{A}{M}}}{\ckforward{s, \inWrapRightFrame{\alpha}{A}}{M}}\\
         &\cksteps{\ckforward{s}{\unwrap{M}}}{\ckforward{s, \inUnwrapFrame{}}{M}}\\
         &\cksteps{\ckforward{s}{\lam{x}{A}{M}}}{\ckbackward{s}{\lam{x}{A}{M}}}\\
         &\cksteps{\ckforward{s}{\app{M}{N}}}{\ckforward{s, \inAppLeftFrame{N}}{M}}\\
-        &\cksteps{\ckforward{s}{M}}{\ckbackward{s}{V}} ~~~~ \textit{if $M$ is a fully saturated constant and computes to $V$ in Fig \ref{fig:Plutus_core_builtins}}\\
-        &\cksteps{\ckforward{s}{M}}{\ckbackward{s}{M}} ~~~~ \textit{if $M$ is a partially saturated constant}\\
+        &\cksteps{\ckforward{s}{\con{cn}}}{\ckbackward{s}{\con{cn}}}\\
         &\cksteps{\ckforward{s}{\error{S}}}{\ckerror{}}\\
-        &\cksteps{\ckbackward{s, \inRunFrame{}}{\fix{x}{S}{M}}}{\ckforward{s}{\subst{\fix{x}{S}{M}}{x}{M}}}\\
         &\cksteps{\ckbackward{s, \inInstLeftFrame{A}}{\abs{\alpha}{K}{M}}}{\ckforward{s}{M}}\\
+        &\cksteps{\ckbackward{s, \inInstLeftFrame{A}}{M}}{\ckbackward{s}{V}} \quad \textit{fully saturated constant}\\
+        &\cksteps{\ckbackward{s, \inInstLeftFrame{A}}{M}}{\ckbackward{s}{\inst{M}{A}}} \quad \textit{partially saturated constant}\\
         &\cksteps{\ckbackward{s, \inWrapRightFrame{\alpha}{A}}{V}}{\ckbackward{s}{\wrap{\alpha}{A}{V}}}\\
         &\cksteps{\ckbackward{s, \inUnwrapFrame{}}{\wrap{\alpha}{A}{V}}}{\ckbackward{s}{V}}\\
         &\cksteps{\ckbackward{s, \inAppLeftFrame{N}}{V}}{\ckforward{s, \inAppRightFrame{V}}{N}}\\
         &\cksteps{\ckbackward{s, \inAppRightFrame{\lam{x}{A}{M}}}{V}}{\ckforward{s}{\subst{V}{x}{M}}}\\
+        &\cksteps{\ckbackward{s,\inAppRightFrame{M}}{N}}{\ckbackward{s}{V}} \quad \textit{fully saturated constant}\\
+        &\cksteps{\ckbackward{s,\inAppRightFrame{M}}{N}}{\ckbackward{s}{\app{M}{N}}} \quad \textit{partially saturated constant}\\
     \end{align*}
     
     \caption{CK Machine}

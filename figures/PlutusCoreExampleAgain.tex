@@ -7,13 +7,11 @@ We illustrate the use of Plutus Core by constructing a simple validator program.
 one : $unit$
 one = (abs $a$ (type) (lam $x$ $a$ $x$))
 \end{lstlisting}
-for the element of the built in type
-\begin{lstlisting}[basicstyle=\ttfamily,mathescape]
-$unit$ := (all a (type) (fun a a))
-\end{lstlisting}
+for the element of the type $unit$ (defined in \ref{fig:Plutus_core_type_abbreviations}).
+
 We stress that declarations in this style are \textbf{not part of the Plutus Core language}. We merely use the familiar syntax to present out example. If the high-level definitions in our example were compiled to a Plutus Core expression, it would result in something like figure \ref{fig:Continuized_Let_Example}.
 
-We proceed by defining the booleans. Like $unit$, the type $boolean$ is bulit in in to the language, but its elements are not. We have
+We proceed by defining the booleans. Like $unit$, the type $boolean$ below is an abbreviation in the specification. Some built-in constants return values of type $boolean$. When needed, user programs should contain the declarations below. We have
 \begin{lstlisting}[basicstyle=\ttfamily,mathescape]
 true : $boolean$
 true = (abs $a$ (type)
@@ -112,7 +110,7 @@ Notice that we must supply $blocknum$ with the size we wish to use to store the 
                 (error $unit$)]))))))))
   ]
 \end{lstlisting}
-\caption{Imaginary result of compiling the above names}
+\caption{Example of Section VII written out in full}
 \label{fig:Continuized_Let_Example}
 \end{figure*}
 
