@@ -833,17 +833,23 @@ gain access to recursion.
 
 \section{Syntax}
 
-The lexical syntax of Plutus Core is described in Figure 1.  Lexemes
-are described in standard regular expression notation.  The only other
+The grammar of Plutus Core is given in \ref{fig:Plutus_core_grammar} and 
+\ref{fig:Plutus_core_lexical_grammar}. This grammar describes the abstract
+syntax trees of Plutus Core, in a convenient notation, and also describes
+the string syntax to be used when referring to those ASTs. The string
+syntax is not fundamental to Plutus Core, and only exists because we must
+refer to programs in documents such as this. Plutus Core programs are
+intended exist only as ASTs produced by compilers from higher languages,
+and as serialized representations on blockchains, and therefore we do not
+expect anyone to write programs in Plutus Core, nor need to use a parser
+for the language.
+
+Lexemes are described in standard regular expression notation.  The only other
 lexemes are round \texttt{()}, square \texttt{[]}, and curly \texttt{\{\}}
 brackets.  Spaces and tabs are allowed anywhere, and have no effect
 save to separate lexemes.
 
-The syntax of Plutus Core is described in Figure 2. Most constructs
-resemble Lisp, with round brackets and a keyword. Variables appear on
-their own.
-
-Aapplication in both terms and types is indicated by square
+Application in both terms and types is indicated by square
 brackets, and instantiation in terms is indicated by curly brackets. We
 permit the use of multi-argument application and instantiation as
 syntactic sugar for iterated application.
@@ -856,7 +862,10 @@ is sugar for
   [[[M_0 ~ M_1] ~ M_2] ~ M_3]
 \]
 All subsequent definitions assume iterated application and instantiation
-has been expanded out, and use only the binary form.
+has been expanded out, and use only the binary form. To the extent that
+a standard utility parser for Plutus Core might be made, for debugging
+purposes and other such things, iterated application and instantiation
+ought to be included as sugar.
 
 %In this grammar, we have multi-argument application, both in types (\(\appT{A}{B^+}\)) and in terms (\(\app{M}{N^+}\)), as well as multi-argument instantiation in terms (\(\inst{M}{A^*}\)). This is to be understood as a convenient form of syntactic sugar for iterated binary application associated to the left, and the formal rules treat only the binary case.
 
