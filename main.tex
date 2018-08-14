@@ -387,7 +387,7 @@
 \newcommand{\iffbecause}[1]{\Leftrightarrow~\textrm{\{#1\}}}
 \newcommand{\qed}{\square}
 \newcommand{\qedbecause}[1]{\square~\textrm{\{#1\}}}
-\newcommand{\Fomega}{F$^{\omega}$}
+\newcommand{\Fomega}{F$_{\omega}$}
 
 \newcommand{\keyword}[1]{\texttt{#1}}
 \newcommand{\size}[1]{\texttt{#1}}
@@ -799,33 +799,20 @@
 
 Plutus Core is the target for compilation of Plutus TX, the smart
 contract language to validate transactions on Cardano. Plutus Core is
-designed to be simple and easy to reason about using proof assistants
+designed to be simple to formalize for use with proof assistants
 and automated theorem provers.
 
-Plutus Core has a strong formal basis. For those familiar with
-programming language theory, it can be described in one line: higher
-kinded System F with isorecursive types, and suitable
-primitive types and values. There are no constructs for data types,
-which are represented using Scott encodings---we do not use Church
-encodings since they may require linear rather than constant time to
-access the components of a data structure. Primitive types, such as
+Plutus Core has a strong formal basis, being based on system F$_{\omega}$ with iso-recursive types.
+There are no constructs for data types, which are represented using Scott encodings. Primitive types, such as
 Integer and Bytestring, are indexed by their size, which allows the
 cost (in gas) of operations such as addition to be determined at
-compile time. In contrast, IELE uses unbounded integers, which never
+compile time. In contrast, IELE uses unbounded integers \cite{IELE?}, which never
 overflow, but require that the gas used is calculated at run time. We
-use \Fomega{} (as opposed to F) because it supports types indexed by
+use F$_{\omega}$ (as opposed to system F) because it supports types indexed by
 size and parameterised types (such as ``List of A'').
 
-Plutus Core also notable lacks obvious built-in support for recursion,
-either general or otherwise. The reason for this is simply that in
-the presence of type left fixed points, it's possible to give a valid
-type to recursion combinators. This is analogous to the fact that in
-Haskell, you can define the Y combinator but you need to use a newtype
-declaration to do. Precisely which combinators one defines is up to
-the user, but as Plutus itself is eagerly reduced, some of them will
-lead to looping behavior, including Y. Libraries can of course
-be defined with various combinators provided as a convenient way to
-gain access to recursion.
+Notably, Plutus Core lacks explicit support for general recursion. The presence of fixed points at the type level allows us to construct term level fixed points regardless, so we omit the unnecessary term level syntax.
+While this does make writing recursive programs more complicated, we intend for Plutus TX to allow easier access to term level recursion.
 
 %Plutus Core is a typed, strict, eagerly-reduced $\lambda$-calculus design to run as a transaction validation scripting language on blockchain systems. It's designed to be simple and easy to reason about using mechanized proof assistants and automated theorem provers. The grammar of the language is given in Figures \ref{fig:Plutus_core_grammar} and \ref{fig:Plutus_core_lexical_grammar}, using a modified s-expression format. The language can be described as a higher-kinded Church-style/intrinsically-typed System F variant with fixedpoint terms, equirecursive fixedpoint types, constant terms, constant types, and size-indexed types. As such, we have the following syntactic constructs at the term level: variables, type annotation, type abstraction, type instantiation, $\lambda$ abstraction, application, term-level fixed points, and term constants. At the type level, we have the following syntactic constructs: variables, polymorphic types, function types, fixedpoint types, $\lambda$ abstraction, application, and constant types. Additionally we have the following kind-level constructs: type kind, function kind, and size kind. The language also explicitly tracks versions for tracking which version of the normalizer is to be run.
 
@@ -898,9 +885,9 @@ ought to be included as sugar.
 
 We define for Plutus Core a number of typing judgments which explain ways that a program can be well-formed. First, in Figure \ref{fig:Plutus_core_contexts}, we define the grammar of variable contexts that these judgments hold under. Variable contexts contain information about the nature of variables --- type variables with their kind, and term variables with their type.
 
-Then, in Figure \ref{fig:Plutus_core_kind_synthesis}, we define what it means for a type synthesize a kind. Plutus Core is a higher-kinded version of System F, so we have a number of standard System F rules together with some obvious extensions. In Figure \ref{fig:Plutus_core_type_synthesis}, we define the type synthesis judgment, which explains how a term synthesizes a type.
+Then, in Figure \ref{fig:Plutus_core_kind_synthesis}, we define what it means for a type synthesize a kind. In Figure \ref{fig:Plutus_core_type_synthesis}, we define the type synthesis judgment, which explains how a term synthesizes a type.
 
-Finally, type synthesis for constants ($\con{bn}$ and $\conT{bt}$) is given in tabular form rather than in inference rule form, in Figure \ref{fig:Plutus_core_builtins}, which also gives the reduction semantics. This table also specifies what conditions trigger an error.
+In Figure \ref{fig:Plutus_core_builtins}, type synthesis rules for constants ($\con{bn}$ and $\conT{bt}$) are given in tabular form along with their reduction semantics. This table also specifies what conditions trigger an error.
 
 
 
@@ -919,7 +906,7 @@ Finally, type synthesis for constants ($\con{bn}$ and $\conT{bt}$) is given in t
 
 \section{Reduction and Execution}
 
-In figure \ref{fig:Plutus_core_reduction}, we define a standard eager, small-step contextual semantics for Plutus Core in terms of the reduction relation for types (\(\typeStep{A}{A'}\)) and terms (\(\step{M}{M'}\)), which incorporates both $\beta$ reduction and contextual congruence. We make use of the transitive closure of these stepping relations via the usual Kleene star notation.
+In figure \ref{fig:Plutus_core_reduction}, we define a standard eager, small-step contextual semantics for Plutus Core in terms of the reduction relation for types (\(\typeStep{A}{A'}\)) and terms (\(\step{M}{M'}\)), which incorporates both $\beta$ reduction and contextual congruence. We denote the transitive closure of these stepping relations using the Kleene star.
 
 In the context of a blockchain system, it can be useful to also have a step indexed version of stepping, indicated by a superscript count of steps (\(\multistepIndexed{M}{n}{M'}\)). In order to prevent transaction validation from looping indefinitely, or from simply taking an inordinate amount of time, which would be a serious security flaw in the blockchain system, we can use step indexing to put an upper bound on the number of computational steps that a program can have. In this setting, we would pick some upper bound $\mathit{max}$ and then perform steps of terms $M$ by computing which $M'$ is such that \(\multistepIndexed{M}{\mathit{max}}{M'}\).
 
@@ -935,7 +922,7 @@ In the context of a blockchain system, it can be useful to also have a step inde
 
 \section{Basic Validation Program Structure}
 
-The basic way that validation is done in Plutus Core is somewhat similar to what's in Bitcoin Script. Whereas in Bitcoin Script, a validation is successful if the validating script successfully executes and leaves $\textit{true}$ on the top of the stack, in Plutus Core, validation is successful when the script reduces to any value other than \(\error{A}\) in the allotted number of steps.
+The basic way that validation is done in Plutus Core is somewhat similar to what's in Bitcoin Script. Where in Bitcoin Script, a validation is successful if the validating script successfully executes and leaves $\textit{true}$ on the top of the stack, in Plutus Core, validation is successful when the script reduces to any value other than \(\error{A}\) in the allotted number of steps.
 
 
 
