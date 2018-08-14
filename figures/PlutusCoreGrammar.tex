@@ -5,7 +5,7 @@
 \begin{figure*}[t]
     \centering
     \[\begin{array}{lrclr}
-        \textrm{Term}             & L,M,N  &     & x                          & \textrm{variable}\\
+        \textrm{Term}             & L,M,N  &::= & x                          & \textrm{variable}\\
                                   &        &     & \abs{\alpha}{K}{V}         & \textrm{type abstraction}\\
                                   &        &     & \inst{M}{S}                & \textrm{type instantiation}\\
                                   &        &     & \wrap{\alpha}{S}{M}        & \textrm{fix type's wrap}\\
@@ -14,11 +14,13 @@
                                   &        &     & \app{M}{N}                 & \textrm{function application}\\
                                   &        &     & \con{cn}                   & \textrm{builtin}\\
                                   &        &     & \error{S}                  & \textrm{error}\\
-        \textrm{Value}            &        &     & \abs{\alpha}{K}{V}         & \textrm{type abstraction}\\
+        \textrm{Value}            &U, V    & ::= & \abs{\alpha}{K}{V}         & \textrm{type abstraction}\\
                                   &        &     & \wrap{\alpha}{S}{V}        & \textrm{fix type's wrap}\\
                                   &        &     & \lam{x}{S}{M}              & \textrm{$\lambda$ abstraction}\\
-                                  &        &     & \con{cn}                   & \textrm{builtin}\\
-        \textrm{Neutral Constant} & 
+                                  &        &     & BV                         & \textrm{builtin value}\\
+        \textrm{Builtin Value}    & BV     & ::= & \con{cn}                   & \textrm{builtin}\\
+                                  &        &     & \app{BV}{V}                & \textrm{function application}\\
+                                  &        &     & \inst{BV}{A}               & \textrm{type instantiation}\\
         \textrm{Type}             & A,B,C  & ::= & \alpha                     & \textrm{type variable}\\
                                   &        &     & \funT{A}{B}                & \textrm{function type}\\
                                   &        &     & \allT{\alpha}{K}{A}        & \textrm{polymorphic type}\\
