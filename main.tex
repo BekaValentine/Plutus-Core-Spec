@@ -690,9 +690,10 @@
 \newcommand{\chkpatfull}[5]{#1 ~\vdash~ #2  ~ \textit{pattern} ~ #3 ~\triangleright~ #4 ~\dashv~ #5}
 \newcommand{\chkpatfullsplit}[5]{\begin{array}{c}#1 ~\vdash~ #2  ~ \textit{pattern} ~ #3 ~\triangleright\\ #4 ~\dashv~ #5\end{array}}
 
-
-
-
+%% kwxm: macro for notes
+\usepackage{xcolor}
+\newcommand{\red}[1]{\textcolor{red}{#1}}
+\newcommand{\redfootnote}[1]{\red{\footnote{\red{#1}}}}
 
 \begin{document}
 %
@@ -750,7 +751,6 @@
 
 
 
-
 % make the title area
 \maketitle
 
@@ -792,9 +792,6 @@
 % creates the second title. It will be ignored for other modes.
 \IEEEpeerreviewmaketitle
 
-
-
-
 \section{Plutus Core}
 
 Plutus Core is the target for compilation of Plutus TX, the smart
@@ -811,17 +808,29 @@ encodings since they may require linear rather than constant time to
 access the components of a data structure. Primitive types, such as
 Integer and Bytestring, are indexed by their size, which allows the
 cost (in gas) of operations such as addition to be determined at
-compile time. In contrast, IELE uses unbounded integers, which never
+compile time.%
+%%%
+\redfootnote{Is this true?  Are we actually doing this at the moment or does it need extra analysis?}
+%%%
+ In contrast, IELE uses unbounded integers, which never
 overflow, but require that the gas used is calculated at run time. We
-use \Fomega{} (as opposed to F) because it supports types indexed by
+use \Fomega{} (as opposed to F)%
+%%%
+\redfootnote{F$^{\omega}$ or F$_{\omega}$?}
+%%%
+because it supports types indexed by
 size and parameterised types (such as ``List of A'').
 
-Plutus Core also notable lacks obvious built-in support for recursion,
+Plutus Core also notably lacks obvious built-in support for recursion,
 either general or otherwise. The reason for this is simply that in
-the presence of type left fixed points, it's possible to give a valid
+the presence of type left %
+%%%
+\red{[Eh?]} 
+%%%
+fixed points, it's possible to give a valid
 type to recursion combinators. This is analogous to the fact that in
 Haskell, you can define the Y combinator but you need to use a newtype
-declaration to do. Precisely which combinators one defines is up to
+declaration to do. Precisely which combinators are defined is up to
 the user, but as Plutus itself is eagerly reduced, some of them will
 lead to looping behavior, including Y. Libraries can of course
 be defined with various combinators provided as a convenient way to
@@ -831,9 +840,17 @@ gain access to recursion.
 
 %By using a variant of System F, we're able to capture various desirable abstraction properties via the continuation-based encoding of existential types. The choice to use fixedpoint types is so that we can represent recursive types via Scott encodings (instead of the less efficient and harder-to-program Church encodings typical of pure System F). Higher-kindedness makes it possible to define type operators like $\textit{List}$ rather than defining the non-parametric types $\textit{ListOfA}$ for each choice of $A$. Finally, sized types make it possible to specify for certain constant types precise what kind of memory usage they'll have. In particular, we track the size of integers and bytestrings explicitly in the types for them, which makes many kinds of formal reasoning about computation time possible.
 
+%%%%%%%%%%
+\red{It might be helpful to have the figures containing the syntax, type system, etc.
+closer to the point where they're talked about.  Almost all of the text appears on
+page 1, then we get 8 or 9 pages of formulas.}  
+\red{Indeed, why not have (sub)sections rather than figures?  I think this
+would certainly be sensible for things like the progress and preservation proofs.}
+%%%%%%%%%%
+
 \section{Syntax}
 
-The grammar of Plutus Core is given in \ref{fig:Plutus_core_grammar} and 
+The grammar of Plutus Core is given in Figures \ref{fig:Plutus_core_grammar} and 
 \ref{fig:Plutus_core_lexical_grammar}. This grammar describes the abstract
 syntax trees of Plutus Core, in a convenient notation, and also describes
 the string syntax to be used when referring to those ASTs. The string
@@ -862,7 +879,11 @@ is sugar for
   [[[M_0 ~ M_1] ~ M_2] ~ M_3]
 \]
 All subsequent definitions assume iterated application and instantiation
-has been expanded out, and use only the binary form. To the extent that
+has been expanded out, and use only the binary form.%
+%%%
+\redfootnote{``Binary'' made me think of 0101011010.  ``Single-argument form''?}
+%%%
+To the extent that
 a standard utility parser for Plutus Core might be made, for debugging
 purposes and other such things, iterated application and instantiation
 ought to be included as sugar.
@@ -870,11 +891,42 @@ ought to be included as sugar.
 %In this grammar, we have multi-argument application, both in types (\(\appT{A}{B^+}\)) and in terms (\(\app{M}{N^+}\)), as well as multi-argument instantiation in terms (\(\inst{M}{A^*}\)). This is to be understood as a convenient form of syntactic sugar for iterated binary application associated to the left, and the formal rules treat only the binary case.
 
 
-
 \subfile{figures/PlutusCoreLexicalGrammar}
 
 \subfile{figures/PlutusCoreGrammar}
 
+%%%%%%%
+\red{Some more explanation of the syntax would be helpful here. I
+  found it quite difficult to work out what the purpose of some of the 
+  syntax was.  I think that there are also some typos.  [I was working from
+    a printed version which missed out the definition of $V$, but I've just noticed that this 
+    has been corrected in this version. Some of my comments may be based on the old version.]
+\begin{itemize}
+\item Are Values also Terms?
+%
+\item Under Term (and maybe also under Value), should $\abs{\alpha}{K}{V}$ be $\abs{\alpha}{K}{M}$?
+%
+\item I was initially quite confused by there being two \texttt{lam}s and an \texttt{abs}, 
+all types of abstraction.  Some up-front explanation (maybe showing how they correspond
+to more standard things like $\lambda x:S.M$ and $\lambda \alpha::K.V$) might be helpful for the reader.
+%
+\item I found it difficult to understand the roles of ``Type'' and
+  ``Type Value'' just looking at the syntax in isolation.  I think
+  Type Values are Types which have been normalised according to Figure
+  7.  It would be useful to explain this in advance, and also to say
+  why type normalisation is useful.  Also, would something like ``Normalised Type'' be 
+  more informative than ``Type Value''?
+%
+\item It might also be worth pointing out that the syntax of Type Values is essentially
+the same as that of Types, except where application is concerned.
+%
+\item What's neutral about a ``neutral'' type?
+\item An explanation of the \texttt{size} kind would be useful as well.
+\item I don't think $L$, $U$, $C$ and $R$ are ever used.  That's unimportant though.
+ \end{itemize}
+[Sorry, I couldn't get this to appear closer to the actual grammar.]
+}
+%%%%%%%
 
 
 
@@ -898,7 +950,7 @@ ought to be included as sugar.
 
 We define for Plutus Core a number of typing judgments which explain ways that a program can be well-formed. First, in Figure \ref{fig:Plutus_core_contexts}, we define the grammar of variable contexts that these judgments hold under. Variable contexts contain information about the nature of variables --- type variables with their kind, and term variables with their type.
 
-Then, in Figure \ref{fig:Plutus_core_kind_synthesis}, we define what it means for a type synthesize a kind. Plutus Core is a higher-kinded version of System F, so we have a number of standard System F rules together with some obvious extensions. In Figure \ref{fig:Plutus_core_type_synthesis}, we define the type synthesis judgment, which explains how a term synthesizes a type.
+Then, in Figure \ref{fig:Plutus_core_kind_synthesis}, we define what it means for a type to synthesize a kind. Plutus Core is a higher-kinded version of System F, so we have a number of standard System F rules together with some obvious extensions. In Figure \ref{fig:Plutus_core_type_synthesis}, we define the type synthesis judgment, which explains how a term synthesizes a type.
 
 Finally, type synthesis for constants ($\con{bn}$ and $\conT{bt}$) is given in tabular form rather than in inference rule form, in Figure \ref{fig:Plutus_core_builtins}, which also gives the reduction semantics. This table also specifies what conditions trigger an error.
 
@@ -919,10 +971,22 @@ Finally, type synthesis for constants ($\con{bn}$ and $\conT{bt}$) is given in t
 
 \section{Reduction and Execution}
 
-In figure \ref{fig:Plutus_core_reduction}, we define a standard eager, small-step contextual semantics for Plutus Core in terms of the reduction relation for types (\(\typeStep{A}{A'}\)) and terms (\(\step{M}{M'}\)), which incorporates both $\beta$ reduction and contextual congruence. We make use of the transitive closure of these stepping relations via the usual Kleene star notation.
+In figure \ref{fig:Plutus_core_reduction}, we define a standard eager, small-step contextual semantics%
+%%%
+\redfootnote{The term ``contextual semantics'' wasn't familiar to me and Google wasn't much help.  
+However the style of semantics \textit{is} familiar: I'm not sure what I'd call it though.
+Is there a reference for this that might help the reader?} 
+%%%
+for Plutus Core in terms of the reduction relation for types (\(\typeStep{A}{A'}\)) and terms (\(\step{M}{M'}\)), which incorporates both $\beta$ reduction and contextual congruence. We make use of the transitive closure of these stepping relations via the usual Kleene star notation.
 
-In the context of a blockchain system, it can be useful to also have a step indexed version of stepping, indicated by a superscript count of steps (\(\multistepIndexed{M}{n}{M'}\)). In order to prevent transaction validation from looping indefinitely, or from simply taking an inordinate amount of time, which would be a serious security flaw in the blockchain system, we can use step indexing to put an upper bound on the number of computational steps that a program can have. In this setting, we would pick some upper bound $\mathit{max}$ and then perform steps of terms $M$ by computing which $M'$ is such that \(\multistepIndexed{M}{\mathit{max}}{M'}\).
-
+In the context of a blockchain system, it can be useful to also have a step indexed version of stepping, indicated by a superscript count of steps (\(\multistepIndexed{M}{n}{M'}\)). In order to prevent transaction validation from looping indefinitely, or from simply taking an inordinate amount of time, which would be a serious security%
+%%%
+\redfootnote{Is it really a \textit{security} flaw?}
+%%%
+ flaw in the blockchain system, we can use step indexing to put an upper bound on the number of computational steps that a program can have. In this setting, we would pick some upper bound $\mathit{max}$ and then perform steps of terms $M$ by computing which $M'$ is such that \(\multistepIndexed{M}{\mathit{max}}{M'}\).%
+%%%
+\redfootnote{This sentence is a bit convoluted.  Is it saying that we perform at most \textit{max}
+reductions and then look at what we get?}
 
 
 \subfile{figures/PlutusCoreReduction}
@@ -933,8 +997,7 @@ In the context of a blockchain system, it can be useful to also have a step inde
 
 
 
-\section{Basic Validation Program Structure}
-
+\section{Basic Validation Program Structure\protect\redfootnote{I'm not sure what this is supposed to mean...}}
 The basic way that validation is done in Plutus Core is somewhat similar to what's in Bitcoin Script. Whereas in Bitcoin Script, a validation is successful if the validating script successfully executes and leaves $\textit{true}$ on the top of the stack, in Plutus Core, validation is successful when the script reduces to any value other than \(\error{A}\) in the allotted number of steps.
 
 
@@ -958,7 +1021,8 @@ TO WRITE
 \subfile{figures/PlutusCoreExampleAgain}
 
 
-
+\red{[I didn't get any further than this. I guess the rest of the document is still in a state
+of flux anyway.]}
 
 \section{Progress and Preservation}
 

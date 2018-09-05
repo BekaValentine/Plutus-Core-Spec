@@ -93,6 +93,8 @@
         \UnaryInfC{\(\step{M}{V}\)}
     \end{prooftree}
     
+    \red{What does ``fully saturated'' mean?}
+
     %\begin{prooftree}
     %    \AxiomC{\(\typeStep{A}{A'}\)}
     %    \UnaryInfC{\(\step{\ctxsubst{f}{A}}{\ctxsubst{f}{A'}}\)}
@@ -134,6 +136,10 @@
                        %&        &     & \ckbackward{s}{S}                 & \textrm{returning a type value}\\
                        &        &     & \ckerror{}                        & \textrm{throwing an error}
     \end{array}\]
+
+\red{In Figure 6, $f$ is defined to be a Type Frame.  I think we actually want plain
+Frames here, which are defined in Figure 8 without any name.  Note that $f$ reappears later,
+in Figure 16 where it's got something to do with erasure.}
     
     \caption{Grammar of CK Machine States}
     \label{fig:Plutus_core_ck_frames}
@@ -154,18 +160,42 @@
         &\cksteps{\ckforward{s}{\con{cn}}}{\ckbackward{s}{\con{cn}}}\\
         &\cksteps{\ckforward{s}{\error{S}}}{\ckerror{}}\\
         &\cksteps{\ckbackward{s, \inInstLeftFrame{A}}{\abs{\alpha}{K}{M}}}{\ckforward{s}{M}}\\
-        &\cksteps{\ckbackward{s, \inInstLeftFrame{A}}{M}}{\ckbackward{s}{V}} \quad \textit{fully saturated constant}\\
+        &\cksteps{\ckbackward{s, \inInstLeftFrame{A}}{M}}{\ckbackward{s}{V}} \quad \textit{fully saturated constant} \quad\mbox{\red{Where does V come from?}}\\
         &\cksteps{\ckbackward{s, \inInstLeftFrame{A}}{M}}{\ckbackward{s}{\inst{M}{A}}} \quad \textit{partially saturated constant}\\
         &\cksteps{\ckbackward{s, \inWrapRightFrame{\alpha}{A}}{V}}{\ckbackward{s}{\wrap{\alpha}{A}{V}}}\\
         &\cksteps{\ckbackward{s, \inUnwrapFrame{}}{\wrap{\alpha}{A}{V}}}{\ckbackward{s}{V}}\\
         &\cksteps{\ckbackward{s, \inAppLeftFrame{N}}{V}}{\ckforward{s, \inAppRightFrame{V}}{N}}\\
         &\cksteps{\ckbackward{s, \inAppRightFrame{\lam{x}{A}{M}}}{V}}{\ckforward{s}{\subst{V}{x}{M}}}\\
-        &\cksteps{\ckbackward{s,\inAppRightFrame{M}}{N}}{\ckbackward{s}{V}} \quad \textit{fully saturated constant}\\
+        &\cksteps{\ckbackward{s,\inAppRightFrame{M}}{N}}{\ckbackward{s}{V}} \quad \textit{fully saturated constant} \quad\mbox{\red{Where does V come from?}}\\
         &\cksteps{\ckbackward{s,\inAppRightFrame{M}}{N}}{\ckbackward{s}{\app{M}{N}}} \quad \textit{partially saturated constant}\\
     \end{align*}
-    
+
     \caption{CK Machine}
     \label{fig:Plutus_core_ck_machine}
+%%%%%%%%%%%%%
+\vskip5mm
+\red{I couldn't see any definition of ``fully saturated'' and ``partially saturated'' constants. Also,
+why not just ``saturated and ``unsaturated''?}
+\vskip5mm
+\red{The machine has states of the form $s \triangleright M$ and $s \triangleleft V$
+where $M$ is a term and $V$ is a value (I think), but there are a number of inconsistencies with the grammar.
+For example:
+\begin{itemize}
+\item There's a transition for the state $s \triangleright \{M A\}$, but according to Figure 3 
+ $\{M A\}$ isn't a term; there is a term $\{M S\}$, but this requires a type value (normalised type?)
+$S$, and $A$ denotes a type.  In fact, all of the transitions listed above involve $A$s, but terms 
+in the grammar all contain $S$s.
+%
+\item If $x$ is a variable name then $x$ is a term, but there's no transition for this.
+%
+\item There's a state $s, [M \_] \triangleleft N$.  We're supposed to have a $V$ on the right of the
+$\triangleleft$, but I think $N$ is a term instead.
+Similarly, I don't think $[M N]$ on the right of the last transition is a $V$.
+%
+\item Hmmm.  We have an implementation of this, so it must make sense to someone...
+\end{itemize}
+}
+%%%%%%%%%%%%%
 \end{figure*}
 
 
