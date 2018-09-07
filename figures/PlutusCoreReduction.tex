@@ -72,7 +72,7 @@
     
     \begin{prooftree}
         \AxiomC{}
-        \UnaryInfC{\(\step{\inst{\abs{\alpha}{K}{M}}{S}}{\subst{S}{\alpha}{M}}\)}
+        \UnaryInfC{\(\step{\inst{\abs{\alpha}{K}{M}}{A}}{\subst{A}{\alpha}{M}}\)}
     \end{prooftree}
     
     \begin{prooftree}
@@ -152,7 +152,7 @@
         &\cksteps{\ckforward{s}{\lam{x}{A}{M}}}{\ckbackward{s}{\lam{x}{A}{M}}}\\
         &\cksteps{\ckforward{s}{\app{M}{N}}}{\ckforward{s, \inAppLeftFrame{N}}{M}}\\
         &\cksteps{\ckforward{s}{\con{cn}}}{\ckbackward{s}{\con{cn}}}\\
-        &\cksteps{\ckforward{s}{\error{S}}}{\ckerror{}}\\
+        &\cksteps{\ckforward{s}{\error{A}}}{\ckerror{}}\\
         &\cksteps{\ckbackward{s, \inInstLeftFrame{A}}{\abs{\alpha}{K}{M}}}{\ckforward{s}{M}}\\
         &\cksteps{\ckbackward{s, \inInstLeftFrame{A}}{M}}{\ckbackward{s}{V}} \quad \textit{fully saturated constant}\\
         &\cksteps{\ckbackward{s, \inInstLeftFrame{A}}{M}}{\ckbackward{s}{\inst{M}{A}}} \quad \textit{partially saturated constant}\\

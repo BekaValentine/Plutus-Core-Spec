@@ -7,16 +7,16 @@
     \[\begin{array}{lrclr}
         \textrm{Term}             & L,M,N  &::= & x                          & \textrm{variable}\\
                                   &        &     & \abs{\alpha}{K}{V}         & \textrm{type abstraction}\\
-                                  &        &     & \inst{M}{S}                & \textrm{type instantiation}\\
-                                  &        &     & \wrap{\alpha}{S}{M}        & \textrm{fix type's wrap}\\
+                                  &        &     & \inst{M}{A}                & \textrm{type instantiation}\\
+                                  &        &     & \wrap{\alpha}{A}{M}        & \textrm{fix type's wrap}\\
                                   &        &     & \unwrap{M}                 & \textrm{fix type's unwrap}\\
-                                  &        &     & \lam{x}{S}{M}              & \textrm{$\lambda$ abstraction}\\
+                                  &        &     & \lam{x}{A}{M}              & \textrm{$\lambda$ abstraction}\\
                                   &        &     & \app{M}{N}                 & \textrm{function application}\\
                                   &        &     & \con{cn}                   & \textrm{builtin}\\
-                                  &        &     & \error{S}                  & \textrm{error}\\
+                                  &        &     & \error{A}                  & \textrm{error}\\
         \textrm{Value}            &U, V    & ::= & \abs{\alpha}{K}{V}         & \textrm{type abstraction}\\
-                                  &        &     & \wrap{\alpha}{S}{V}        & \textrm{fix type's wrap}\\
-                                  &        &     & \lam{x}{S}{M}              & \textrm{$\lambda$ abstraction}\\
+                                  &        &     & \wrap{\alpha}{A}{V}        & \textrm{fix type's wrap}\\
+                                  &        &     & \lam{x}{A}{M}              & \textrm{$\lambda$ abstraction}\\
                                   &        &     & BV                         & \textrm{builtin value}\\
         \textrm{Builtin Value}    & BV     & ::= & \con{cn}                   & \textrm{builtin}\\
                                   &        &     & \app{BV}{V}                & \textrm{function application}\\
