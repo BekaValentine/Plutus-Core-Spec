@@ -81,7 +81,9 @@
         \texttt{subtractInteger}   &  \forall s :: size.\ integer_s \to integer_s \to integer_s  &  s!i_0 , s!i_1 & s!(i_0 - i_1)                     & -2^{8s-1} \leq i_0 - i_1 < 2^{8s-1}\\
         \texttt{multiplyInteger}   &  \forall s :: size.\ integer_s \to integer_s \to integer_s  &  s!i_0 , s!i_1   & s!(i_0 * i_1)                     & -2^{8s-1} \leq i_0 * i_1 < 2^{8s-1}\\
         \texttt{divideInteger}     &  \forall s :: size.\ integer_s \to integer_s \to integer_s  &  s!i_0 , s!i_1   & s!(\operatorname{div}\ i_0\ i_1)                     & i_1 \not= 0\\
-        \texttt{remainderInteger}  &  \forall s :: size.\ integer_s \to integer_s \to integer_s  &  s!i_0 , s!i_1   & s!(\operatorname{mod} \ i_0 \ i_1)                     & i_1 \not= 0\\
+        \texttt{quotientInteger}   &  \forall s :: size.\ integer_s \to integer_s \to integer_s  &  s!i_0 , s!i_1   & s!(\operatorname{quot}\ i_0\ i_1)                    & i_1 \not= 0\\
+        \texttt{remainderInteger}  &  \forall s :: size.\ integer_s \to integer_s \to integer_s  &  s!i_0 , s!i_1   & s!(\operatorname{rem} \ i_0 \ i_1)                     & i_1 \not= 0\\
+        \texttt{modInteger}        &  \forall s :: size.\ integer_s \to integer_s \to integer_s  &  s!i_0 , s!i_1   & s!(\operatorname{mod} \ i_0 \ i_1)                     & i_1 \not= 0\\
         %&&\\
         
         \texttt{lessThanInteger}            &  \forall s :: size.\ integer_s \to integer_s \to boolean  &  s!i_0 , s!i_1   &   i_0 < i_1\\
