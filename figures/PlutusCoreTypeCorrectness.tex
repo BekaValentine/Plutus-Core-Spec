@@ -6,7 +6,7 @@
     \[\begin{array}{lrclr}
         \textrm{Ctx} & \Gamma  & ::= & \epsilon                    & \textrm{empty context} \\
                      &         &     & \Gamma, \typeJ{\alpha}{K}   & \textrm{type variable} \\
-                     &         &     & \Gamma, \termJ{x}{A}        & \textrm{term variable} \\
+                     &         &     & \Gamma, \termJ{x}{S}        & \textrm{term variable} \\
     \end{array}\]
     
     
@@ -20,7 +20,7 @@
     
     \begin{prooftree}
         \AxiomC{}
-        \UnaryInfC{\(\ctxni{\Gamma, \termJ{x}{A}}{\termJ{x}{A}}\)}
+        \UnaryInfC{\(\ctxni{\Gamma, \termJ{x}{S}}{\termJ{x}{S}}\)}
     \end{prooftree}
     
     \begin{prooftree}
@@ -31,18 +31,18 @@
     
      \begin{prooftree}
         \AxiomC{\(\ctxni{\Gamma}{\typeJ{\alpha}{K}}\)}
-        \UnaryInfC{\(\ctxni{\Gamma, \termJ{y}{B}}{\typeJ{\alpha}{B}}\)}
+        \UnaryInfC{\(\ctxni{\Gamma, \termJ{y}{T}}{\typeJ{\alpha}{K}}\)}
     \end{prooftree}
     
     \begin{prooftree}
-        \AxiomC{\(\ctxni{\Gamma}{\termJ{x}{A}}\)}
-        \UnaryInfC{\(\ctxni{\Gamma, \typeJ{\beta}{J}}{\termJ{x}{A}}\)}
+        \AxiomC{\(\ctxni{\Gamma}{\termJ{x}{S}}\)}
+        \UnaryInfC{\(\ctxni{\Gamma, \typeJ{\beta}{J}}{\termJ{x}{S}}\)}
     \end{prooftree}
     
      \begin{prooftree}
-        \AxiomC{\(\ctxni{\Gamma}{\termJ{x}{A}}\)}
+        \AxiomC{\(\ctxni{\Gamma}{\termJ{x}{S}}\)}
         \AxiomC{\(x \not= y\)}
-        \BinaryInfC{\(\ctxni{\Gamma, \termJ{y}{B}}{\termJ{x}{A}}\)}
+        \BinaryInfC{\(\ctxni{\Gamma, \termJ{y}{T}}{\termJ{x}{S}}\)}
     \end{prooftree}
     
     
@@ -63,8 +63,8 @@
     \begin{prooftree}
         \AxiomC{\(\validJ{\Gamma}\)}
         \AxiomC{$x$ is free in $\Gamma$}
-        \AxiomC{\(\hypJ{\Gamma}{\istypeJ{A}{\typeK{}}}\)}
-        \TrinaryInfC{\(\Gamma, \termJ{x}{A}\)}
+        \AxiomC{\(\hypJ{\Gamma}{\istypeJ{S}{\typeK{}}}\)}
+        \TrinaryInfC{\(\Gamma, \termJ{x}{S}\)}
     \end{prooftree}
     
     
@@ -99,10 +99,10 @@
     \end{prooftree}
     
     \begin{prooftree}
-        \AxiomC{\(\hypJ{\Gamma}{\istypeJ{B}{\typeK{}}}\)}
         \AxiomC{\(\hypJ{\Gamma}{\istypeJ{A}{\typeK{}}}\)}
+        \AxiomC{\(\hypJ{\Gamma}{\istypeJ{B}{\typeK{}}}\)}
         \RightLabel{tyfun}
-        \BinaryInfC{\(\hypJ{\Gamma}{\istypeJ{\funT{B}{A}}{\typeK{}}}\)}
+        \BinaryInfC{\(\hypJ{\Gamma}{\istypeJ{\funT{A}{B }}{\typeK{}}}\)}
     \end{prooftree}
     
     \begin{prooftree}
@@ -133,53 +133,53 @@
 
 
 \begin{figure*}[t]
-    \judgmentdef{\(\hypJ{\Gamma}{\istermJ{M}{A}}\)}{In context $\Gamma$, term $M$ has type $A$}
+    \judgmentdef{\(\hypJ{\Gamma}{\istermJ{M}{S}}\)}{In context $\Gamma$, term $M$ has type $A$}
     
     \begin{prooftree}
-        \AxiomC{\(\ctxni{\Gamma}{\termJ{x}{A}}\)}
+        \AxiomC{\(\ctxni{\Gamma}{\termJ{x}{S}}\)}
         \RightLabel{var}
-        \UnaryInfC{\(\hypJ{\Gamma}{\istermJ{x}{A}}\)}
+        \UnaryInfC{\(\hypJ{\Gamma}{\istermJ{x}{S}}\)}
     \end{prooftree}
     
     \begin{prooftree}
-        \AxiomC{\(\hypJ{\Gamma, \typeJ{\alpha}{K}}{\istermJ{M}{B}}\)}
+        \AxiomC{\(\hypJ{\Gamma, \typeJ{\alpha}{K}}{\istermJ{M}{T}}\)}
         \RightLabel{abs}
-        \UnaryInfC{\(\hypJ{\Gamma}{\istermJ{\abs{\alpha}{K}{M}}{\allT{\alpha}{K}{B}}}\)}
+        \UnaryInfC{\(\hypJ{\Gamma}{\istermJ{\abs{\alpha}{K}{M}}{\allT{\alpha}{K}{T}}}\)}
     \end{prooftree}
     
     \begin{prooftree}
-        \AxiomC{\(\hypJ{\Gamma}{\istermJ{L}{\allT{\alpha}{K}{B}}}\)}
+        \AxiomC{\(\hypJ{\Gamma}{\istermJ{L}{\allT{\alpha}{K}{T}}}\)}
         \AxiomC{\(\hypJ{\Gamma}{\istypeJ{A}{K}}\)}
         \RightLabel{inst}
-        \BinaryInfC{\(\hypJ{\Gamma}{\istermJ{\inst{L}{A}}{\subst{A}{\alpha}{B}}}\)}
+        \BinaryInfC{\(\hypJ{\Gamma}{\istermJ{\inst{L}{A}}{\normalform{\subst{S}{\alpha}{T}}}}\)}
     \end{prooftree}
     
     \begin{prooftree}
         \alwaysNoLine
         \AxiomC{\(\hypJ{\Gamma, \typeJ{\alpha}{\typeK{}}}{\istypeJ{A}{\typeK{}}}\)}
-        \UnaryInfC{\(\hypJ{\Gamma}{\istermJ{M}{\subst{\fixT{\alpha}{A}}{\alpha}{A}}}\)}
+        \UnaryInfC{\(\hypJ{\Gamma}{\istermJ{M}{\normalform{\subst{\fixT{\alpha}{A}}{\alpha}{A}}}}\)}
         \alwaysSingleLine
         \RightLabel{wrap}
-        \UnaryInfC{\(\hypJ{\Gamma}{\istermJ{\wrap{\alpha}{A}{M}}{\fixT{\alpha}{A}}}\)}
+        \UnaryInfC{\(\hypJ{\Gamma}{\istermJ{\wrap{\alpha}{A}{M}}{\fixT{\alpha}{\normalform{A}}}}\)}
     \end{prooftree}
     
     \begin{prooftree}
-        \AxiomC{\(\hypJ{\Gamma}{\istermJ{M}{\fixT{\alpha}{A}}}\)}
+        \AxiomC{\(\hypJ{\Gamma}{\istermJ{M}{\fixT{\alpha}{T}}}\)}
         \RightLabel{unwrap}
-        \UnaryInfC{\(\hypJ{\Gamma}{\istermJ{\unwrap{M}}{\subst{\fixT{\alpha}{A}}{\alpha}{A}}}\)}
+        \UnaryInfC{\(\hypJ{\Gamma}{\istermJ{\unwrap{M}}{\normalform{\subst{\fixT{\alpha}{T}}{\alpha}{T}}}}\)}
     \end{prooftree}
     
     \begin{prooftree}
-        \AxiomC{\(\hypJ{\Gamma, \termJ{y}{A}}{\istermJ{M}{B}}\)}
+        \AxiomC{\(\hypJ{\Gamma, \termJ{y}{\normalform{A}}}{\istermJ{M}{T}}\)}
         \RightLabel{lam}
-        \UnaryInfC{\(\hypJ{\Gamma}{\istermJ{\lam{y}{A}{M}}{\funT{A}{B}}}\)}
+        \UnaryInfC{\(\hypJ{\Gamma}{\istermJ{\lam{y}{A}{M}}{\funT{\normalform{A}}{T}}}\)}
     \end{prooftree}
     
     \begin{prooftree}
-        \AxiomC{\(\hypJ{\Gamma}{\istermJ{L}{\funT{A}{B}}}\)}
-        \AxiomC{\(\hypJ{\Gamma}{\istermJ{M}{A}}\)}
+        \AxiomC{\(\hypJ{\Gamma}{\istermJ{L}{\funT{S}{T}}}\)}
+        \AxiomC{\(\hypJ{\Gamma}{\istermJ{M}{S}}\)}
         \RightLabel{app}
-        \BinaryInfC{\(\hypJ{\Gamma}{\istermJ{\app{L}{M}}{B}}\)}
+        \BinaryInfC{\(\hypJ{\Gamma}{\istermJ{\app{L}{M}}{T}}\)}
     \end{prooftree}
     
     \begin{prooftree}
@@ -191,7 +191,7 @@
     \begin{prooftree}
         \AxiomC{\(\hypJ{\Gamma}{\istypeJ{A}{\typeK{}}}\)}
         \RightLabel{error}
-        \UnaryInfC{\(\hypJ{\Gamma}{\istermJ{\error{A}}{A}}\)}
+        \UnaryInfC{\(\hypJ{\Gamma}{\istermJ{\error{A}}{\normalform{A}}}\)}
     \end{prooftree}
     
     \caption{Type Synthesis}

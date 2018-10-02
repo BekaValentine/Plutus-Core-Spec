@@ -606,7 +606,7 @@
 \newcommand{\step}[2]{#1 ~ \rightarrow ~ #2}
 \newcommand{\multistep}[2]{#1 ~ \rightarrow^* ~ #2}
 \newcommand{\multistepIndexed}[3]{#1 ~ \rightarrow^{#2} ~ #3}
-\newcommand{\normalform}[1]{\llbracket #1 \rrbracket}
+\newcommand{\normalform}[1]{\lfloor #1 \rfloor}
 \newcommand{\evalprog}[2]{#1 ~\Longrightarrow~ #2}
 \newcommand{\evalsto}[3]{#2 ~\Downarrow_{#1}~ #3}
 \newcommand{\coneval}[3]{\mathrm{built-in} ~ \name{#1} ~ \mathrm{evals ~ on} ~ #2 ~ \mathrm{to} ~ #3}
@@ -698,7 +698,7 @@
 %
 % paper title
 % can use linebreaks \\ within to get better formatting as desired
-\title{Formal Specification of\\the Plutus Core Language v1.0 (RC5.3)}
+\title{Formal Specification of\\the Plutus Core Language v1.0 (RC5.4)}
 
 
 % author names and affiliations
@@ -957,14 +957,6 @@ TO WRITE
 
 \subfile{figures/PlutusCoreExampleAgain}
 
-
-
-
-\section{Progress and Preservation}
-
-TO WRITE
-
-\subfile{figures/PlutusCoreProgressAndPreservation}
 
 
 
